@@ -22,6 +22,9 @@ class GmlWriter(BaseWriter, ABC):
         :param write_binary: flag if file is a binary file
         :return:
         """
+        if data.is_origin_based():
+            raise Exception("Geo-referenced data must not be origin based")
+
         self._contains_transformation_information(data)
 
         if "b" not in file.mode.lower():

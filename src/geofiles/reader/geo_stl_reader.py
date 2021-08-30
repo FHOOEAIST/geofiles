@@ -35,8 +35,13 @@ class GeoStlReader(BaseReader, ABC):
             if trimmed.startswith("geosolid") or trimmed.startswith("solid"):
                 splits = trimmed.split(" ")
                 res.crs = splits[1]
-                if len(splits) > 3:
-                    res.origin = splits[2:4]
+                l = len(splits)
+                if l == 5 or l == 6:
+                    res.origin = splits[2:5]
+                    if l == 6:
+                        obj.name = splits[-1]
+                elif l == 2:
+                    obj.name = splits[-1]
             elif trimmed.startswith("facet"):
                 current_face = Face()
                 obj.faces.append(current_face)

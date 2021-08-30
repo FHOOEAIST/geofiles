@@ -99,14 +99,14 @@ class BaseWriter(ABC):
         if data.translation is not None:
             for t in data.translation:
                 if not math.isclose(t, 0, rel_tol=1e-6):
-                    raise Exception("Given contains translation information. Transform data, before writing to file")
+                    raise Exception("Given data contains translation information. Transform data, before writing to file")
 
         if data.rotation is not None:
-            for t in data.translation:
+            for t in data.rotation:
                 if not math.isclose(t, 0, rel_tol=1e-6):
-                    raise Exception("Given contains rotation information. Transform data, before writing to file")
+                    raise Exception("Given data contains rotation information. Transform data, before writing to file")
 
         if data.scaling is not None:
             for t in data.scaling:
                 if not math.isclose(t, 1, rel_tol=1e-6):
-                    raise Exception("Given contains scale information. Transform data, before writing to file")
+                    raise Exception("Given data contains scale information. Transform data, before writing to file")
