@@ -1,3 +1,6 @@
+import os
+
+from geofiles.conversion.crs_converter import CrsConverter
 from geofiles.conversion.local_converter import LocalConverter
 from geofiles.conversion.origin_converter import OriginConverter
 from geofiles.reader.geo_obj_reader import GeoObjReader
@@ -7,17 +10,13 @@ from geofiles.reader.geo_stl_reader import GeoStlReader
 from geofiles.writer.city_json_writer import CityJsonWriter
 from geofiles.writer.geo_json_writer import GeoJsonWriter
 from geofiles.writer.geo_obj_writer import GeoObjWriter
-from geofiles.conversion.crs_converter import CrsConverter
-
-import os
-
 from geofiles.writer.geo_off_writer import GeoOffWriter
 from geofiles.writer.geo_ply_writer import GeoPlyWriter
 from geofiles.writer.geo_stl_writer import GeoStlWriter
 from geofiles.writer.gml_writer import GmlWriter
 from geofiles.writer.kml_writer import KmlWriter
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     reader = GeoPlyReader()
     cwd = os.getcwd()
     idx = cwd.find("src")
@@ -31,7 +30,6 @@ if __name__ == '__main__':
 
         # kml_writer = GeoPlyWriter()
         # kml_writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube.geoply"), converted)
-
 
         # writer = GeoObjWriter()
         # writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube2.geoobj"), converted)

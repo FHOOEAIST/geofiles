@@ -1,9 +1,9 @@
 from abc import ABC
 from io import TextIOWrapper
 
-from geofiles.domain.geo_object_file import GeoObjectFile
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.face import Face
+from geofiles.domain.geo_object import GeoObject
+from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
 
@@ -12,13 +12,15 @@ class GeoObjWriter(BaseWriter, ABC):
     Class for writing Geo-Referenced .obj files (.geoobj)
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written
         :param data: content to be written
         :param write_binary: flag if file is a binary file
-        :return: 
+        :return:
         """
         if data.crs is not None:
             self._write_to_file(file, "crs ", write_binary)
@@ -67,7 +69,9 @@ class GeoObjWriter(BaseWriter, ABC):
                         self._write_to_file(file, "/", write_binary)
 
                     if contains_textures:
-                        self._write_to_file(file, f.texture_coordinates[i], write_binary)
+                        self._write_to_file(
+                            file, f.texture_coordinates[i], write_binary
+                        )
 
                     if contains_normals:
                         self._write_to_file(file, "/", write_binary)
@@ -97,4 +101,3 @@ class GeoObjWriter(BaseWriter, ABC):
         :return: the supported file type of this writer
         """
         return ".geoobj"
-

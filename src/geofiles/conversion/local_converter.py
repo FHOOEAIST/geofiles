@@ -8,7 +8,10 @@ class LocalConverter:
     """
     Converter used to convert a geo referenced file to a local file or vice versa
     """
-    def from_local(self, data: GeoObjectFile, crs: str, origin: list, origin_based: bool = True):
+
+    def from_local(
+        self, data: GeoObjectFile, crs: str, origin: list, origin_based: bool = True
+    ):
         """
         Converts the given object file with a local coordinate system to a geo-referenced representation
         :param data: to be converted

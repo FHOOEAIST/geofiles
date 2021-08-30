@@ -1,6 +1,6 @@
 import copy
 import math
-from math import sin, cos, radians, pi
+from math import cos, pi, radians, sin
 
 
 def get_distant_point(x0, y0, d, theta):
@@ -33,12 +33,13 @@ def get_angle_between_points(point2, point1):
     :param point2: second point
     :return: angle between both points
     """
-    r = (180.0 / math.pi * math.atan2(point1[0] - point2[0], point1[1] - point2[1]))
+    r = 180.0 / math.pi * math.atan2(point1[0] - point2[0], point1[1] - point2[1])
 
     if r < 0:
         r %= 360
 
     return r
+
 
 def get_center(vertices):
     """

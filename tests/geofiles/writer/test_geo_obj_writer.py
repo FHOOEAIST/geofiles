@@ -9,7 +9,7 @@ class TestGeoObjWriter(BaseWriterTest):
 
     def test_write(self):
         data = self.get_cube()
-        self._test_write(data, "cube"+self.get_writer().get_file_type())
+        self._test_write(data, "cube" + self.get_writer().get_file_type())
 
     def test_write2(self):
         data = self.get_cube()

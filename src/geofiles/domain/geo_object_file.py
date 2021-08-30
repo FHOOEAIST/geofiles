@@ -70,4 +70,3 @@ class GeoObjectFile:
             return list_to_access[idx]
         else:
             raise Exception(f"Non valid index {idx}")
-

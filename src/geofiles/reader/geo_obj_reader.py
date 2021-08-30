@@ -1,11 +1,9 @@
 from abc import ABC
-
-from geofiles.domain.geo_object_file import GeoObjectFile
-from geofiles.domain.geo_object import GeoObject
-from geofiles.domain.face import Face
-
 from io import TextIOWrapper
 
+from geofiles.domain.face import Face
+from geofiles.domain.geo_object import GeoObject
+from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
 
 
@@ -13,6 +11,7 @@ class GeoObjReader(BaseReader, ABC):
     """
     Reader implementaiton for geo-referenced .obj files
     """
+
     def _read(self, file: TextIOWrapper) -> GeoObjectFile:
         """
         Reads a given .geoobj file
@@ -35,7 +34,7 @@ class GeoObjReader(BaseReader, ABC):
             if not line:
                 break
             trimmed = line.strip()
-            trimmed = ' '.join(trimmed.split())
+            trimmed = " ".join(trimmed.split())
             # check if current line is a classic vertex
             if trimmed.startswith("v"):
                 coordinates = trimmed[2:].split(" ")

@@ -10,10 +10,13 @@ class GeoStlWriter(BaseWriter, ABC):
     """
     Writer implementation for creating Geo-Referenced STL geometry files (.geostl)
     """
+
     def __init__(self):
         self.stl_name = ""
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written
@@ -27,7 +30,9 @@ class GeoStlWriter(BaseWriter, ABC):
         if data.is_origin_based():
             for c in data.origin:
                 origin += str(c) + " "
-        self._write_to_file(file, f"geosolid {data.crs} {origin} {self.stl_name}", write_binary, True)
+        self._write_to_file(
+            file, f"geosolid {data.crs} {origin} {self.stl_name}", write_binary, True
+        )
         for obj in data.objects:
             obj: GeoObject = obj
             for face in obj.faces:
@@ -38,13 +43,17 @@ class GeoStlWriter(BaseWriter, ABC):
                         normal = [x + y for x, y in zip(normal, n)]
                     normal = [str(x / len(face.normal_indices)) for x in normal]
 
-                    self._write_to_file(file, f" facet normal {' '.join(normal)}", write_binary, True)
+                    self._write_to_file(
+                        file, f" facet normal {' '.join(normal)}", write_binary, True
+                    )
                 else:
                     self._write_to_file(file, f" facet", write_binary, True)
                 self._write_to_file(file, f"  outer loop", write_binary, True)
                 for idx in face.indices:
                     vertex = [str(a) for a in data.get_vertex(idx)]
-                    self._write_to_file(file, f"   vertex {' '.join(vertex)}", write_binary, True)
+                    self._write_to_file(
+                        file, f"   vertex {' '.join(vertex)}", write_binary, True
+                    )
                 self._write_to_file(file, f"  endloop", write_binary, True)
                 self._write_to_file(file, f" endfacet", write_binary, True)
 

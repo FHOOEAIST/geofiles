@@ -1,4 +1,5 @@
 import unittest
+
 from geofiles.conversion.static import *
 
 
@@ -56,4 +57,4 @@ class TestStatic(unittest.TestCase):
             get_lon_lat(vertex, crs)
 
         # then
-        self.assertTrue('Not supported crs some_crs' in str(context.exception))
+        self.assertTrue("Not supported crs some_crs" in str(context.exception))

@@ -13,7 +13,9 @@ class GeoJsonWriter(BaseWriter, ABC):
     Writer implementation for creating GeoJSON geometry files
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written

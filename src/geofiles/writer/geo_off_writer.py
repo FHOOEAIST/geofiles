@@ -11,7 +11,9 @@ class GeoOffWriter(BaseWriter, ABC):
     Writer implementation for creating Geo-Referenced OFF geometry files (.geooff)
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written
@@ -32,7 +34,12 @@ class GeoOffWriter(BaseWriter, ABC):
         if data.crs is not None and data.origin is None:
             self._write_to_file(file, data.crs, write_binary, True)
         elif data.origin is not None and data.origin is not None:
-            self._write_to_file(file, f"{data.crs} {' '.join([str(f) for f in data.origin])}", write_binary, True)
+            self._write_to_file(
+                file,
+                f"{data.crs} {' '.join([str(f) for f in data.origin])}",
+                write_binary,
+                True,
+            )
         self._write_to_file(file, f"{num_vertices} {num_faces} 0", write_binary, True)
 
         for v in data.vertices:

@@ -11,7 +11,9 @@ class GeoPlyWriter(BaseWriter, ABC):
     Writer implementation for creating Geo PLY geometry files (.geoply)
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written
@@ -32,23 +34,45 @@ class GeoPlyWriter(BaseWriter, ABC):
             self._write_to_file(file, f"crs {data.crs}", write_binary, True)
 
         if data.origin is not None:
-            self._write_to_file(file, f"origin {' '.join([str(f) for f in data.origin])}", write_binary, True)
+            self._write_to_file(
+                file,
+                f"origin {' '.join([str(f) for f in data.origin])}",
+                write_binary,
+                True,
+            )
 
         if data.scaling is not None:
-            self._write_to_file(file, f"scale {' '.join([str(f) for f in data.scaling])}", write_binary, True)
+            self._write_to_file(
+                file,
+                f"scale {' '.join([str(f) for f in data.scaling])}",
+                write_binary,
+                True,
+            )
 
         if data.rotation is not None:
-            self._write_to_file(file, f"rotate {' '.join([str(f) for f in data.rotation])}", write_binary, True)
+            self._write_to_file(
+                file,
+                f"rotate {' '.join([str(f) for f in data.rotation])}",
+                write_binary,
+                True,
+            )
 
         if data.translation is not None:
-            self._write_to_file(file, f"translate {' '.join([str(f) for f in data.translation])}", write_binary, True)
+            self._write_to_file(
+                file,
+                f"translate {' '.join([str(f) for f in data.translation])}",
+                write_binary,
+                True,
+            )
 
         self._write_to_file(file, f"element vertex {num_vertices}", write_binary, True)
         self._write_to_file(file, "property float x", write_binary, True)
         self._write_to_file(file, "property float y", write_binary, True)
         self._write_to_file(file, "property float z", write_binary, True)
         self._write_to_file(file, f"element face  {num_faces}", write_binary, True)
-        self._write_to_file(file, "property list uchar int vertex_index", write_binary, True)
+        self._write_to_file(
+            file, "property list uchar int vertex_index", write_binary, True
+        )
         self._write_to_file(file, "end_header", write_binary, True)
 
         for v in data.vertices:

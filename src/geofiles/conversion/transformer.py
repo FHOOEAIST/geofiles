@@ -8,6 +8,7 @@ class Transformer:
     """
     class used to apply different transformations to given GeoObjectFile
     """
+
     def rotate(self, data: GeoObjectFile) -> GeoObjectFile:
         """
         Applies the rotation defined in the given data
@@ -32,7 +33,13 @@ class Transformer:
         """
         return self.transform(data, rotate=False, translate=False)
 
-    def transform(self, data: GeoObjectFile, scale: bool = True, rotate: bool = True, translate: bool = True) -> GeoObjectFile:
+    def transform(
+        self,
+        data: GeoObjectFile,
+        scale: bool = True,
+        rotate: bool = True,
+        translate: bool = True,
+    ) -> GeoObjectFile:
         """
         Applies the scaling, rotation and translation for the given data
         :param data: to be transformed
@@ -70,16 +77,22 @@ class Transformer:
         zero = [0, 0, 0]
         for vertex in res.vertices:
             # recenter around (0,0,0) and scale it
-            new_vertex = [(v_i - c_i) * s_i for v_i, c_i, s_i in zip(vertex, center, scaling)]
+            new_vertex = [
+                (v_i - c_i) * s_i for v_i, c_i, s_i in zip(vertex, center, scaling)
+            ]
             # TODO check and remove
             # for idx, c in enumerate(vertex):
             #     new_c = c - center[idx]
             #     new_c *= scaling
             #     new_vertex.append(new_c)
             # rotate vertex
-            rotated = rotate_point(new_vertex, zero, rotation[0], rotation[1], rotation[2])
+            rotated = rotate_point(
+                new_vertex, zero, rotation[0], rotation[1], rotation[2]
+            )
             # recenter around origin
-            rotated = [c_i + r_i + t_i for c_i, r_i, t_i in zip(center, rotated, translation)]
+            rotated = [
+                c_i + r_i + t_i for c_i, r_i, t_i in zip(center, rotated, translation)
+            ]
             new_vertices.append(rotated)
         res.vertices = new_vertices
 

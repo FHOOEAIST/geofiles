@@ -1,6 +1,6 @@
 import os
-from collections import OrderedDict, Counter
 import random
+from collections import Counter, OrderedDict
 
 from geofiles.writer.base import BaseWriter
 from tests.geofiles.base_test import BaseTest
@@ -17,7 +17,7 @@ class BaseWriterTest(BaseTest):
             if os.path.exists(file):
                 os.remove(file)
 
-    def _test_write(self, data, ref_file_name:str, write_binary:bool = False):
+    def _test_write(self, data, ref_file_name: str, write_binary: bool = False):
         """
         Test implementation
         :param ref_file_name: name of the reference file for comparison
@@ -33,7 +33,13 @@ class BaseWriterTest(BaseTest):
         rd.seed(42)
 
         # when
-        writer.write(file, data, write_binary, append_file_type=False, random_seed=rd.getrandbits(128))
+        writer.write(
+            file,
+            data,
+            write_binary,
+            append_file_type=False,
+            random_seed=rd.getrandbits(128),
+        )
 
         # then
         self.assertTrue(os.path.exists(file))

@@ -4,7 +4,6 @@ from geofiles.conversion.calculation import *
 
 
 class TestCalculation(unittest.TestCase):
-
     def test_get_distant_point(self):
         # given
         x = 0
@@ -33,7 +32,6 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(res[0], 0.0)
         self.assertAlmostEqual(res[1], 1.0)
 
-
     def test_get_point_distance(self):
         # given
         p1 = [0, 0]
@@ -58,7 +56,7 @@ class TestCalculation(unittest.TestCase):
     def test_get_angle_between_points(self):
         # given
         p1 = [0, 0]
-        p2 = [0, 1] # top
+        p2 = [0, 1]  # top
 
         # when
         theta = get_angle_between_points(p1, p2)
@@ -69,7 +67,7 @@ class TestCalculation(unittest.TestCase):
     def test_get_angle_between_points2(self):
         # given
         p1 = [0, 0]
-        p2 = [1, 0] # right
+        p2 = [1, 0]  # right
 
         # when
         theta = get_angle_between_points(p1, p2)

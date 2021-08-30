@@ -1,11 +1,9 @@
 from abc import ABC
-
-from geofiles.domain.geo_object_file import GeoObjectFile
-from geofiles.domain.geo_object import GeoObject
-from geofiles.domain.face import Face
-
 from io import TextIOWrapper
 
+from geofiles.domain.face import Face
+from geofiles.domain.geo_object import GeoObject
+from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
 
 
@@ -13,6 +11,7 @@ class GeoOffReader(BaseReader, ABC):
     """
     Reader implementaiton for geo-referenced .off files (.geooff)
     """
+
     def _read(self, file: TextIOWrapper) -> GeoObjectFile:
         res = GeoObjectFile()
         obj = GeoObject()
@@ -31,7 +30,7 @@ class GeoOffReader(BaseReader, ABC):
             if not line:
                 break
             trimmed = line.strip()
-            trimmed = ' '.join(trimmed.split())
+            trimmed = " ".join(trimmed.split())
 
             if len(trimmed) == 0:
                 continue

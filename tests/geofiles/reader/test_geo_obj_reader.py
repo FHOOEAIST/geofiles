@@ -23,7 +23,9 @@ class TestGeoObjReader(BaseTest):
 
         for idx, face in enumerate(geo_obj_file.objects[0].faces):
             for inneridx, i in enumerate(face.indices):
-                self.assertEqual(int(i), int(cube.objects[0].faces[idx].indices[inneridx]))
+                self.assertEqual(
+                    int(i), int(cube.objects[0].faces[idx].indices[inneridx])
+                )
 
         for idx, vertex in enumerate(geo_obj_file.vertices):
             self.assertAlmostEqual(float(vertex[0]), cube.vertices[idx][0])
@@ -49,7 +51,9 @@ class TestGeoObjReader(BaseTest):
 
         for idx, face in enumerate(geo_obj_file.objects[0].faces):
             for inneridx, i in enumerate(face.indices):
-                self.assertEqual(int(i), int(cube.objects[0].faces[idx].indices[inneridx]))
+                self.assertEqual(
+                    int(i), int(cube.objects[0].faces[idx].indices[inneridx])
+                )
 
         for idx, vertex in enumerate(geo_obj_file.vertices):
             self.assertAlmostEqual(float(vertex[0]), cube.vertices[idx][0])
@@ -65,7 +69,10 @@ class TestGeoObjReader(BaseTest):
         geo_obj_file = reader.read(file)
 
         # then
-        self.assertEqual(geo_obj_file.origin, ['14.2842798233032', '48.30284881591775', '279.807006835938'])
+        self.assertEqual(
+            geo_obj_file.origin,
+            ["14.2842798233032", "48.30284881591775", "279.807006835938"],
+        )
 
     def test_read4(self):
         # given
@@ -76,8 +83,10 @@ class TestGeoObjReader(BaseTest):
         geo_obj_file = reader.read(file)
 
         # then
-        self.assertEqual(geo_obj_file.origin, ['14.2842798233032', '48.30284881591775', '279.807006835938'])
+        self.assertEqual(
+            geo_obj_file.origin,
+            ["14.2842798233032", "48.30284881591775", "279.807006835938"],
+        )
         self.assertEqual(geo_obj_file.translation, ["10", "50", "100"])
         self.assertEqual(geo_obj_file.scaling, ["2", "2", "2"])
         self.assertEqual(geo_obj_file.rotation, ["90", "0", "0"])
-

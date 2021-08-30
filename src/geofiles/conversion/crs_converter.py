@@ -2,15 +2,18 @@ import copy
 
 import pyproj
 
-from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.conversion.static import *
+from geofiles.domain.geo_object_file import GeoObjectFile
 
 
 class CrsConverter:
     """
     Converter for projecting a given geo referenced object to another coordinate system
     """
-    def convert(self, data: GeoObjectFile, target_crs: str, alwaysxy: bool = True) -> GeoObjectFile:
+
+    def convert(
+        self, data: GeoObjectFile, target_crs: str, alwaysxy: bool = True
+    ) -> GeoObjectFile:
         """
         Converts the given data to another coordinate reference system
         :param data: to be converted
@@ -40,15 +43,21 @@ class CrsConverter:
         transformer = pyproj.Transformer.from_crs(source, target, always_xy=alwaysxy)
 
         if data.is_origin_based():
-            res.origin = self._convert_coordinate(data.origin, transformer, from_wgs84, to_wgs84)
+            res.origin = self._convert_coordinate(
+                data.origin, transformer, from_wgs84, to_wgs84
+            )
         else:
             converted = []
             for vertex in data.vertices:
-                converted.append(self._convert_coordinate(vertex, transformer, from_wgs84, to_wgs84))
+                converted.append(
+                    self._convert_coordinate(vertex, transformer, from_wgs84, to_wgs84)
+                )
             res.vertices = converted
         return res
 
-    def _convert_coordinate(self, vertex, transformer, from_wgs84:bool, to_wgs84:bool):
+    def _convert_coordinate(
+        self, vertex, transformer, from_wgs84: bool, to_wgs84: bool
+    ):
         """
         Converts the given vertex based on the given transformer with reference if input or output system is WGS84
         :param vertex: to be converted

@@ -31,7 +31,7 @@ class TestGeoObjectFile(BaseTest):
             cube.get_vertex(0)
 
             # then
-        self.assertTrue('Non valid index' in str(context.exception))
+        self.assertTrue("Non valid index" in str(context.exception))
 
     def test_get_vertex4(self):
         # given
@@ -42,7 +42,7 @@ class TestGeoObjectFile(BaseTest):
             cube.get_vertex("test")
 
             # then
-        self.assertTrue('invalid literal for int()' in str(context.exception))
+        self.assertTrue("invalid literal for int()" in str(context.exception))
 
     def test_is_origin_based(self):
         # given

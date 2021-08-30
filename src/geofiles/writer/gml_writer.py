@@ -1,4 +1,5 @@
 import uuid
+import xml.etree.ElementTree as ET
 from abc import ABC
 from io import TextIOWrapper
 
@@ -6,7 +7,6 @@ from geofiles.conversion.static import get_wgs_84
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
-import xml.etree.ElementTree as ET
 
 
 class GmlWriter(BaseWriter, ABC):
@@ -14,7 +14,9 @@ class GmlWriter(BaseWriter, ABC):
     Writer implementation for creating GML geometry files
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written
@@ -38,7 +40,7 @@ class GmlWriter(BaseWriter, ABC):
 
         attributes = dict()
         attributes["xmlns:gml"] = "http://www.opengis.net/gml/3.2"
-        root = ET.Element('root', attributes)
+        root = ET.Element("root", attributes)
         for obj in data.objects:
             obj: GeoObject = obj
             solid = ET.Element("gml:Solid")
@@ -78,7 +80,7 @@ class GmlWriter(BaseWriter, ABC):
                 coordinates.text += ",".join(vertex)
 
         tree = ET.ElementTree(root)
-        tree.write(file, encoding='ascii', xml_declaration=True)
+        tree.write(file, encoding="ascii", xml_declaration=True)
 
     def get_file_type(self) -> str:
         """

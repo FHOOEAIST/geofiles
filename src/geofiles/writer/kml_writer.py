@@ -1,3 +1,4 @@
+import xml.etree.ElementTree as ET
 from abc import ABC
 from io import TextIOWrapper
 
@@ -5,7 +6,6 @@ from geofiles.conversion.static import get_wgs_84
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
-import xml.etree.ElementTree as ET
 
 
 class KmlWriter(BaseWriter, ABC):
@@ -13,7 +13,9 @@ class KmlWriter(BaseWriter, ABC):
     Writer implementation for creating KML geometry files
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
+    def _write(
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
+    ):
         """
         Write implementation
         :param file: target to be written
@@ -32,7 +34,7 @@ class KmlWriter(BaseWriter, ABC):
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
 
-        root = ET.Element('kml')
+        root = ET.Element("kml")
         root.attrib["xmlns"] = "http://www.opengis.net/kml/2.2"
         for obj in data.objects:
             obj: GeoObject = obj
@@ -68,7 +70,7 @@ class KmlWriter(BaseWriter, ABC):
                     coordinates.text += str(coord) + " "
 
         tree = ET.ElementTree(root)
-        tree.write(file, encoding='ascii', xml_declaration=True)
+        tree.write(file, encoding="ascii", xml_declaration=True)
 
     def get_file_type(self) -> str:
         """
