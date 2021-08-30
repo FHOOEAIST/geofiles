@@ -1,0 +1,14 @@
+bandit
+black
+coverage
+flake8
+flake8-docstrings
+flake8-import-order
+hypothesis
+isort[requirements]
+mypy
+pep8-naming
+pyflakes
+pylint
+pytest
+pytest-cov
