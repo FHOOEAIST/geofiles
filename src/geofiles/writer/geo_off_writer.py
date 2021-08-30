@@ -11,7 +11,7 @@ class GeoOffWriter(BaseWriter, ABC):
     Writer implementation for creating Geo-Referenced OFF geometry files (.geooff)
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool):
+    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
         """
         Write implementation
         :param file: target to be written

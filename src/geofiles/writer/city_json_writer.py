@@ -13,7 +13,7 @@ class CityJsonWriter(BaseWriter, ABC):
     Writer implementation for creating GeoJSON geometry files
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool):
+    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
 
@@ -36,7 +36,10 @@ class CityJsonWriter(BaseWriter, ABC):
             obj: GeoObject = obj
             cityobject = dict()
             if obj.name == "" or obj.name is None:
-                objects[uuid.uuid4()] = cityobject
+                if random_seed is None:
+                    objects[str(uuid.uuid4())] = cityobject
+                else:
+                    objects[str(uuid.UUID(int=random_seed, version=4))] = cityobject
             else:
                 objects[obj.name] = cityobject
             cityobject["type"] = "GenericCityObject"

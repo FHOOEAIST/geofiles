@@ -14,7 +14,7 @@ class GmlWriter(BaseWriter, ABC):
     Writer implementation for creating GML geometry files
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool):
+    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
         """
         Write implementation
         :param file: target to be written
@@ -53,7 +53,11 @@ class GmlWriter(BaseWriter, ABC):
             for face in obj.faces:
                 polygon = ET.Element("gml:Polygon")
                 polygon.attrib = dict()
-                polygon.attrib["gml:id"] = uuid.uuid4()
+                if random_seed is None:
+                    id = str(uuid.uuid4())
+                else:
+                    id = str(uuid.UUID(int=random_seed, version=4))
+                polygon.attrib["gml:id"] = id
                 surface_member.append(polygon)
                 boundaries = ET.Element("gml:exterior")
                 polygon.append(boundaries)

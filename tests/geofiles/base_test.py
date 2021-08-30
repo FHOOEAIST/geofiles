@@ -1,9 +1,11 @@
+import os
 import unittest
 
 from geofiles.conversion.origin_converter import OriginConverter
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
+from geofiles.writer.base import BaseWriter
 
 
 class BaseTest(unittest.TestCase):
@@ -25,6 +27,7 @@ class BaseTest(unittest.TestCase):
             [14.2842730710157, 48.3028443243414, 279.307006835938]
         ]
         geoobject = GeoObject()
+        geoobject.name = "cube"
         f1 = Face()
         f1.indices = [1, 2, 3]
         f2 = Face()
@@ -82,3 +85,43 @@ class BaseTest(unittest.TestCase):
         ]
 
         return res
+
+    def compare_with_cube(self, geo_obj_file):
+        """
+        Compares the given GeoObjectFile with the cube
+        :param geo_obj_file: to be compared
+        :return: None
+        """
+        cube = self.get_cube()
+        self.assertTrue(geo_obj_file.is_geo_referenced())
+        self.assertFalse(geo_obj_file.is_origin_based())
+        self.assertEqual(len(geo_obj_file.objects), 1)
+        self.assertEqual(len(geo_obj_file.objects[0].faces), 12)
+        self.assertEqual(len(geo_obj_file.vertices), 8)
+        self.assertEqual(geo_obj_file.crs, "urn:ogc:def:crs:OGC:2:84")
+
+        for idx, face in enumerate(geo_obj_file.objects[0].faces):
+            for inneridx, i in enumerate(face.indices):
+                self.assertEqual(int(i), int(cube.objects[0].faces[idx].indices[inneridx]))
+
+        for idx, vertex in enumerate(geo_obj_file.vertices):
+            self.assertAlmostEqual(float(vertex[0]), cube.vertices[idx][0])
+            self.assertAlmostEqual(float(vertex[1]), cube.vertices[idx][1])
+            self.assertAlmostEqual(float(vertex[2]), cube.vertices[idx][2])
+
+    @staticmethod
+    def get_ressource_file(filename: str):
+        """
+        Gets a file in the ressource folder
+        :param filename: name of the file
+        :return: full path to the file
+        """
+        cwd = os.getcwd()
+        idx = cwd.find("tests")
+        cwd = cwd[:idx]
+        return os.path.join(os.path.join(cwd, "ressources"), filename)
+
+    @classmethod
+    def get_test_file(cls, writer: BaseWriter):
+        return cls.get_ressource_file("test" + writer.get_file_type())
+

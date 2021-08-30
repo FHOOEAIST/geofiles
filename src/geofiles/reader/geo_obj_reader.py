@@ -40,7 +40,6 @@ class GeoObjReader(BaseReader, ABC):
             if trimmed.startswith("v"):
                 coordinates = trimmed[2:].split(" ")
                 res.vertices.append(coordinates)
-                filled_group = True
             # check if current line is a face defintion
             elif trimmed.startswith("f"):
                 face_defs = trimmed[2:].split(" ")

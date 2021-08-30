@@ -45,12 +45,7 @@ class GeoObjectFile:
         :param idx: idx to access
         :return: vertex at given index
         """
-        idx = int(idx)
-
-        if idx > 0:
-            return self.vertices[idx - 1]
-        else:
-            return self.vertices[idx]
+        return self._access_idx(self.vertices, idx)
 
     def get_normal(self, idx: int):
         """
@@ -58,10 +53,21 @@ class GeoObjectFile:
         :param idx: idx to access
         :return: normal vertex at given index
         """
+        return self._access_idx(self.normals, idx)
+
+    def _access_idx(self, list_to_access, idx):
+        """
+        Access the given list using the given index (Note: indices are .obj style starting with 1 and tail indices < 0)
+        :param list_to_access: list to be accessed
+        :param idx: index
+        :return: element in list at given index
+        """
         idx = int(idx)
 
         if idx > 0:
-            return self.normals[idx - 1]
+            return list_to_access[idx - 1]
+        elif idx < 0:
+            return list_to_access[idx]
         else:
-            return self.normals[idx]
+            raise Exception(f"Non valid index {idx}")
 

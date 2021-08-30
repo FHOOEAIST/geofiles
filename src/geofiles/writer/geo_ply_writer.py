@@ -11,7 +11,7 @@ class GeoPlyWriter(BaseWriter, ABC):
     Writer implementation for creating Geo PLY geometry files (.geoply)
     """
 
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool):
+    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
         """
         Write implementation
         :param file: target to be written

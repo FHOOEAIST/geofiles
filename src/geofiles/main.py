@@ -22,7 +22,7 @@ if __name__ == '__main__':
     cwd = os.getcwd()
     idx = cwd.find("src")
     cwd = cwd[:idx]
-    path = os.path.join(os.path.join(cwd, "ressources"), "cube.ply")
+    path = os.path.join(os.path.join(cwd, "ressources"), "cube.geoply")
     with open(path) as file:
         geoObjFile = reader.read(file)
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         converted = converter.convert(geoObjFile, "urn:ogc:def:crs:OGC:2:84")
 
         # kml_writer = GeoPlyWriter()
-        # kml_writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube.ply"), converted)
+        # kml_writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube.geoply"), converted)
 
 
         # writer = GeoObjWriter()

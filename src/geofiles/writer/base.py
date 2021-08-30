@@ -6,13 +6,14 @@ from geofiles.domain.geo_object_file import GeoObjectFile
 
 
 class BaseWriter(ABC):
-    def write(self, file, data: GeoObjectFile, write_binary: bool = False, append_file_type: bool = True) -> None:
+    def write(self, file, data: GeoObjectFile, write_binary: bool = False, append_file_type: bool = True, random_seed = None) -> None:
         """
         Allows to create write a file at the given file position
         :param file: file to be written. Either a opened file or a path to the file
         :param data: to be written
         :param write_binary: flag if file should be written in binary style (only used if file-parameter is a path)
         :param append_file_type: flag if a writer's associated file type should be appended to the given file (only if it is a path)
+        :param random_seed: may be used by the writer for e.g. IDs
         :return: None
         """
         close = False
@@ -37,20 +38,21 @@ class BaseWriter(ABC):
             else:
                 raise Exception(f"Can't handle {file}")
 
-            self._write(to_write, data, write_binary)
+            self._write(to_write, data, write_binary, random_seed)
 
         finally:
             if close and to_write is not None:
                 to_write.close()
 
     @abstractmethod
-    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool):
+    def _write(self, file: TextIOWrapper, data: GeoObjectFile,  write_binary: bool, random_seed):
         """
         Write implementation
         :param file: target to be written
         :param data: content to be written
         :param write_binary: flag if file is a binary file
-        :return: 
+        :param random_seed: may be used by the writer for e.g. IDs
+        :return:
         """
         return
 
