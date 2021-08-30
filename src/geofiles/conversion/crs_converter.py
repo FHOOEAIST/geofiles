@@ -14,7 +14,7 @@ class CrsConverter:
         """
         Converts the given data to another coordinate reference system
         :param data: to be converted
-        :param target_crs: target coordinate system
+        :param target_crs: target coordinate system (string to create a pyproj.crs.CRS)
         :param alwaysxy: If true, the transform method will accept as input and return as output
             coordinates using the traditional GIS order, that is longitude, latitude
             for geographic CRS and easting, northing for most projected CRS.

@@ -26,17 +26,19 @@ def get_point_distance(point1, point2):
     return math.sqrt(sum((px - qx) ** 2.0 for px, qx in zip(point1, point2)))
 
 
-def get_angle_between_points(point1, point2):
+def get_angle_between_points(point2, point1):
     """
     Calculates the angle between two points
     :param point1: first point
     :param point2: second point
     :return: angle between both points
     """
-    v1_theta = math.atan2(point1[1], point1[0])
-    v2_theta = math.atan2(point2[1], point2[0])
-    return (v2_theta - v1_theta) * (180.0 / math.pi)
+    r = (180.0 / math.pi * math.atan2(point1[0] - point2[0], point1[1] - point2[1]))
 
+    if r < 0:
+        r %= 360
+
+    return r
 
 def get_center(vertices):
     """
@@ -65,7 +67,7 @@ def get_center(vertices):
 
 def rotate_point(point, origin, roll: float, pitch: float, yaw: float):
     """
-    Rotates the given point around the given origin
+    Rotates the given 3D point around the given origin
     :param point: to be rotated
     :param origin: rotation center
     :param roll: x-rotation
@@ -98,8 +100,8 @@ def rotate_point(point, origin, roll: float, pitch: float, yaw: float):
     azy = cosb * sinc
     azz = cosb * cosc
 
-    xR = (axx * currX + axy * currY + axz * currZ) + origin.getX()
-    yR = (ayx * currX + ayy * currY + ayz * currZ) + origin.getY()
-    zR = (azx * currX + azy * currY + azz * currZ) + origin.getZ()
+    xR = (axx * currX + axy * currY + axz * currZ) + origin[0]
+    yR = (ayx * currX + ayy * currY + ayz * currZ) + origin[1]
+    zR = (azx * currX + azy * currY + azz * currZ) + origin[2]
 
     return [xR, yR, zR]

@@ -24,7 +24,7 @@ class LocalConverter:
         res.origin = origin
         if not origin_based:
             converter = OriginConverter()
-            res = converter.from_origin(data)
+            res = converter.from_origin(res)
         return res
 
     def to_local(self, data: GeoObjectFile):

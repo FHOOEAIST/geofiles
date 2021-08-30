@@ -72,9 +72,9 @@ class OriginConverter:
             r = get_angle_between_points(vertex, north_vector) + bearing_offset
             new_vertex = geod.fwd(origin_lon, origin_lat, r, distance)
             if data.crs == get_wgs_84():
-                new_vertices.append([new_vertex[0], new_vertex[1], data.origin[2] + vertex[2]])
+                new_vertices.append([new_vertex[0], new_vertex[1], data.origin[2] - vertex[2]])
             else:
-                new_vertices.append([new_vertex[1], new_vertex[0], data.origin[2] + vertex[2]])
+                new_vertices.append([new_vertex[1], new_vertex[0], data.origin[2] - vertex[2]])
 
         res.vertices = new_vertices
         return res

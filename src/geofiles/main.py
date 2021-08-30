@@ -29,16 +29,17 @@ if __name__ == '__main__':
         converter = CrsConverter()
         converted = converter.convert(geoObjFile, "urn:ogc:def:crs:OGC:2:84")
 
-        kml_writer = GeoPlyWriter()
-        kml_writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube.ply"), converted)
+        # kml_writer = GeoPlyWriter()
+        # kml_writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube.ply"), converted)
 
 
         # writer = GeoObjWriter()
         # writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube2.geoobj"), converted)
         # print(geoObjFile)
         #
-        # originconverter = OriginConverter()
-        # origin_based = originconverter.to_origin(converted)
+        originconverter = OriginConverter()
+        origin_based = originconverter.to_origin(converted)
+        print()
         # writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube3.geoobj"), origin_based)
         # non_origin_based = originconverter.from_origin(origin_based)
         # writer.write(os.path.join(os.path.join(cwd, "ressources"), "cube4.geoobj"), non_origin_based)
