@@ -117,7 +117,7 @@ class BaseTest(unittest.TestCase):
         :return: full path to the file
         """
         cwd = os.getcwd()
-        idx = cwd.find("tests\\")
+        idx = cwd.find("tests")
         cwd = cwd[:idx]
         if not cwd.endswith(os.sep):
             cwd = cwd[:idx+1]
