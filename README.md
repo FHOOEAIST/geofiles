@@ -1,15 +1,13 @@
-# Geo-referenced Geometry Files
+# Geo-referenced Geometry File Formats
 
 Classic geometry file formats as `.obj`, `.off`, `.ply`, `.stl` or `.dae` do not support the utilization of coordinate systems besides from a local system, that can not be defined more precisely.
 This feature is a major requirement for global applications, exchanging geo-referenced models e.g. in the context of outdoor augmented reality applications.
 
 For this reason, the present project evaluates different possibility of geo-referenced geometry files.
 
-Next to wide-spread standards as `CityJSON`, `GeoJSON`, `GML` or `KML`, we introduce four geo-referenced extensions called `.geoobj`, `.geooff`, `.geoply` and `.geostl`.
+Next to wide-spread standards as `GeoVRML`, `X3D`, `CityJSON`, `GeoJSON`, `GML` or `KML`, we introduce four geo-referenced extensions called `.geoobj`, `.geooff`, `.geoply` and `.geostl`.
 While, the named standard formats allow defining objects with multiple additional features, they also come with an overhead according to the file size and an increased structural complexity with disadvantages to the read performance.
 This overhead has to be minimized in many use cases and for this reason, some file formats are more suitable than others. For completeness: the overhead can be further reduced using binary representations (like binary `obj` or `stl`) instead of textual ones, but since not all named formats support a binary mode, this is ignored in favor of human-readability within this project.
-
-In addition to the named formats there is also the `GeoVRML` format and its successor `X3D` with the geospatial extension. Both formats are currently not part of this comparison.
 
 ## Geo-referenced Extensions
 
@@ -109,7 +107,7 @@ geosolid urn:ogc:def:crs:OGC:2:84 48.3028533074941 14.2842865755919 279.30700683
 
 ## File format comparison
 
-The different named file formats come with a variable amount of features according to e.g. the supported CRS, multi-object support or also differ in the representation of vertices. To take up the last point, some formats use e.g. central vertex lists with referencing indices in the face definition and others re-define the vertices within every indiviudal face. Next to that there are many different other features (e.g. smoothing groups in `.obj`, `geographicalExtent` in `CityJSON` or exact property definitions in `.ply`), which vary between the file formats and lead to a diverse semantic expressiveness. 
+The different named file formats come with a variable amount of features according to e.g. the supported CRS, an origin for specifying a local coordinate system, multi-object support or also differ in the representation of vertices. To take up the last point, some formats use e.g. central vertex lists with referencing indices in the face definition and others re-define the vertices within every indiviudal face. Next to that there are many different other features (e.g. smoothing groups in `.obj`, `geographicalExtent` in `CityJSON` or exact property definitions in `.ply`), which vary between the file formats and lead to a diverse semantic expressiveness. 
 
 | Format   | Base format | Coordinate Reference System | Multiple Objects | Vertex References | Origin Support | Transformation Information | Semantic Expressiveness |
 |----------|------|-----------------------------|------------------|-------------------|----------------|----------------------------|-------------------------|
@@ -121,9 +119,16 @@ The different named file formats come with a variable amount of features accordi
 | [GeoStl](#geostl)   | [Stl](https://www.fabbers.com/tech/STL_Format)  | Any                         | No               | No                | Yes            | No                         | --                      |
 | [GML](https://www.ogc.org/standards/gml)      | [XML](https://www.w3.org/XML/)  | Any                         | Yes              | No                | No             | No                         | ++                      |
 | [KML](https://developers.google.com/kml/documentation/kmlreference)      | [XML](https://www.w3.org/XML/)  | WGS 84                      | Yes              | No                | No             | No                         | ++                      |
+| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | Longitude/Latitude or UTM | Yes | Yes | Yes | Translation (via GeoPositionInterpolator) | + |
+| [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html) | [XML](https://www.w3.org/XML/) | Any | Yes | Yes | Yes | Yes (via GeoTransform) | ++ |
+
 ### Size comparison
 
-TODO
+**Note:** GeoVRML and X3D are currently not supported by the present framework and for this are not part of the size comparision.
+
+| Model | [CityJSON](https://www.cityjson.org/) | [GeoJSON](https://geojson.org/) | [GeoObj](#geoobj) | [GeoOFF](#geooff) | [GeoPly](#geoply) | [GeoStl](#geostl)  | [GML](https://www.ogc.org/standards/gml)  | [KML](https://developers.google.com/kml/documentation/kmlreference)  |
+|-------|----------|---------|--------|--------|--------|--------|------|------|
+| TODO  | TODO     | TODO    | TODO   | TODO   | TODO   | TODO   | TODO | TODO |
 
 ## Getting started
 
@@ -177,3 +182,30 @@ Note:
 writer = GeoPlyWriter()
 writer.write("mygreatfile.geoply", transformed, append_file_type=False)
 ```
+
+## FAQ
+
+- Why yet another 3D geometry file format like `.geoobj`?
+  - During our research in the context of outdoor augmented reality applications, we were looking for a possibility for exchanging geo-referenced geometry models. In this context, the other named file format come with a too high overhead (e.g. `XML` tags or not required meta information as object types like in `CityJson`) in our opinion and are for this reason not suitable.
+- You describe multiple geo-referenced file formats. Which one should I use for geo-referenced 3D models?
+  - This depends on the use case. If you have to exchange the models with as little overhead as possible we recommend using the proposed `.geoobj` or `.geooff` format extensions. If you require semantic expressiveness, you should prefer other formats like `CityJson` or `GML`. 
+
+## Contributing
+
+**First make sure to read our [general contribution guidelines](https://fhooeaist.github.io/CONTRIBUTING.html).**
+   
+## Licence
+
+Copyright (c) 2021 the original author or authors.
+DO NOT ALTER OR REMOVE COPYRIGHT NOTICES.
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+## Research
+
+If you are going to use this project as part of a research paper, we would ask you to reference this project by citing
+it. 
+
+<TODO zenodo doi>
