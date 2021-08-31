@@ -111,7 +111,7 @@ geosolid urn:ogc:def:crs:OGC:2:84 48.3028533074941 14.2842865755919 279.30700683
 
 The different named file formats come with a variable amount of features according to e.g. the supported CRS, multi-object support or also differ in the representation of vertices. To take up the last point, some formats use e.g. central vertex lists with referencing indices in the face definition and others re-define the vertices within every indiviudal face. Next to that there are many different other features (e.g. smoothing groups in `.obj`, `geographicalExtent` in `CityJSON` or exact property definitions in `.ply`), which vary between the file formats and lead to a diverse semantic expressiveness. 
 
-| Format   | Baseformat | Coordinate Reference System | Multiple Objects | Vertex References | Origin Support | Transformation Information | Semantic Expressiveness |
+| Format   | Base format | Coordinate Reference System | Multiple Objects | Vertex References | Origin Support | Transformation Information | Semantic Expressiveness |
 |----------|------|-----------------------------|------------------|-------------------|----------------|----------------------------|-------------------------|
 | [CityJSON](https://www.cityjson.org/) | [JSON](https://www.json.org/) | Any                         | Yes              | Yes               | No             | No                         | ++                      |
 | [GeoJSON](https://geojson.org/)  | [JSON](https://www.json.org/) | WGS 84                      | Yes              | No                | No             | No                         | +                       |
