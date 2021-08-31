@@ -36,11 +36,11 @@ class GeoObjReader(BaseReader, ABC):
             trimmed = line.strip()
             trimmed = " ".join(trimmed.split())
             # check if current line is a classic vertex
-            if trimmed.startswith("v"):
+            if trimmed.startswith("v "):
                 coordinates = trimmed[2:].split(" ")
                 res.vertices.append(coordinates)
             # check if current line is a face defintion
-            elif trimmed.startswith("f"):
+            elif trimmed.startswith("f "):
                 face_defs = trimmed[2:].split(" ")
                 face = Face()
                 for face_def in face_defs:
@@ -55,7 +55,7 @@ class GeoObjReader(BaseReader, ABC):
                 current_object.faces.append(face)
                 filled_group = True
             # check if current line is a group definition
-            elif trimmed.startswith("g"):
+            elif trimmed.startswith("g "):
                 name = trimmed[2:]
                 # if it is the first group definition and if we have not found any other definition
                 # just set the name of the current group; otherwise it is a new group
@@ -70,25 +70,25 @@ class GeoObjReader(BaseReader, ABC):
                     current_object = new_object
                 found_group = True
             # check if the current line defines the coordinate reference system
-            elif trimmed.startswith("crs"):
+            elif trimmed.startswith("crs "):
                 res.crs = trimmed[4:]
             # check if the current line defines the origin
-            elif trimmed.startswith("o"):
+            elif trimmed.startswith("o "):
                 res.origin = trimmed[2:].split(" ")
-            elif trimmed.startswith("sc"):
+            elif trimmed.startswith("sc "):
                 res.scaling = trimmed[3:].split(" ")
-            elif trimmed.startswith("t"):
+            elif trimmed.startswith("t "):
                 res.translation = trimmed[2:].split(" ")
             elif trimmed.startswith("r"):
                 res.rotation = trimmed[2:].split(" ")
             # check if the current line defines a texture coordinate
-            elif trimmed.startswith("vt"):
-                coordinates = trimmed[2:].split(" ")
+            elif trimmed.startswith("vt "):
+                coordinates = trimmed[3:].split(" ")
                 res.texture_coordinates.append(coordinates)
                 filled_group = True
             # check if the current line defines a coordinate's normal
-            elif trimmed.startswith("vn"):
-                coordinates = trimmed[2:].split(" ")
+            elif trimmed.startswith("vn "):
+                coordinates = trimmed[3:].split(" ")
                 res.normals.append(coordinates)
                 filled_group = True
 

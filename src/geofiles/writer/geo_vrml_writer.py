@@ -160,7 +160,7 @@ class GeoVrmlWriter(BaseWriter, ABC):
                 for idx in face.indices:
                     self._write_to_file(
                         file,
-                        f"{convert_obj_index(idx, num_of_vertices)} ",
+                        f"{convert_obj_index(int(idx), num_of_vertices)} ",
                         write_binary,
                         False,
                     )
@@ -228,3 +228,9 @@ class GeoVrmlWriter(BaseWriter, ABC):
         for i in range(0, num_of_objects):
             self._write_to_file(file, f"      USE OBJECT-{i}", write_binary, True)
         self._write_to_file(file, f"   ]", write_binary, True)
+
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if file format supports origin based representation
+        """
+        return True

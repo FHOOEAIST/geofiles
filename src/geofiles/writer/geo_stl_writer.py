@@ -44,7 +44,7 @@ class GeoStlWriter(BaseWriter, ABC):
                     normal = [0, 0, 0]
                     for idx in face.normal_indices:
                         n = data.get_normal(idx)
-                        normal = [x + y for x, y in zip(normal, n)]
+                        normal = [float(x) + float(y) for x, y in zip(normal, n)]
                     normal = [str(x / len(face.normal_indices)) for x in normal]
 
                     self._write_to_file(
@@ -68,3 +68,9 @@ class GeoStlWriter(BaseWriter, ABC):
         :return: the supported file type of this writer
         """
         return ".geostl"
+
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if file format supports origin based representation
+        """
+        return True

@@ -23,7 +23,7 @@ def get_point_distance(point1: list, point2: list) -> float:
     :param point2: second point
     :return: distance between both points
     """
-    return math.sqrt(sum((px - qx) ** 2.0 for px, qx in zip(point1, point2)))
+    return math.sqrt(sum((float(px) - float(qx)) ** 2.0 for px, qx in zip(point1, point2)))
 
 
 def get_angle_between_points(point1: list, point2: list) -> float:
@@ -33,7 +33,7 @@ def get_angle_between_points(point1: list, point2: list) -> float:
     :param point2: second point
     :return: angle between both points
     """
-    r = 180.0 / math.pi * math.atan2(point2[0] - point1[0], point2[1] - point1[1])
+    r = 180.0 / math.pi * math.atan2(float(point2[0]) - float(point1[0]), float(point2[1]) - float(point1[1]))
 
     if r < 0:
         r %= 360
@@ -57,7 +57,7 @@ def get_center(vertices: list) -> list:
             center = copy.deepcopy(vertex)
         else:
             for idx, v in enumerate(vertex):
-                center[idx] += v
+                center[idx] += float(v)
         cnt += 1
 
     for idx in range(0, len(center)):

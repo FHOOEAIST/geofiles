@@ -76,6 +76,12 @@ class BaseWriter(ABC):
         """
         return ""
 
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if file format supports origin based representation
+        """
+        return False
+
     def _write_to_file(
         self,
         file: TextIOWrapper,
@@ -118,21 +124,21 @@ class BaseWriter(ABC):
         """
         if data.translation is not None:
             for t in data.translation:
-                if not math.isclose(t, 0, rel_tol=1e-6):
+                if not math.isclose(float(t), 0, rel_tol=1e-6):
                     raise Exception(
                         "Given data contains translation information. Transform data, before writing to file"
                     )
 
         if data.rotation is not None:
             for t in data.rotation:
-                if not math.isclose(t, 0, rel_tol=1e-6):
+                if not math.isclose(float(t), 0, rel_tol=1e-6):
                     raise Exception(
                         "Given data contains rotation information. Transform data, before writing to file"
                     )
 
         if data.scaling is not None:
             for t in data.scaling:
-                if not math.isclose(t, 1, rel_tol=1e-6):
+                if not math.isclose(float(t), 1, rel_tol=1e-6):
                     raise Exception(
                         "Given data contains scale information. Transform data, before writing to file"
                     )

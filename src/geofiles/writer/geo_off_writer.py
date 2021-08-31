@@ -64,3 +64,9 @@ class GeoOffWriter(BaseWriter, ABC):
         :return: the supported file type of this writer
         """
         return ".geooff"
+
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if file format supports origin based representation
+        """
+        return True

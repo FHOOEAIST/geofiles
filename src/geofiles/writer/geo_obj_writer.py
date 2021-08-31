@@ -107,3 +107,9 @@ class GeoObjWriter(BaseWriter, ABC):
         :return: the supported file type of this writer
         """
         return ".geoobj"
+
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if file format supports origin based representation
+        """
+        return True
