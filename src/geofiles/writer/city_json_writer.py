@@ -19,9 +19,6 @@ class CityJsonWriter(BaseWriter, ABC):
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
 
-        if data.crs is None:
-            raise Exception("File must be geo-referenced")
-
         self._contains_transformation_information(data)
 
         num_vertices = len(data.vertices)
@@ -29,9 +26,10 @@ class CityJsonWriter(BaseWriter, ABC):
         res = dict()
         res["type"] = "CityJSON"
         res["version"] = "1.0"
-        metadata = dict()
-        res["metadata"] = metadata
-        metadata["referenceSystem"] = data.crs
+        if data.crs is not None:
+            metadata = dict()
+            res["metadata"] = metadata
+            metadata["referenceSystem"] = data.crs
         objects = dict()
         res["CityObjects"] = objects
         for obj in data.objects:

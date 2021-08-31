@@ -7,7 +7,7 @@ For this reason, the present project evaluates different possibility of geo-refe
 
 Next to wide-spread standards as `CityJSON`, `GeoJSON`, `GML` or `KML`, we introduce four geo-referenced extensions called `.geoobj`, `.geooff`, `.geoply` and `.geostl`.
 While, the named standard formats allow defining objects with multiple additional features, they also come with an overhead according to the file size and an increased structural complexity with disadvantages to the read performance.
-This overhead has to be minimized in many use cases and for this reason, some file formats are more suitable than others. For completeness: the overhead can be further reduced using binary representations (like binary `obj`) instead of textual ones, but since not all named formats support a binary mode, this is ignored in favor of human-readability within this project.
+This overhead has to be minimized in many use cases and for this reason, some file formats are more suitable than others. For completeness: the overhead can be further reduced using binary representations (like binary `obj` or `stl`) instead of textual ones, but since not all named formats support a binary mode, this is ignored in favor of human-readability within this project.
 
 In addition to the named formats there is also the `GeoVRML` format and its successor `X3D` with the geospatial extension. Both formats are currently not part of this comparison.
 
@@ -109,12 +109,18 @@ geosolid urn:ogc:def:crs:OGC:2:84 48.3028533074941 14.2842865755919 279.30700683
 
 ## File format comparison
 
-TODO
+The different named file formats come with a variable amount of features according to e.g. the supported CRS, multi-object support or also differ in the representation of vertices. To take up the last point, some formats use e.g. central vertex lists with referencing indices in the face definition and others re-define the vertices within every indiviudal face. Next to that there are many different other features (e.g. smoothing groups in `.obj`, `geographicalExtent` in `CityJSON` or exact property definitions in `.ply`), which vary between the file formats and lead to a diverse semantic expressiveness. 
 
-### Feature comparison
-
-TODO (base-format, grouping with multiple objects, vertex-references, texturization)
-
+| Format   | Baseformat | Coordinate Reference System | Multiple Objects | Vertex References | Origin Support | Transformation Information | Semantic Expressiveness |
+|----------|------|-----------------------------|------------------|-------------------|----------------|----------------------------|-------------------------|
+| [CityJSON](https://www.cityjson.org/) | [JSON](https://www.json.org/) | Any                         | Yes              | Yes               | No             | No                         | ++                      |
+| [GeoJSON](https://geojson.org/)  | [JSON](https://www.json.org/) | WGS 84                      | Yes              | No                | No             | No                         | +                       |
+| [GeoObj](#geoobj)   | [OBJ](http://fegemo.github.io/cefet-cg/attachments/obj-spec.pdf)  | Any                         | Yes              | Yes               | Yes            | Yes                        | ~                       |
+| [GeoOFF](#geooff)   | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)  | Any                         | No               | Yes               | Yes            | No                         | -                       |
+| [GeoPly](#geoply)   | [Ply](http://graphics.stanford.edu/data/3Dscanrep/)  | Any                         | No               | Yes               | Yes            | Yes                        | ~                       |
+| [GeoStl](#geostl)   | [Stl](https://www.fabbers.com/tech/STL_Format)  | Any                         | No               | No                | Yes            | No                         | --                      |
+| [GML](https://www.ogc.org/standards/gml)      | [XML](https://www.w3.org/XML/)  | Any                         | Yes              | No                | No             | No                         | ++                      |
+| [KML](https://developers.google.com/kml/documentation/kmlreference)      | [XML](https://www.w3.org/XML/)  | WGS 84                      | Yes              | No                | No             | No                         | ++                      |
 ### Size comparison
 
 TODO
