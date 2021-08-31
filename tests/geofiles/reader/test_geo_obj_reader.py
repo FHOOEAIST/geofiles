@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestGeoObjReader(BaseTest):
-    def test_read(self):
+    def test_read(self) -> None:
         # given
         file = self.get_ressource_file("cube.geoobj")
         reader = GeoObjReader()
@@ -32,7 +32,7 @@ class TestGeoObjReader(BaseTest):
             self.assertAlmostEqual(float(vertex[1]), cube.vertices[idx][1])
             self.assertAlmostEqual(float(vertex[2]), cube.vertices[idx][2])
 
-    def test_read2(self):
+    def test_read2(self) -> None:
         # given
         file = self.get_ressource_file("local.obj")
         reader = GeoObjReader()
@@ -60,7 +60,7 @@ class TestGeoObjReader(BaseTest):
             self.assertAlmostEqual(float(vertex[1]), cube.vertices[idx][1])
             self.assertAlmostEqual(float(vertex[2]), cube.vertices[idx][2])
 
-    def test_read3(self):
+    def test_read3(self) -> None:
         # given
         file = self.get_ressource_file("cube_origin.geoobj")
         reader = GeoObjReader()
@@ -74,7 +74,7 @@ class TestGeoObjReader(BaseTest):
             ["14.2842798233032", "48.30284881591775", "279.807006835938"],
         )
 
-    def test_read4(self):
+    def test_read4(self) -> None:
         # given
         file = self.get_ressource_file("cube_transformed.geoobj")
         reader = GeoObjReader()

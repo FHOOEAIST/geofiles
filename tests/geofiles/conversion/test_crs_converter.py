@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestCrsConverter(BaseTest):
-    def test_convert(self):
+    def test_convert(self) -> None:
         # given
         cube = self.get_cube()
         converter = CrsConverter()
@@ -18,7 +18,7 @@ class TestCrsConverter(BaseTest):
             self.assertAlmostEqual(vertex[1], ref[0])
             self.assertAlmostEqual(vertex[2], ref[2])
 
-    def test_convert2(self):
+    def test_convert2(self) -> None:
         # given
         cube = self.get_cube()
         converter = CrsConverter()

@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestGeoPlyReader(BaseTest):
-    def test_read(self):
+    def test_read(self) -> None:
         # given
         file = self.get_ressource_file("cube.geoply")
         reader = GeoPlyReader()
@@ -14,7 +14,7 @@ class TestGeoPlyReader(BaseTest):
         # then
         self.compare_with_cube(geo_obj_file)
 
-    def test_read2(self):
+    def test_read2(self) -> None:
         # given
         file = self.get_ressource_file("cube_origin.geoply")
         reader = GeoPlyReader()
@@ -28,7 +28,7 @@ class TestGeoPlyReader(BaseTest):
             ["14.2842798233032", "48.30284881591775", "279.807006835938"],
         )
 
-    def test_read3(self):
+    def test_read3(self) -> None:
         # given
         file = self.get_ressource_file("cube_transformed.geoply")
         reader = GeoPlyReader()

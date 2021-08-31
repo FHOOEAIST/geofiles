@@ -5,7 +5,7 @@ from geofiles.domain.geo_object_file import GeoObjectFile
 
 
 class BaseReader(ABC):
-    def read(self, file) -> GeoObjectFile:
+    def read(self, file: any) -> GeoObjectFile:
         """
         Reads a given file
         :param file: to be read (may be a string representing the path or an opened file instance)

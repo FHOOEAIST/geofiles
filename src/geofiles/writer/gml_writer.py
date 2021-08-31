@@ -3,7 +3,6 @@ import xml.etree.ElementTree as ET
 from abc import ABC
 from io import TextIOWrapper
 
-from geofiles.conversion.static import get_wgs_84
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
@@ -15,8 +14,8 @@ class GmlWriter(BaseWriter, ABC):
     """
 
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
-    ):
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+    ) -> None:
         """
         Write implementation
         :param file: target to be written

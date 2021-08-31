@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestGeoOffReader(BaseTest):
-    def test_read(self):
+    def test_read(self) -> None:
         # given
         file = self.get_ressource_file("cube.geooff")
         reader = GeoOffReader()
@@ -14,7 +14,7 @@ class TestGeoOffReader(BaseTest):
         # then
         self.compare_with_cube(geo_obj_file)
 
-    def test_read2(self):
+    def test_read2(self) -> None:
         # given
         file = self.get_ressource_file("cube_origin.geooff")
         reader = GeoOffReader()

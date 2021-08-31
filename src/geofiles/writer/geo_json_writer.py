@@ -14,8 +14,8 @@ class GeoJsonWriter(BaseWriter, ABC):
     """
 
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
-    ):
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+    ) -> None:
         """
         Write implementation
         :param file: target to be written

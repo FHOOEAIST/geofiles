@@ -65,7 +65,7 @@ class BaseTest(unittest.TestCase):
 
         return res
 
-    def get_local_cube(self):
+    def get_local_cube(self) -> GeoObjectFile:
         """
         :return: A local geometry example of a cube without a referenced coordinate system
         """
@@ -84,7 +84,7 @@ class BaseTest(unittest.TestCase):
 
         return res
 
-    def compare_with_cube(self, geo_obj_file):
+    def compare_with_cube(self, geo_obj_file) -> None:
         """
         Compares the given GeoObjectFile with the cube
         :param geo_obj_file: to be compared
@@ -110,7 +110,7 @@ class BaseTest(unittest.TestCase):
             self.assertAlmostEqual(float(vertex[2]), cube.vertices[idx][2])
 
     @staticmethod
-    def get_ressource_file(filename: str):
+    def get_ressource_file(filename: str) -> str:
         """
         Gets a file in the ressource folder
         :param filename: name of the file
@@ -120,9 +120,9 @@ class BaseTest(unittest.TestCase):
         idx = cwd.find("tests")
         cwd = cwd[:idx]
         if not cwd.endswith(os.sep):
-            cwd = cwd[:idx+1]
+            cwd = cwd[: idx + 1]
         return os.path.join(os.path.join(cwd, "ressources"), filename)
 
     @classmethod
-    def get_test_file(cls, writer: BaseWriter):
+    def get_test_file(cls, writer: BaseWriter) -> str:
         return cls.get_ressource_file("test" + writer.get_file_type())

@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestOriginConverter(BaseTest):
-    def test_to_origin(self):
+    def test_to_origin(self) -> None:
         # given
         converter = OriginConverter()
         cube = self.get_cube()
@@ -16,7 +16,7 @@ class TestOriginConverter(BaseTest):
         self.assertAlmostEqual(origin_based.origin[1], 48.30284881591775)
         self.assertAlmostEqual(origin_based.origin[2], 279.807006835938)
 
-    def test_from_origin(self):
+    def test_from_origin(self) -> None:
         # given
         converter = OriginConverter()
         cube = self.get_cube()

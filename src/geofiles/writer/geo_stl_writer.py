@@ -11,12 +11,12 @@ class GeoStlWriter(BaseWriter, ABC):
     Writer implementation for creating Geo-Referenced STL geometry files (.geostl)
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.stl_name = ""
 
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
-    ):
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+    ) -> None:
         """
         Write implementation
         :param file: target to be written

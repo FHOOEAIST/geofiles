@@ -8,7 +8,7 @@ from geofiles.domain.geo_object_file import GeoObjectFile
 class BaseWriter(ABC):
     def write(
         self,
-        file,
+        file: any,
         data: GeoObjectFile,
         write_binary: bool = False,
         append_file_type: bool = True,
@@ -36,7 +36,7 @@ class BaseWriter(ABC):
                     to_write = open(file, "w")
                 close = True
             elif isinstance(file, TextIOWrapper):
-                if not "w" in file.mode.lower:
+                if "w" not in file.mode.lower:
                     raise Exception("Given file is not in write mode")
 
                 if "b" in file.mode.lower():
@@ -53,8 +53,8 @@ class BaseWriter(ABC):
 
     @abstractmethod
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
-    ):
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+    ) -> None:
         """
         Write implementation
         :param file: target to be written
@@ -79,7 +79,7 @@ class BaseWriter(ABC):
         write_binary: bool,
         append_new_line: bool = False,
         encoding: str = "ascii",
-    ):
+    ) -> None:
         """
         Write to the given file
         :param file: to be written to
@@ -93,7 +93,7 @@ class BaseWriter(ABC):
         if append_new_line:
             file.write(self._encode("\n", write_binary, encoding))
 
-    def _encode(self, data, write_binary: bool, encoding: str = "ascii"):
+    def _encode(self, data, write_binary: bool, encoding: str = "ascii") -> str:
         """
         Encode the given data
         :param data: to be encoded
@@ -106,11 +106,11 @@ class BaseWriter(ABC):
         else:
             return f"{data}"
 
-    def _contains_transformation_information(self, data: GeoObjectFile):
+    def _contains_transformation_information(self, data: GeoObjectFile) -> None:
         """
         Check the given data if it contains translation, rotation or scale information
         :param data: to be checked
-        :return: NOne
+        :return: None
         """
         if data.translation is not None:
             for t in data.translation:

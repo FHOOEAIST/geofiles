@@ -1,9 +1,14 @@
+from typing import List, Optional
+
+from geofiles.domain.geo_object import GeoObject
+
+
 class GeoObjectFile:
     """
     Basic class representing a file containing geo referenced object
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes a GeoObjectFile with the following attributes:
         - crs: name (string) of the used coordinate reference system
@@ -16,15 +21,15 @@ class GeoObjectFile:
         - normals: List of all normals within this GeoObjectFile
         - texture_coordinates: List of all texture_coordinates within this GeoObjectFile
         """
-        self.crs = None
-        self.origin = None
-        self.translation = None
-        self.rotation = None
-        self.scaling = None
-        self.objects = []
-        self.vertices = []
-        self.normals = []
-        self.texture_coordinates = []
+        self.crs: Optional[str] = None
+        self.origin: Optional[List[float]] = None
+        self.translation: Optional[List[float]] = None
+        self.rotation: Optional[List[float]] = None
+        self.scaling: Optional[List[float]] = None
+        self.objects: List[GeoObject] = []
+        self.vertices: List[List[float]] = []
+        self.normals: List[List[float]] = []
+        self.texture_coordinates: List[List[float]] = []
 
     def is_origin_based(self) -> bool:
         """
@@ -39,7 +44,7 @@ class GeoObjectFile:
         """
         return self.crs is not None
 
-    def get_vertex(self, idx: int):
+    def get_vertex(self, idx: int) -> List[float]:
         """
         Returns the vertex at the given index (Note: indices are .obj style starting with 1 and tail indices < 0
         :param idx: idx to access
@@ -47,7 +52,7 @@ class GeoObjectFile:
         """
         return self._access_idx(self.vertices, idx)
 
-    def get_normal(self, idx: int):
+    def get_normal(self, idx: int) -> List[float]:
         """
         Returns the normal vertex at the given index (Note: indices are .obj style starting with 1 and tail indices < 0
         :param idx: idx to access
@@ -55,7 +60,7 @@ class GeoObjectFile:
         """
         return self._access_idx(self.normals, idx)
 
-    def _access_idx(self, list_to_access, idx):
+    def _access_idx(self, list_to_access, idx) -> List[float]:
         """
         Access the given list using the given index (Note: indices are .obj style starting with 1 and tail indices < 0)
         :param list_to_access: list to be accessed

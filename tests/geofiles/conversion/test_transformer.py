@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestTransformer(BaseTest):
-    def test_rotate(self):
+    def test_rotate(self) -> None:
         # given
         cube = self.get_cube(True)
         transformer = Transformer()
@@ -26,7 +26,7 @@ class TestTransformer(BaseTest):
         for idx, vertex in enumerate(rotated.vertices):
             self.assertEqual(vertex, res[idx])
 
-    def test_translate(self):
+    def test_translate(self) -> None:
         # given
         cube = self.get_cube(True)
         transformer = Transformer()
@@ -41,7 +41,7 @@ class TestTransformer(BaseTest):
             self.assertAlmostEqual(vertex[1], cube.vertices[idx][1] - 5)
             self.assertAlmostEqual(vertex[2], cube.vertices[idx][2] + 10)
 
-    def test_scale(self):
+    def test_scale(self) -> None:
         # given
         cube = self.get_cube(True)
         transformer = Transformer()
@@ -56,7 +56,7 @@ class TestTransformer(BaseTest):
             self.assertAlmostEqual(vertex[1], cube.vertices[idx][1] * 5, 5)
             self.assertAlmostEqual(vertex[2], cube.vertices[idx][2] * 7, 5)
 
-    def test_transform(self):
+    def test_transform(self) -> None:
         # given
         cube = self.get_cube(True)
         transformer = Transformer()

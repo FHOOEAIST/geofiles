@@ -12,7 +12,7 @@ def get_epsg_4326() -> str:
     return "urn:ogc:def:crs:EPSG::4326"
 
 
-def get_lon_lat(vertex, coordinate_system) -> tuple:
+def get_lon_lat(vertex: list, coordinate_system: str) -> tuple:
     """
     Method for accessing longitude and latitude
     :param vertex: WGS84 or EPSG4236 vertex

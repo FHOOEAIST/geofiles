@@ -4,7 +4,7 @@ from geofiles.conversion.calculation import *
 
 
 class TestCalculation(unittest.TestCase):
-    def test_get_distant_point(self):
+    def test_get_distant_point(self) -> None:
         # given
         x = 0
         y = 0
@@ -18,7 +18,7 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(res[0], 1.0)
         self.assertAlmostEqual(res[1], 0.0)
 
-    def test_get_distant_point2(self):
+    def test_get_distant_point2(self) -> None:
         # given
         x = 0
         y = 0
@@ -32,7 +32,7 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(res[0], 0.0)
         self.assertAlmostEqual(res[1], 1.0)
 
-    def test_get_point_distance(self):
+    def test_get_point_distance(self) -> None:
         # given
         p1 = [0, 0]
         p2 = [1, 0]
@@ -43,7 +43,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertAlmostEqual(d, 1.0)
 
-    def test_get_point_distance2(self):
+    def test_get_point_distance2(self) -> None:
         # given
         p1 = [0, 0]
 
@@ -53,7 +53,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertAlmostEqual(d, 0.0)
 
-    def test_get_angle_between_points(self):
+    def test_get_angle_between_points(self) -> None:
         # given
         p1 = [0, 0]
         p2 = [0, 1]  # top
@@ -64,7 +64,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertAlmostEqual(theta, 0)
 
-    def test_get_angle_between_points2(self):
+    def test_get_angle_between_points2(self) -> None:
         # given
         p1 = [0, 0]
         p2 = [1, 0]  # right
@@ -75,7 +75,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertAlmostEqual(theta, 90)
 
-    def test_get_angle_between_points3(self):
+    def test_get_angle_between_points3(self) -> None:
         # given
         p1 = [0, 0]
         p2 = [0, -1]
@@ -86,7 +86,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertAlmostEqual(theta, 180)
 
-    def test_get_angle_between_points4(self):
+    def test_get_angle_between_points4(self) -> None:
         # given
         p1 = [0, 0]
         p2 = [-1, 0]
@@ -97,7 +97,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertAlmostEqual(theta, 270)
 
-    def test_get_center(self):
+    def test_get_center(self) -> None:
         # given
         vertices = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 
@@ -108,7 +108,7 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(center[0], 0)
         self.assertAlmostEqual(center[1], 0)
 
-    def test_get_center2(self):
+    def test_get_center2(self) -> None:
         # given
         vertices = [[-1, 0, 2], [0, 1, 4], [1, 0, 2], [0, -1, 4]]
 
@@ -120,7 +120,7 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(center[1], 0)
         self.assertAlmostEqual(center[2], 3)
 
-    def test_rotate_point(self):
+    def test_rotate_point(self) -> None:
         # given
         point = [6, 0, 0]
         origin = [0, 0, 0]
@@ -133,7 +133,7 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(rotated_point[1], 6)
         self.assertAlmostEqual(rotated_point[2], 0)
 
-    def test_convert_obj_index(self):
+    def test_convert_obj_index(self) -> None:
         # given
         idx = 1
         list = [5, 3, 2]
@@ -144,7 +144,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertEqual(converted, 0)
 
-    def test_convert_obj_index2(self):
+    def test_convert_obj_index2(self) -> None:
         # given
         idx = -1
         list = [5, 3, 2]
@@ -155,7 +155,7 @@ class TestCalculation(unittest.TestCase):
         # then
         self.assertEqual(converted, 2)
 
-    def test_convert_obj_index3(self):
+    def test_convert_obj_index3(self) -> None:
         # given
         idx = 0
         list = [5, 3, 2]

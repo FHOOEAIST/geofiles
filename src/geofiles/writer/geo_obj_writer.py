@@ -13,8 +13,8 @@ class GeoObjWriter(BaseWriter, ABC):
     """
 
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed
-    ):
+        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+    ) -> None:
         """
         Write implementation
         :param file: target to be written
@@ -81,7 +81,7 @@ class GeoObjWriter(BaseWriter, ABC):
 
                 self._write_to_file(file, "", write_binary, True)
 
-    def _write_coordinates(self, coordinates, file, prefix: str, write_binary: bool):
+    def _write_coordinates(self, coordinates, file, prefix: str, write_binary: bool) -> None:
         """
         Write the given coordinates to the file
         :param coordinates: to be written

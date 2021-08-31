@@ -3,7 +3,7 @@ import math
 from math import cos, pi, radians, sin
 
 
-def get_distant_point(x0, y0, d, theta):
+def get_distant_point(x0: float, y0: float, d: float, theta: float) -> list:
     """
     Get a new point based on the start position, distance and angle
     :param x0: start x
@@ -16,7 +16,7 @@ def get_distant_point(x0, y0, d, theta):
     return [x0 + d * cos(theta_rad), y0 + d * sin(theta_rad)]
 
 
-def get_point_distance(point1, point2):
+def get_point_distance(point1: list, point2: list) -> float:
     """
     Calculates the distance between the two given points
     :param point1: first point
@@ -26,14 +26,14 @@ def get_point_distance(point1, point2):
     return math.sqrt(sum((px - qx) ** 2.0 for px, qx in zip(point1, point2)))
 
 
-def get_angle_between_points(point2, point1):
+def get_angle_between_points(point1: list, point2: list) -> float:
     """
     Calculates the angle between two points
     :param point1: first point
     :param point2: second point
     :return: angle between both points
     """
-    r = 180.0 / math.pi * math.atan2(point1[0] - point2[0], point1[1] - point2[1])
+    r = 180.0 / math.pi * math.atan2(point2[0] - point1[0], point2[1] - point1[1])
 
     if r < 0:
         r %= 360
@@ -41,7 +41,7 @@ def get_angle_between_points(point2, point1):
     return r
 
 
-def get_center(vertices):
+def get_center(vertices: list) -> list:
     """
     Calculates the center point for the given vertices
     :param vertices: for which center should be calculated
@@ -66,7 +66,7 @@ def get_center(vertices):
     return center
 
 
-def rotate_point(point, origin, roll: float, pitch: float, yaw: float):
+def rotate_point(point: list, origin: list, roll: float, pitch: float, yaw: float) -> list:
     """
     Rotates the given 3D point around the given origin
     :param point: to be rotated
@@ -108,7 +108,7 @@ def rotate_point(point, origin, roll: float, pitch: float, yaw: float):
     return [xR, yR, zR]
 
 
-def convert_obj_index(idx: int, l):
+def convert_obj_index(idx: int, l: any) -> int:
     """
     Method for converting an obj based index to a python like index
     :param idx: to be converted

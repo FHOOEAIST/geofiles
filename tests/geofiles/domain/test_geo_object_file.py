@@ -2,7 +2,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestGeoObjectFile(BaseTest):
-    def test_get_vertex(self):
+    def test_get_vertex(self) -> None:
         # given
         cube = self.get_cube()
 
@@ -12,7 +12,7 @@ class TestGeoObjectFile(BaseTest):
         # then
         self.assertEqual(vertex, [14.2842865755919, 48.3028533074941, 279.307006835938])
 
-    def test_get_vertex2(self):
+    def test_get_vertex2(self) -> None:
         # given
         cube = self.get_cube()
 
@@ -22,7 +22,7 @@ class TestGeoObjectFile(BaseTest):
         # then
         self.assertEqual(vertex, [14.2842730710157, 48.3028443243414, 279.307006835938])
 
-    def test_get_vertex3(self):
+    def test_get_vertex3(self) -> None:
         # given
         cube = self.get_cube()
 
@@ -33,7 +33,7 @@ class TestGeoObjectFile(BaseTest):
             # then
         self.assertTrue("Non valid index" in str(context.exception))
 
-    def test_get_vertex4(self):
+    def test_get_vertex4(self) -> None:
         # given
         cube = self.get_cube()
 
@@ -44,7 +44,7 @@ class TestGeoObjectFile(BaseTest):
             # then
         self.assertTrue("invalid literal for int()" in str(context.exception))
 
-    def test_is_origin_based(self):
+    def test_is_origin_based(self) -> None:
         # given
         cube = self.get_cube()
 
@@ -54,7 +54,7 @@ class TestGeoObjectFile(BaseTest):
         # then
         self.assertFalse(origin_based)
 
-    def test_is_origin_based2(self):
+    def test_is_origin_based2(self) -> None:
         # given
         cube = self.get_cube(True)
 
@@ -64,7 +64,7 @@ class TestGeoObjectFile(BaseTest):
         # then
         self.assertTrue(origin_based)
 
-    def test_is_geo_referenced(self):
+    def test_is_geo_referenced(self) -> None:
         # given
         cube = self.get_cube(True)
 
@@ -74,7 +74,7 @@ class TestGeoObjectFile(BaseTest):
         # then
         self.assertTrue(geo_referenced)
 
-    def test_is_geo_referenced2(self):
+    def test_is_geo_referenced2(self) -> None:
         # given
         cube = self.get_local_cube()
 

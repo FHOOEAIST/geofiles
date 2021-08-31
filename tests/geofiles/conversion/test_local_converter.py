@@ -3,7 +3,7 @@ from tests.geofiles.base_test import BaseTest
 
 
 class TestLocalConverter(BaseTest):
-    def test_from_local(self):
+    def test_from_local(self) -> None:
         # given
         cube = self.get_local_cube()
         converter = LocalConverter()
@@ -17,7 +17,7 @@ class TestLocalConverter(BaseTest):
         self.assertEqual(converted.crs, crs)
         self.assertEqual(converted.origin, origin)
 
-    def test_from_local2(self):
+    def test_from_local2(self) -> None:
         # given
         cube = self.get_local_cube()
         converter = LocalConverter()
@@ -43,7 +43,7 @@ class TestLocalConverter(BaseTest):
             self.assertAlmostEqual(vertex[1], res[idx][1])
             self.assertAlmostEqual(vertex[2], res[idx][2])
 
-    def test_to_local(self):
+    def test_to_local(self) -> None:
         # given
         cube = self.get_cube()
         converter = LocalConverter()

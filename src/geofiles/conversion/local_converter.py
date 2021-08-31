@@ -11,7 +11,7 @@ class LocalConverter:
 
     def from_local(
         self, data: GeoObjectFile, crs: str, origin: list, origin_based: bool = True
-    ):
+    ) -> GeoObjectFile:
         """
         Converts the given object file with a local coordinate system to a geo-referenced representation
         :param data: to be converted
@@ -30,7 +30,7 @@ class LocalConverter:
             res = converter.from_origin(res)
         return res
 
-    def to_local(self, data: GeoObjectFile):
+    def to_local(self, data: GeoObjectFile) -> GeoObjectFile:
         """
         Converts the given geo-referenced file to a local representation
         :param data: to be converted

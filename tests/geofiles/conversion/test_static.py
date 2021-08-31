@@ -4,7 +4,7 @@ from geofiles.conversion.static import *
 
 
 class TestStatic(unittest.TestCase):
-    def test_get_wgs_84(self):
+    def test_get_wgs_84(self) -> None:
         # given
         ref = "urn:ogc:def:crs:OGC:2:84"
         # when
@@ -13,7 +13,7 @@ class TestStatic(unittest.TestCase):
         # then
         self.assertEqual(wgs84, ref)
 
-    def test_get_epsg_4326(self):
+    def test_get_epsg_4326(self) -> None:
         # given
         ref = "urn:ogc:def:crs:EPSG::4326"
 
@@ -23,7 +23,7 @@ class TestStatic(unittest.TestCase):
         # then
         self.assertEqual(epsg4326, ref)
 
-    def test_get_lon_lat(self):
+    def test_get_lon_lat(self) -> None:
         # given
         epsg = get_epsg_4326()
         vertex = [48.3028533074941, 14.2842865755919, 279.307006835938]
@@ -35,7 +35,7 @@ class TestStatic(unittest.TestCase):
         self.assertAlmostEqual(lon, vertex[1])
         self.assertAlmostEqual(lat, vertex[0])
 
-    def test_get_lon_lat2(self):
+    def test_get_lon_lat2(self) -> None:
         # given
         wgs = get_wgs_84()
         vertex = [48.3028533074941, 14.2842865755919, 279.307006835938]
@@ -47,7 +47,7 @@ class TestStatic(unittest.TestCase):
         self.assertAlmostEqual(lon, vertex[0])
         self.assertAlmostEqual(lat, vertex[1])
 
-    def test_get_lon_lat3(self):
+    def test_get_lon_lat3(self) -> None:
         # given
         crs = "some_crs"
         vertex = [48.3028533074941, 14.2842865755919, 279.307006835938]
