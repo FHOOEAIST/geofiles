@@ -132,3 +132,37 @@ class TestCalculation(unittest.TestCase):
         self.assertAlmostEqual(rotated_point[0], 0)
         self.assertAlmostEqual(rotated_point[1], 6)
         self.assertAlmostEqual(rotated_point[2], 0)
+
+    def test_convert_obj_index(self):
+        # given
+        idx = 1
+        list = [5, 3, 2]
+
+        # when
+        converted = convert_obj_index(idx, list)
+
+        # then
+        self.assertEqual(converted, 0)
+
+    def test_convert_obj_index2(self):
+        # given
+        idx = -1
+        list = [5, 3, 2]
+
+        # when
+        converted = convert_obj_index(idx, list)
+
+        # then
+        self.assertEqual(converted, 2)
+
+    def test_convert_obj_index3(self):
+        # given
+        idx = 0
+        list = [5, 3, 2]
+
+        # when
+        with self.assertRaises(Exception) as context:
+            converted = convert_obj_index(idx, list)
+
+        # then
+        self.assertTrue("Index 0 not supported in OBJ" in str(context.exception))

@@ -106,3 +106,25 @@ def rotate_point(point, origin, roll: float, pitch: float, yaw: float):
     zR = (azx * currX + azy * currY + azz * currZ) + origin[2]
 
     return [xR, yR, zR]
+
+
+def convert_obj_index(idx: int, l):
+    """
+    Method for converting an obj based index to a python like index
+    :param idx: to be converted
+    :param l: length of referenced list or the list itself
+    :return: converted idx
+    """
+    if isinstance(l, int):
+        list_len = l
+    elif isinstance(l, list):
+        list_len = len(l)
+    else:
+        raise Exception(f"Not supported type {type(l)} of parameter l")
+
+    if idx > 0:
+        return idx - 1
+    elif idx < 0:
+        return list_len + idx
+    else:
+        raise Exception("Index 0 not supported in OBJ")

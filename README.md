@@ -119,12 +119,14 @@ The different named file formats come with a variable amount of features accordi
 | [GeoStl](#geostl)   | [Stl](https://www.fabbers.com/tech/STL_Format)  | Any                         | No               | No                | Yes            | No                         | --                      |
 | [GML](https://www.ogc.org/standards/gml)      | [XML](https://www.w3.org/XML/)  | Any                         | Yes              | No                | No             | No                         | ++                      |
 | [KML](https://developers.google.com/kml/documentation/kmlreference)      | [XML](https://www.w3.org/XML/)  | WGS 84                      | Yes              | No                | No             | No                         | ++                      |
-| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | WGS84 / EPSG4326 / UTM | Yes | Yes | Yes | Translation (via GeoPositionInterpolator) | + |
+| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | WGS84 / EPSG4326 / UTM | Yes | Yes | Yes | Yes | + |
 | [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html) | [XML](https://www.w3.org/XML/) | [Multiple supported CRS](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html#t-Supportedspatialframes) | Yes | Yes | Yes | Yes (via GeoTransform) | ++ |
 
 ### Size comparison
 
-**Note:** GeoVRML and X3D are currently not supported by the present framework and for this are not part of the size comparision.
+**Note:** 
+- The file comparison uses the minimal required sub-set of the specific file formats to represent geo-referenced 3D models. Additional features (e.g. GeographicalExtent in `CityJSON`) are not considered as far as possible.
+- GeoVRML and X3D are currently not supported by the present framework and for this are not part of the size comparision.
 
 | Model | [CityJSON](https://www.cityjson.org/) | [GeoJSON](https://geojson.org/) | [GeoObj](#geoobj) | [GeoOFF](#geooff) | [GeoPly](#geoply) | [GeoStl](#geostl)  | [GML](https://www.ogc.org/standards/gml)  | [KML](https://developers.google.com/kml/documentation/kmlreference)  |
 |-------|----------|---------|--------|--------|--------|--------|------|------|
