@@ -119,8 +119,8 @@ The different named file formats come with a variable amount of features accordi
 | [GeoStl](#geostl)   | [Stl](https://www.fabbers.com/tech/STL_Format)  | Any                         | No               | No                | Yes            | No                         | --                      |
 | [GML](https://www.ogc.org/standards/gml)      | [XML](https://www.w3.org/XML/)  | Any                         | Yes              | No                | No             | No                         | ++                      |
 | [KML](https://developers.google.com/kml/documentation/kmlreference)      | [XML](https://www.w3.org/XML/)  | WGS 84                      | Yes              | No                | No             | No                         | ++                      |
-| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | Longitude/Latitude or UTM | Yes | Yes | Yes | Translation (via GeoPositionInterpolator) | + |
-| [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html) | [XML](https://www.w3.org/XML/) | Any | Yes | Yes | Yes | Yes (via GeoTransform) | ++ |
+| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | WGS84 / EPSG4326 / UTM | Yes | Yes | Yes | Translation (via GeoPositionInterpolator) | + |
+| [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html) | [XML](https://www.w3.org/XML/) | [Multiple supported CRS](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html#t-Supportedspatialframes) | Yes | Yes | Yes | Yes (via GeoTransform) | ++ |
 
 ### Size comparison
 
