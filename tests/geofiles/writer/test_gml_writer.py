@@ -1,3 +1,6 @@
+from typing import Optional
+
+from geofiles.writer.base import BaseWriter
 from geofiles.writer.gml_writer import GmlWriter
 from tests.geofiles.writer.base_writer_test import BaseWriterTest
 

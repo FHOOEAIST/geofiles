@@ -66,7 +66,9 @@ def get_center(vertices: list) -> list:
     return center
 
 
-def rotate_point(point: list, origin: list, roll: float, pitch: float, yaw: float) -> list:
+def rotate_point(
+    point: list, origin: list, roll: float, pitch: float, yaw: float
+) -> list:
     """
     Rotates the given 3D point around the given origin
     :param point: to be rotated

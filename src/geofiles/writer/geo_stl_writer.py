@@ -15,7 +15,11 @@ class GeoStlWriter(BaseWriter, ABC):
         self.stl_name = ""
 
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+        self,
+        file: TextIOWrapper,
+        data: GeoObjectFile,
+        write_binary: bool,
+        random_seed: any,
     ) -> None:
         """
         Write implementation

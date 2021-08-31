@@ -1,4 +1,7 @@
+from typing import Optional
+
 from geofiles.conversion.origin_converter import OriginConverter
+from geofiles.writer.base import BaseWriter
 from geofiles.writer.geo_ply_writer import GeoPlyWriter
 from tests.geofiles.writer.base_writer_test import BaseWriterTest
 

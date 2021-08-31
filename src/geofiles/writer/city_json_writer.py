@@ -14,7 +14,11 @@ class CityJsonWriter(BaseWriter, ABC):
     """
 
     def _write(
-        self, file: TextIOWrapper, data: GeoObjectFile, write_binary: bool, random_seed: any
+        self,
+        file: TextIOWrapper,
+        data: GeoObjectFile,
+        write_binary: bool,
+        random_seed: any,
     ) -> None:
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
