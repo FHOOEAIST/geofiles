@@ -1,8 +1,9 @@
 import copy
+from typing import Any, List
 
 import pyproj
 
-from geofiles.conversion.static import *
+from geofiles.conversion.static import get_epsg_4326, get_wgs_84
 from geofiles.domain.geo_object_file import GeoObjectFile
 
 
@@ -42,7 +43,7 @@ class CrsConverter:
             to_wgs84 = True
         transformer = pyproj.Transformer.from_crs(source, target, always_xy=alwaysxy)
 
-        if data.is_origin_based():
+        if data.is_origin_based() and data.origin is not None:
             res.origin = self._convert_coordinate(
                 data.origin, transformer, from_wgs84, to_wgs84
             )
@@ -55,9 +56,10 @@ class CrsConverter:
             res.vertices = converted
         return res
 
+    @staticmethod
     def _convert_coordinate(
-        self, vertex, transformer, from_wgs84: bool, to_wgs84: bool
-    ):
+        vertex: List[float], transformer: Any, from_wgs84: bool, to_wgs84: bool
+    ) -> List[float]:
         """
         Converts the given vertex based on the given transformer with reference if input or output system is WGS84
         :param vertex: to be converted
@@ -74,6 +76,7 @@ class CrsConverter:
             x = vertex[1]
             y = vertex[0]
 
+        transformed: List[float]
         if len(vertex) > 2:
             z = vertex[2]
             transformed = transformer.transform(x, y, z)

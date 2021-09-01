@@ -1,9 +1,9 @@
 import xml.etree.ElementTree as ET
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any
 
 from geofiles.conversion.static import get_wgs_84
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -18,7 +18,7 @@ class KmlWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -41,7 +41,6 @@ class KmlWriter(BaseWriter, ABC):
         root = ET.Element("kml")
         root.attrib["xmlns"] = "http://www.opengis.net/kml/2.2"
         for obj in data.objects:
-            obj: GeoObject = obj
             placemark = ET.Element("Placemark")
             root.append(placemark)
             name = ET.Element("name")

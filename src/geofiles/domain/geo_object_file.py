@@ -60,7 +60,8 @@ class GeoObjectFile:
         """
         return self._access_idx(self.normals, idx)
 
-    def _access_idx(self, list_to_access, idx) -> List[float]:
+    @staticmethod
+    def _access_idx(list_to_access: List[List[float]], idx: int) -> List[float]:
         """
         Access the given list using the given index (Note: indices are .obj style starting with 1 and tail indices < 0)
         :param list_to_access: list to be accessed
@@ -71,7 +72,8 @@ class GeoObjectFile:
 
         if idx > 0:
             return list_to_access[idx - 1]
-        elif idx < 0:
+
+        if idx < 0:
             return list_to_access[idx]
-        else:
-            raise Exception(f"Non valid index {idx}")
+
+        raise Exception(f"Non valid index {idx}")

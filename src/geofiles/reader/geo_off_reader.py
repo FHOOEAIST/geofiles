@@ -40,7 +40,7 @@ class GeoOffReader(BaseReader, ABC):
                     splits = trimmed.split(" ")
                     res.crs = splits[0]
                     if len(splits) > 1:
-                        res.origin = splits[1:]
+                        res.origin = [float(a) for a in splits[1:]]
                     next_line_definition = True
                     next_line_crs = False
                 elif next_line_definition:
@@ -55,7 +55,7 @@ class GeoOffReader(BaseReader, ABC):
             else:
                 splits = trimmed.split(" ")
                 if cnt < num_of_vertices:
-                    res.vertices.append(splits)
+                    res.vertices.append([float(a) for a in splits])
                     cnt += 1
                 else:
                     face = Face()

@@ -1,15 +1,15 @@
 import os
 import random
 from collections import Counter, OrderedDict
-from typing import Optional
+from typing import Any
 
 from geofiles.writer.base import BaseWriter
 from tests.geofiles.base_test import BaseTest
 
 
 class BaseWriterTest(BaseTest):
-    def get_writer(self) -> Optional[BaseWriter]:
-        return None
+    def get_writer(self) -> BaseWriter:  # pylint: disable=R0201
+        raise NotImplementedError()
 
     def tearDown(self) -> None:
         writer = self.get_writer()
@@ -18,12 +18,14 @@ class BaseWriterTest(BaseTest):
             if os.path.exists(file):
                 os.remove(file)
 
-    def _test_write(self, data, ref_file_name: str, write_binary: bool = False) -> None:
+    def _test_write(
+        self, data: Any, ref_file_name: str, write_binary: bool = False
+    ) -> None:
         """
         Test implementation
         :param ref_file_name: name of the reference file for comparison
-        :param data:
-        :return:
+        :param data: data to be written
+        :return: None
         """
         # given
         writer: BaseWriter = self.get_writer()

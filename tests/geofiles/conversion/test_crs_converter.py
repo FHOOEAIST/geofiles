@@ -1,4 +1,4 @@
-from geofiles.conversion.crs_converter import *
+from geofiles.conversion.crs_converter import CrsConverter
 from tests.geofiles.base_test import BaseTest
 
 

@@ -1,4 +1,5 @@
 import copy
+from typing import Any, List
 
 from geofiles.conversion.origin_converter import OriginConverter
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -9,8 +10,9 @@ class LocalConverter:
     Converter used to convert a geo referenced file to a local file or vice versa
     """
 
+    @staticmethod
     def from_local(
-        self, data: GeoObjectFile, crs: str, origin: list, origin_based: bool = True
+        data: GeoObjectFile, crs: str, origin: List[Any], origin_based: bool = True
     ) -> GeoObjectFile:
         """
         Converts the given object file with a local coordinate system to a geo-referenced representation
@@ -30,7 +32,8 @@ class LocalConverter:
             res = converter.from_origin(res)
         return res
 
-    def to_local(self, data: GeoObjectFile) -> GeoObjectFile:
+    @staticmethod
+    def to_local(data: GeoObjectFile) -> GeoObjectFile:
         """
         Converts the given geo-referenced file to a local representation
         :param data: to be converted
@@ -39,6 +42,7 @@ class LocalConverter:
         if not data.is_geo_referenced():
             raise Exception("Given data is already in local coordinates")
 
+        res: GeoObjectFile
         if not data.is_origin_based():
             converter = OriginConverter()
             res = converter.to_origin(data)

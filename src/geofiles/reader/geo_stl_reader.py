@@ -1,5 +1,6 @@
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any, Dict
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -17,9 +18,9 @@ class GeoStlReader(BaseReader, ABC):
         res = GeoObjectFile()
         obj = GeoObject()
         res.objects.append(obj)
-        vertices = dict()
+        vertices: Dict[Any, Any] = dict()
         cnt = 1
-        current_face = None
+        current_face: Face
         while True:
             # Get next line from file
             line = file.readline()
@@ -34,12 +35,12 @@ class GeoStlReader(BaseReader, ABC):
             if trimmed.startswith("geosolid") or trimmed.startswith("solid"):
                 splits = trimmed.split(" ")
                 res.crs = splits[1]
-                l = len(splits)
-                if l == 5 or l == 6:
-                    res.origin = splits[2:5]
-                    if l == 6:
+                list_len = len(splits)
+                if list_len in (5, 6):
+                    res.origin = [float(a) for a in splits[2:5]]
+                    if list_len == 6:
                         obj.name = splits[-1]
-                elif l == 2:
+                elif list_len == 2:
                     obj.name = splits[-1]
             elif trimmed.startswith("facet"):
                 current_face = Face()
@@ -53,7 +54,7 @@ class GeoStlReader(BaseReader, ABC):
                     cnt += 1
                 current_face.indices.append(idx)
 
-        for vs in vertices.keys():
+        for vs in vertices:
             splits = vs.split(" ")
             x = float(splits[0])
             y = float(splits[1])

@@ -1,7 +1,7 @@
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any, List
 
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -19,7 +19,7 @@ class GeoStlWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -31,17 +31,16 @@ class GeoStlWriter(BaseWriter, ABC):
         self._contains_transformation_information(data)
 
         origin = ""
-        if data.is_origin_based():
+        if data.is_origin_based() and data.origin is not None:
             for c in data.origin:
                 origin += str(c) + " "
         self._write_to_file(
             file, f"geosolid {data.crs} {origin} {self.stl_name}", write_binary, True
         )
         for obj in data.objects:
-            obj: GeoObject = obj
             for face in obj.faces:
                 if len(face.normal_indices) != 0:
-                    normal = [0, 0, 0]
+                    normal: List[Any] = [0, 0, 0]
                     for idx in face.normal_indices:
                         n = data.get_normal(idx)
                         normal = [float(x) + float(y) for x, y in zip(normal, n)]
@@ -51,15 +50,15 @@ class GeoStlWriter(BaseWriter, ABC):
                         file, f" facet normal {' '.join(normal)}", write_binary, True
                     )
                 else:
-                    self._write_to_file(file, f" facet", write_binary, True)
-                self._write_to_file(file, f"  outer loop", write_binary, True)
+                    self._write_to_file(file, " facet", write_binary, True)
+                self._write_to_file(file, "  outer loop", write_binary, True)
                 for idx in face.indices:
                     vertex = [str(a) for a in data.get_vertex(idx)]
                     self._write_to_file(
                         file, f"   vertex {' '.join(vertex)}", write_binary, True
                     )
-                self._write_to_file(file, f"  endloop", write_binary, True)
-                self._write_to_file(file, f" endfacet", write_binary, True)
+                self._write_to_file(file, "  endloop", write_binary, True)
+                self._write_to_file(file, " endfacet", write_binary, True)
 
         self._write_to_file(file, "endgeosolid", write_binary, True)
 

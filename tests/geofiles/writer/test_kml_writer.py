@@ -1,12 +1,10 @@
-from typing import Optional
-
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.kml_writer import KmlWriter
 from tests.geofiles.writer.base_writer_test import BaseWriterTest
 
 
 class TestKmlWriter(BaseWriterTest):
-    def get_writer(self) -> Optional[BaseWriter]:
+    def get_writer(self) -> BaseWriter:
         return KmlWriter()
 
     def test_write(self) -> None:

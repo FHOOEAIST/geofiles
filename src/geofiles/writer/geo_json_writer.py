@@ -1,9 +1,9 @@
 import json
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any, Dict, List
 
 from geofiles.conversion.static import get_wgs_84
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -18,7 +18,7 @@ class GeoJsonWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -35,15 +35,14 @@ class GeoJsonWriter(BaseWriter, ABC):
 
         self._contains_transformation_information(data)
 
-        res = dict()
+        res: Dict[Any, Any] = dict()
         res["type"] = "FeatureCollection"
-        features = []
+        features: List[Any] = []
         res["features"] = features
         for obj in data.objects:
-            obj: GeoObject = obj
-            polygon = dict()
+            polygon: Dict[Any, Any] = dict()
             polygon["type"] = "MultiPolygon"
-            coordinates = []
+            coordinates: List[Any] = []
             polygon["coordinates"] = coordinates
             for face in obj.faces:
                 f = []

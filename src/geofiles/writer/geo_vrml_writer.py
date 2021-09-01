@@ -1,11 +1,10 @@
 import math
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any, List
 
 from geofiles.conversion.calculation import convert_obj_index
 from geofiles.conversion.static import get_wgs_84
-from geofiles.domain.face import Face
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -20,7 +19,7 @@ class GeoVrmlWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -65,7 +64,7 @@ class GeoVrmlWriter(BaseWriter, ABC):
             True,
         )
 
-        if data.is_origin_based():
+        if data.is_origin_based() and data.origin is not None:
             self._write_to_file(file, "EXTERNPROTO GeoOrigin [", write_binary, True)
             self._write_to_file(
                 file,
@@ -115,11 +114,9 @@ class GeoVrmlWriter(BaseWriter, ABC):
         )
 
         for obj in data.objects:
-            obj: GeoObject = obj
-            local_vertices = []
+            local_vertices: List[Any] = []
             vertex_mapping = dict()
             for face in obj.faces:
-                face: Face = face
                 for idx in face.indices:
                     vertex_mapping[idx] = len(local_vertices)
                     local_vertices.append(data.get_vertex(idx))
@@ -129,13 +126,11 @@ class GeoVrmlWriter(BaseWriter, ABC):
                     file, f"DEF OBJECT-{i} Shape " + "{", write_binary, True
                 )
             else:
-                self._write_to_file(file, f"Shape " + "{", write_binary, True)
+                self._write_to_file(file, "Shape " + "{", write_binary, True)
             self._write_to_file(
                 file, "   geometry IndexedFaceSet {", write_binary, True
             )
-            self._write_to_file(
-                file, f"      coord GeoCoordinate " + "{", write_binary, True
-            )
+            self._write_to_file(file, "      coord GeoCoordinate {", write_binary, True)
             self._write_to_file(
                 file, '         geoSystem [ "GDC" ]', write_binary, True
             )
@@ -156,7 +151,6 @@ class GeoVrmlWriter(BaseWriter, ABC):
             num_of_faces = len(obj.faces)
             j = 0
             for face in obj.faces:
-                face: Face = face
                 for idx in face.indices:
                     self._write_to_file(
                         file,
@@ -224,10 +218,10 @@ class GeoVrmlWriter(BaseWriter, ABC):
         :param write_binary: flag if file is a binary file
         :return: None
         """
-        self._write_to_file(file, f"   children [", write_binary, True)
+        self._write_to_file(file, "   children [", write_binary, True)
         for i in range(0, num_of_objects):
             self._write_to_file(file, f"      USE OBJECT-{i}", write_binary, True)
-        self._write_to_file(file, f"   ]", write_binary, True)
+        self._write_to_file(file, "   ]", write_binary, True)
 
     def supports_origin_base(self) -> bool:
         """

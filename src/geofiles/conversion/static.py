@@ -1,3 +1,6 @@
+from typing import List
+
+
 def get_wgs_84() -> str:
     """
     :return: name of the WGS 84 coordinate system
@@ -12,7 +15,7 @@ def get_epsg_4326() -> str:
     return "urn:ogc:def:crs:EPSG::4326"
 
 
-def get_lon_lat(vertex: list, coordinate_system: str) -> tuple:
+def get_lon_lat(vertex: List[float], coordinate_system: str) -> List[float]:
     """
     Method for accessing longitude and latitude
     :param vertex: WGS84 or EPSG4236 vertex
@@ -20,8 +23,9 @@ def get_lon_lat(vertex: list, coordinate_system: str) -> tuple:
     :return: longitude, latitude
     """
     if coordinate_system == get_wgs_84():
-        return vertex[0], vertex[1]
-    elif coordinate_system == get_epsg_4326():
-        return vertex[1], vertex[0]
-    else:
-        raise Exception(f"Not supported crs {coordinate_system}")
+        return [vertex[0], vertex[1]]
+
+    if coordinate_system == get_epsg_4326():
+        return [vertex[1], vertex[0]]
+
+    raise Exception(f"Not supported crs {coordinate_system}")

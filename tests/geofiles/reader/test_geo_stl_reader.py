@@ -25,5 +25,5 @@ class TestGeoStlReader(BaseTest):
         # then
         self.assertEqual(
             geo_obj_file.origin,
-            ["14.2842798233032", "48.30284881591775", "279.807006835938"],
+            [14.2842798233032, 48.30284881591775, 279.807006835938],
         )

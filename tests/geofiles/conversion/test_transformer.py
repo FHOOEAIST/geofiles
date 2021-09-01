@@ -1,4 +1,4 @@
-from geofiles.conversion.transformer import *
+from geofiles.conversion.transformer import Transformer
 from tests.geofiles.base_test import BaseTest
 
 

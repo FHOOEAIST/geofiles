@@ -1,4 +1,5 @@
 import copy
+from typing import List
 
 from geofiles.conversion.calculation import get_center, rotate_point
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -33,8 +34,8 @@ class Transformer:
         """
         return self.transform(data, rotate=False, translate=False)
 
+    @staticmethod
     def transform(
-        self,
         data: GeoObjectFile,
         scale: bool = True,
         rotate: bool = True,
@@ -52,19 +53,22 @@ class Transformer:
             raise Exception("Function only supported for origin based representations")
 
         res = copy.deepcopy(data)
-        if scale:
+        scaling: List[float]
+        if scale and res.scaling is not None:
             scaling = res.scaling
             res.scaling = None
         else:
             scaling = [1, 1, 1]
 
-        if rotate:
+        rotation: List[float]
+        if rotate and res.rotation is not None:
             rotation = res.rotation
             res.rotation = None
         else:
             rotation = [0, 0, 0]
 
-        if translate:
+        translation: List[float]
+        if translate and res.translation is not None:
             translation = res.translation
             res.translation = None
         else:
@@ -74,18 +78,12 @@ class Transformer:
 
         new_vertices = []
 
-        zero = [0, 0, 0]
+        zero: List[float] = [0, 0, 0]
         for vertex in res.vertices:
             # recenter around (0,0,0) and scale it
             new_vertex = [
                 (v_i - c_i) * s_i for v_i, c_i, s_i in zip(vertex, center, scaling)
             ]
-            # TODO check and remove
-            # for idx, c in enumerate(vertex):
-            #     new_c = c - center[idx]
-            #     new_c *= scaling
-            #     new_vertex.append(new_c)
-            # rotate vertex
             rotated = rotate_point(
                 new_vertex, zero, rotation[0], rotation[1], rotation[2]
             )

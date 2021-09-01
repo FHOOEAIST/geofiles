@@ -1,18 +1,23 @@
 import math
 from abc import ABC, abstractmethod
 from io import TextIOWrapper
+from typing import Any
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 
 
 class BaseWriter(ABC):
+    """
+    Base implementation for writing geo-referenced object
+    """
+
     def write(
         self,
-        file: any,
+        file: Any,
         data: GeoObjectFile,
         write_binary: bool = False,
         append_file_type: bool = True,
-        random_seed=None,
+        random_seed: Any = None,
     ) -> None:
         """
         Allows to create write a file at the given file position
@@ -24,7 +29,7 @@ class BaseWriter(ABC):
         :return: None
         """
         close = False
-        to_write = None
+        to_write: Any = None
         try:
             if isinstance(file, str):
                 if append_file_type:
@@ -36,7 +41,7 @@ class BaseWriter(ABC):
                     to_write = open(file, "w")
                 close = True
             elif isinstance(file, TextIOWrapper):
-                if "w" not in file.mode.lower:
+                if "w" not in file.mode.lower():
                     raise Exception("Given file is not in write mode")
 
                 if "b" in file.mode.lower():
@@ -57,7 +62,7 @@ class BaseWriter(ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -76,7 +81,7 @@ class BaseWriter(ABC):
         """
         return ""
 
-    def supports_origin_base(self) -> bool:
+    def supports_origin_base(self) -> bool:  # pylint: disable=R0201
         """
         :return: true if file format supports origin based representation
         """
@@ -85,7 +90,7 @@ class BaseWriter(ABC):
     def _write_to_file(
         self,
         file: TextIOWrapper,
-        data: any,
+        data: Any,
         write_binary: bool,
         append_new_line: bool = False,
         encoding: str = "ascii",
@@ -103,7 +108,8 @@ class BaseWriter(ABC):
         if append_new_line:
             file.write(self._encode("\n", write_binary, encoding))
 
-    def _encode(self, data, write_binary: bool, encoding: str = "ascii") -> str:
+    @staticmethod
+    def _encode(data: Any, write_binary: bool, encoding: str = "ascii") -> Any:
         """
         Encode the given data
         :param data: to be encoded
@@ -112,11 +118,11 @@ class BaseWriter(ABC):
         :return: encoded data
         """
         if write_binary:
-            return f"{data}".encode(encoding)
-        else:
-            return f"{data}"
+            return str(data).encode(encoding)
+        return f"{data}"
 
-    def _contains_transformation_information(self, data: GeoObjectFile) -> None:
+    @staticmethod
+    def _contains_transformation_information(data: GeoObjectFile) -> None:
         """
         Check the given data if it contains translation, rotation or scale information
         :param data: to be checked

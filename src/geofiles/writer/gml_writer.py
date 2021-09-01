@@ -2,8 +2,8 @@ import uuid
 import xml.etree.ElementTree as ET
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any
 
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -18,7 +18,7 @@ class GmlWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -45,7 +45,6 @@ class GmlWriter(BaseWriter, ABC):
         attributes["xmlns:gml"] = "http://www.opengis.net/gml/3.2"
         root = ET.Element("root", attributes)
         for obj in data.objects:
-            obj: GeoObject = obj
             solid = ET.Element("gml:Solid")
             solid.attrib = dict()
             solid.attrib["srsName"] = data.crs
@@ -62,10 +61,10 @@ class GmlWriter(BaseWriter, ABC):
                 polygon = ET.Element("gml:Polygon")
                 polygon.attrib = dict()
                 if random_seed is None:
-                    id = str(uuid.uuid4())
+                    polygon_id = str(uuid.uuid4())
                 else:
-                    id = str(uuid.UUID(int=random_seed, version=4))
-                polygon.attrib["gml:id"] = id
+                    polygon_id = str(uuid.UUID(int=random_seed, version=4))
+                polygon.attrib["gml:id"] = polygon_id
                 surface_member.append(polygon)
                 boundaries = ET.Element("gml:exterior")
                 polygon.append(boundaries)

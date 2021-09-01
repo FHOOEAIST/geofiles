@@ -2,8 +2,8 @@ import json
 import uuid
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any, Dict, List
 
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -18,7 +18,7 @@ class CityJsonWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
@@ -27,18 +27,17 @@ class CityJsonWriter(BaseWriter, ABC):
 
         num_vertices = len(data.vertices)
 
-        res = dict()
+        res: Dict[Any, Any] = dict()
         res["type"] = "CityJSON"
         res["version"] = "1.0"
         if data.crs is not None:
-            metadata = dict()
+            metadata: Dict[Any, Any] = dict()
             res["metadata"] = metadata
             metadata["referenceSystem"] = data.crs
-        objects = dict()
+        objects: Dict[Any, Any] = dict()
         res["CityObjects"] = objects
         for obj in data.objects:
-            obj: GeoObject = obj
-            cityobject = dict()
+            cityobject: Dict[Any, Any] = dict()
             if obj.name == "" or obj.name is None:
                 if random_seed is None:
                     objects[str(uuid.uuid4())] = cityobject
@@ -47,13 +46,13 @@ class CityJsonWriter(BaseWriter, ABC):
             else:
                 objects[obj.name] = cityobject
             cityobject["type"] = "GenericCityObject"
-            geometries = []
+            geometries: List[Any] = []
             cityobject["geometry"] = geometries
-            geometry = dict()
+            geometry: Dict[Any, Any] = dict()
             geometries.append(geometry)
             geometry["type"] = "MultiSurface"
             geometry["lod"] = 1
-            boundaries = []
+            boundaries: List[Any] = []
             geometry["boundaries"] = boundaries
             for face in obj.faces:
                 boundary = []

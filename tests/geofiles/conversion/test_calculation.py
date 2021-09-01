@@ -1,6 +1,13 @@
 import unittest
 
-from geofiles.conversion.calculation import *
+from geofiles.conversion.calculation import (
+    convert_obj_index,
+    get_angle_between_points,
+    get_center,
+    get_distant_point,
+    get_point_distance,
+    rotate_point,
+)
 
 
 class TestCalculation(unittest.TestCase):
@@ -136,10 +143,10 @@ class TestCalculation(unittest.TestCase):
     def test_convert_obj_index(self) -> None:
         # given
         idx = 1
-        list = [5, 3, 2]
+        example = [5, 3, 2]
 
         # when
-        converted = convert_obj_index(idx, list)
+        converted = convert_obj_index(idx, example)
 
         # then
         self.assertEqual(converted, 0)
@@ -147,10 +154,10 @@ class TestCalculation(unittest.TestCase):
     def test_convert_obj_index2(self) -> None:
         # given
         idx = -1
-        list = [5, 3, 2]
+        example = [5, 3, 2]
 
         # when
-        converted = convert_obj_index(idx, list)
+        converted = convert_obj_index(idx, example)
 
         # then
         self.assertEqual(converted, 2)
@@ -158,11 +165,11 @@ class TestCalculation(unittest.TestCase):
     def test_convert_obj_index3(self) -> None:
         # given
         idx = 0
-        list = [5, 3, 2]
+        example = [5, 3, 2]
 
         # when
         with self.assertRaises(Exception) as context:
-            converted = convert_obj_index(idx, list)
+            convert_obj_index(idx, example)
 
         # then
         self.assertTrue("Index 0 not supported in OBJ" in str(context.exception))

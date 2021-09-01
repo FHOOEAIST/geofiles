@@ -1,12 +1,10 @@
-from typing import Optional
-
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.geo_json_writer import GeoJsonWriter
 from tests.geofiles.writer.base_writer_test import BaseWriterTest
 
 
 class TestGeoJsonWriter(BaseWriterTest):
-    def get_writer(self) -> Optional[BaseWriter]:
+    def get_writer(self) -> BaseWriter:
         return GeoJsonWriter()
 
     def test_write(self) -> None:

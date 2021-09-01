@@ -1,6 +1,6 @@
 import unittest
 
-from geofiles.conversion.static import *
+from geofiles.conversion.static import get_epsg_4326, get_lon_lat, get_wgs_84
 
 
 class TestStatic(unittest.TestCase):

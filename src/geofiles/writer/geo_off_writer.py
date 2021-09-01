@@ -1,7 +1,7 @@
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any
 
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -16,7 +16,7 @@ class GeoOffWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -30,7 +30,6 @@ class GeoOffWriter(BaseWriter, ABC):
         num_vertices = len(data.vertices)
         faces = []
         for obj in data.objects:
-            obj: GeoObject = obj
             for face in obj.faces:
                 faces.append(face)
         num_faces = len(faces)

@@ -1,8 +1,7 @@
 from abc import ABC
 from io import TextIOWrapper
+from typing import Any, List
 
-from geofiles.domain.face import Face
-from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 
@@ -17,7 +16,7 @@ class GeoObjWriter(BaseWriter, ABC):
         file: TextIOWrapper,
         data: GeoObjectFile,
         write_binary: bool,
-        random_seed: any,
+        random_seed: Any,
     ) -> None:
         """
         Write implementation
@@ -59,10 +58,8 @@ class GeoObjWriter(BaseWriter, ABC):
         self._write_coordinates(data.texture_coordinates, file, "vt ", write_binary)
 
         for geoobject in data.objects:
-            geoobject: GeoObject = geoobject
             self._write_to_file(file, f"g {geoobject.name}", write_binary, True)
             for f in geoobject.faces:
-                f: Face = f
                 self._write_to_file(file, "f ", write_binary)
                 contains_textures = len(f.texture_coordinates) != 0
                 contains_normals = len(f.normal_indices) != 0
@@ -86,7 +83,11 @@ class GeoObjWriter(BaseWriter, ABC):
                 self._write_to_file(file, "", write_binary, True)
 
     def _write_coordinates(
-        self, coordinates, file, prefix: str, write_binary: bool
+        self,
+        coordinates: List[List[Any]],
+        file: TextIOWrapper,
+        prefix: str,
+        write_binary: bool,
     ) -> None:
         """
         Write the given coordinates to the file

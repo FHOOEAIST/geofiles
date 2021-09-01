@@ -1,5 +1,3 @@
-from typing import Optional
-
 from geofiles.conversion.origin_converter import OriginConverter
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.geo_stl_writer import GeoStlWriter
@@ -7,7 +5,7 @@ from tests.geofiles.writer.base_writer_test import BaseWriterTest
 
 
 class TestGeoStlWriter(BaseWriterTest):
-    def get_writer(self) -> Optional[BaseWriter]:
+    def get_writer(self) -> BaseWriter:
         return GeoStlWriter()
 
     def test_write(self) -> None:

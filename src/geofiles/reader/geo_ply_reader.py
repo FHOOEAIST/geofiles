@@ -35,19 +35,19 @@ class GeoPlyReader(BaseReader, ABC):
                 elif trimmed.startswith("element vertex"):
                     num_of_vertices = int(trimmed[14:])
                 elif trimmed.startswith("origin"):
-                    res.origin = trimmed[7:].split(" ")
+                    res.origin = [float(a) for a in trimmed[7:].split(" ")]
                 elif trimmed.startswith("scale"):
-                    res.scaling = trimmed[6:].split(" ")
+                    res.scaling = [float(a) for a in trimmed[6:].split(" ")]
                 elif trimmed.startswith("translate"):
-                    res.translation = trimmed[10:].split(" ")
+                    res.translation = [float(a) for a in trimmed[10:].split(" ")]
                 elif trimmed.startswith("rotate"):
-                    res.rotation = trimmed[7:].split(" ")
+                    res.rotation = [float(a) for a in trimmed[7:].split(" ")]
                 elif trimmed.startswith("end_header"):
                     search_for_vertices = True
             else:
                 splits = trimmed.split(" ")
                 if cnt < num_of_vertices:
-                    res.vertices.append(splits)
+                    res.vertices.append([float(a) for a in splits])
                     cnt += 1
                 else:
                     face = Face()

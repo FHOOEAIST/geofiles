@@ -9,7 +9,8 @@ from geofiles.writer.base import BaseWriter
 
 
 class BaseTest(unittest.TestCase):
-    def get_cube(self, origin_based: bool = False) -> GeoObjectFile:
+    @staticmethod
+    def get_cube(origin_based: bool = False) -> GeoObjectFile:
         """
         :param origin_based: flag if cube should be origin based
         :return: A sample GeoObjectFile representing a geo-referenced cube
@@ -65,11 +66,12 @@ class BaseTest(unittest.TestCase):
 
         return res
 
-    def get_local_cube(self) -> GeoObjectFile:
+    @classmethod
+    def get_local_cube(cls) -> GeoObjectFile:
         """
         :return: A local geometry example of a cube without a referenced coordinate system
         """
-        res = self.get_cube()
+        res = cls.get_cube()
         res.crs = None
         res.vertices = [
             [-0.5, -0.5, 0.5],
@@ -84,7 +86,7 @@ class BaseTest(unittest.TestCase):
 
         return res
 
-    def compare_with_cube(self, geo_obj_file) -> None:
+    def compare_with_cube(self, geo_obj_file: GeoObjectFile) -> None:
         """
         Compares the given GeoObjectFile with the cube
         :param geo_obj_file: to be compared
