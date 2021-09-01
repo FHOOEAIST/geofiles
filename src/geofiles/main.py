@@ -87,7 +87,7 @@ if __name__ == '__main__':
         origin_based_sizes[file] = origin_based_sizes_for_file
 
     with open(join(path, "result.csv"), "w") as file:
-        file.write("file")
+        file.write("file,original")
         for extension, writer in writers.items():
             file.write(f",{extension}")
             if writer.supports_origin_base():
@@ -97,12 +97,15 @@ if __name__ == '__main__':
         for key, size in sizes.items():
             origin_size = origin_based_sizes[key]
             file.write(key)
+            file.write(",")
+            original_file_size = os.path.getsize(join(path, key))
+            file.write("{:.2f}".format(original_file_size / 1024.0))
             for file_format in writers.keys():
                 file.write(",")
                 file.write("{:.2f}".format(size[file_format] / 1024.0))
                 if origin_size.get(file_format) is not None:
                     file.write(",")
-                    file.write("{:.2f}".format(size[file_format] / 1024.0))
+                    file.write("{:.2f}".format(origin_size[file_format] / 1024.0))
             file.write("\n")
 
 
