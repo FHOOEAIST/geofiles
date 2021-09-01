@@ -124,7 +124,8 @@ The different named file formats come with a variable amount of features accordi
 | [KML](https://developers.google.com/kml/documentation/kmlreference)                         | [XML](https://www.w3.org/XML/)                                                      | Text or compressed ([KMZ](https://www.google.com/earth/outreach/learn/packaging-content-in-a-kmz-file/))                     | WGS 84                                                                                                                                        | Yes              | No                | No             | No                         | ++                      |
 | [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf)                      | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec)                                 | Text or Binary                               | WGS84 / EPSG4326 / UTM                                                                                                                        | Yes              | Yes               | Yes            | Yes                        | +                       |
 | [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html) | [XML](https://www.w3.org/XML/), [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | Text or Binary                               | [Multiple supported CRS](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html#t-Supportedspatialframes) | Yes              | Yes               | Yes            | Yes    | ++                      |
-* Currently, only text support, but the base format would support binary, so a binary extension would be possible.
+
+\* Currently, only text support, but the base format would support binary, so a binary extension would be possible.
 
 
 ### Size comparison
