@@ -163,6 +163,8 @@ You can find the source of the used obj files [here](https://github.com/alecjaco
 
 **Note: Sizes are in KiloByte (KB)**
 
+An interactive visualization of the size comparison can be found [here](https://fhooeaist.github.io/geofiles/).
+
 ## Getting started
 
 To set up and use the project have a look at the detailed description [here](./documentation/Tox.md)
