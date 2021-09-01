@@ -130,13 +130,13 @@ The different named file formats come with a variable amount of features accordi
 
 ### Size comparison
 
-The following file comparison uses the minimal required sub-set of the specific file formats to represent geo-referenced 3D models. Additional features (e.g. GeographicalExtent in `CityJSON`) are not considered as far as possible, to avoid a negative bias of the comparison. Next to that also the used reader does not support all features of the input files (e.g. `.mtb` material information). This leads to the situation that in some cases the input file size is greater than the geo-referenced version.
+The following file comparison uses the minimal required sub-set of the specific file formats to represent geo-referenced 3D models. Additional features (e.g. GeographicalExtent in `CityJSON`) are not considered as far as possible, to avoid a negative bias of the comparison. Next to that also the used reader does not support all features of the input files (e.g. `.mtb` material information) and may use different line-ending symbols (Windows vs Linux). This leads to the situation that in some cases the input file size is greater than the geo-referenced version.
 
 You can find the source of the used obj files [here](https://github.com/alecjacobson/common-3d-test-models). Also note that, X3D is currently not explicitly supported by the present framework since it can be encoded using XML or VRML. Next to that it is the successor of [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) and supports many features of [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) within the [geospatial extension](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html) with only minor  differences. For this reason it would result in comparable size when using the VRML encoding.
 
 
 | file               | original | cityjson | geojson  | geoobj   | geoobj-origin | geooff   | geooff-origin | geoply   | geoply-origin | geostl   | geostl-origin | geovrml  | geovrml-origin | gml      | kml       |
-|-------------------:|---------:|---------:|---------:|---------:|--------------:|---------:|--------------:|---------:|--------------:|---------:|--------------:|---------:|---------------:|---------:|----------:|
+|-------------------|---------:|---------:|---------:|---------:|--------------:|---------:|--------------:|---------:|--------------:|---------:|--------------:|---------:|---------------:|---------:|----------:|
 | alligator.obj      | 196.02   | 308.53   | 1402.25  | 287.66   | 214.05        | 272.42   | 198.81        | 272.57   | 198.97        | 1396.25  | 984.62        | 1298.15  | 886.96         | 2202.64  | 2237.52   |
 | armadillo.obj      | 4526.15  | 5279.43  | 23622.39 | 4937.50  | 4819.14       | 4693.41  | 4575.04       | 4693.56  | 4575.20       | 23476.92 | 22766.42      | 22142.54 | 21432.48       | 36998.27 | 37583.91  |
 | beast.obj          | 3256.38  | 2850.39  | 9550.49  | 4192.73  | 3449.05       | 2566.04  | 1822.35       | 2566.19  | 1822.51       | 9686.46  | 6709.18       | 9516.06  | 6539.20        | 13723.15 | 13944.12  |
