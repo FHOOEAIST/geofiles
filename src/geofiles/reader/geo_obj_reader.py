@@ -48,7 +48,7 @@ class GeoObjReader(BaseReader, ABC):
                     list_len = len(vals)
                     if list_len > 0:
                         face.indices.append(int(vals[0]))
-                    if list_len > 1 and vals[1] is not None:
+                    if list_len > 1 and vals[1] is not None and len(vals[1]) != 0:
                         face.texture_coordinates.append(int(vals[1]))
                     if list_len > 2:
                         face.normal_indices.append(int(vals[2]))

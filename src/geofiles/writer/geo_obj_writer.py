@@ -30,28 +30,16 @@ class GeoObjWriter(BaseWriter, ABC):
             self._write_to_file(file, data.crs, write_binary, True)
 
         if data.origin is not None:
-            self._write_to_file(file, "o ", write_binary)
-            for coordinate in data.origin:
-                self._write_to_file(file, f"{coordinate} ", write_binary)
-            self._write_to_file(file, "", write_binary, True)
+            self._write_to_file(file, "o "+" ".join([str(a) for a in data.origin]), write_binary, True)
 
         if data.scaling is not None:
-            self._write_to_file(file, "sc ", write_binary)
-            for coordinate in data.scaling:
-                self._write_to_file(file, f"{coordinate} ", write_binary)
-            self._write_to_file(file, "", write_binary, True)
+            self._write_to_file(file, "sc "+" ".join([str(a) for a in data.scaling]), write_binary, True)
 
         if data.translation is not None:
-            self._write_to_file(file, "t ", write_binary)
-            for coordinate in data.translation:
-                self._write_to_file(file, f"{coordinate} ", write_binary)
-            self._write_to_file(file, "", write_binary, True)
+            self._write_to_file(file, "t "+" ".join([str(a) for a in data.translation]), write_binary, True)
 
         if data.rotation is not None:
-            self._write_to_file(file, "r ", write_binary)
-            for coordinate in data.rotation:
-                self._write_to_file(file, f"{coordinate} ", write_binary)
-            self._write_to_file(file, "", write_binary, True)
+            self._write_to_file(file, "r "+" ".join([str(a) for a in data.rotation]), write_binary, True)
 
         self._write_coordinates(data.vertices, file, "v ", write_binary)
         self._write_coordinates(data.normals, file, "vn ", write_binary)
@@ -63,6 +51,7 @@ class GeoObjWriter(BaseWriter, ABC):
                 self._write_to_file(file, "f ", write_binary)
                 contains_textures = len(f.texture_coordinates) != 0
                 contains_normals = len(f.normal_indices) != 0
+                index_len = len(f.indices)
                 for i, idx in enumerate(f.indices):
                     self._write_to_file(file, idx, write_binary)
 
@@ -78,7 +67,8 @@ class GeoObjWriter(BaseWriter, ABC):
                         self._write_to_file(file, "/", write_binary)
                         self._write_to_file(file, f.normal_indices[i], write_binary)
 
-                    self._write_to_file(file, " ", write_binary)
+                    if i < index_len - 1:
+                        self._write_to_file(file, " ", write_binary)
 
                 self._write_to_file(file, "", write_binary, True)
 
@@ -99,8 +89,7 @@ class GeoObjWriter(BaseWriter, ABC):
         """
         for v in coordinates:
             self._write_to_file(file, prefix, write_binary)
-            for coordinate in v:
-                self._write_to_file(file, f"{coordinate} ", write_binary)
+            self._write_to_file(file, " ".join([str(a) for a in v]), write_binary)
             self._write_to_file(file, "", write_binary, True)
 
     def get_file_type(self) -> str:
