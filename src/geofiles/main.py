@@ -21,6 +21,7 @@ if __name__ == '__main__':
     Size comparison using multiple obj base models.
     You can find examples e.g. here: https://github.com/alecjacobson/common-3d-test-models
     """
+    logging.basicConfig(level=logging.INFO)
     path = input("Path to sample .obj files: ")
     inputfiles = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".obj")]
     crs = "urn:ogc:def:crs:OGC:2:84"
