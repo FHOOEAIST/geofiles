@@ -1,10 +1,8 @@
-import pathlib
-
 import pkg_resources
 from setuptools import setup
 
 try:
-    with pathlib.Path('requirements.txt').open() as requirements_txt:
+    with open('requirements.txt', 'rb') as requirements_txt:
         install_requires = [
             str(requirement)
             for requirement
