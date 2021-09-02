@@ -172,6 +172,12 @@ An interactive visualization of the size comparison can be found [here](https://
 
 To set up and use the project have a look at the detailed description [here](./documentation/Tox.md)
 
+You can install the framework via pip:
+
+```
+pip install geofiles
+```
+
 ### Importing files
 
 The present project supports multiple reader implementations for importing (geo-referenced) geometry files (`.obj`, `.geoobj`,  `.ply`, `.geoply`, `.off`, `.geooff`, `.stl`, `.geostl`).
