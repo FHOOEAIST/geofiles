@@ -140,7 +140,7 @@ if __name__ == "__main__":
             origin_size = origin_based_sizes[key]
             csvfile.write(key)
             csvfile.write(",")
-            original_file_size = os.path.getsize(join(path, key))
+            original_file_size = os.path.getsize(join(target_folder, key))
             csvfile.write("{:.2f}".format(original_file_size / 1024.0))
             for file_format in writers:
                 csvfile.write(",")
