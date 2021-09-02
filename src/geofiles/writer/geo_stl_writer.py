@@ -36,12 +36,13 @@ class GeoStlWriter(BaseWriter, ABC):
                 for c in data.origin:
                     origin += str(c) + " "
             self._write_to_file(
-                file, f"geosolid {data.crs} {origin} {self.stl_name}", write_binary, True
+                file,
+                f"geosolid {data.crs} {origin} {self.stl_name}",
+                write_binary,
+                True,
             )
         else:
-            self._write_to_file(
-                file, f"solid {self.stl_name}", write_binary, True
-            )
+            self._write_to_file(file, f"solid {self.stl_name}", write_binary, True)
 
         for obj in data.objects:
             for face in obj.faces:

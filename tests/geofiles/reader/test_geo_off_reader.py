@@ -38,5 +38,3 @@ class TestGeoOffReader(BaseTest):
 
         # then
         self.compare_geo_obj_files(geo_obj_file, self.get_local_cube())
-
-
