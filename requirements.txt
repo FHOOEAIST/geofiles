@@ -1,0 +1,11 @@
+pyproj==3.1.0
+## The following requirements were added by pip freeze:
+attrs==21.2.0
+certifi==2021.5.30
+cjio==0.6.9
+click==8.0.1
+colorama==0.4.4
+jsonref==0.2
+jsonschema==3.2.0
+pyrsistent==0.18.0
+six==1.16.0
