@@ -101,12 +101,12 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(geo_obj_file.crs, "urn:ogc:def:crs:OGC:2:84")
         self.compare_geo_obj_files(cube, geo_obj_file)
 
-    def compare_geo_obj_files(self, file1: GeoObjectFile, file2: GeoObjectFile):
+    def compare_geo_obj_files(self, file1: GeoObjectFile, file2: GeoObjectFile) -> None:
         """
         Compares the given GeoObjectFiles according to their faces and vertices
         """
-        for obj_idx, object in enumerate(file1.objects):
-            for idx, face in enumerate(object.faces):
+        for obj_idx, geoobject in enumerate(file1.objects):
+            for idx, face in enumerate(geoobject.faces):
                 for inneridx, i in enumerate(face.indices):
                     self.assertEqual(
                         int(i), int(file2.objects[obj_idx].faces[idx].indices[inneridx])
