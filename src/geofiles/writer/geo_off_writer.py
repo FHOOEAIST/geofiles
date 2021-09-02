@@ -33,7 +33,11 @@ class GeoOffWriter(BaseWriter, ABC):
             for face in obj.faces:
                 faces.append(face)
         num_faces = len(faces)
-        self._write_to_file(file, "GeoOFF", write_binary, True)
+        if data.is_geo_referenced():
+            self._write_to_file(file, "GeoOFF", write_binary, True)
+        else:
+            self._write_to_file(file, "OFF", write_binary, True)
+
         if data.crs is not None and data.origin is None:
             self._write_to_file(file, data.crs, write_binary, True)
         elif data.origin is not None and data.origin is not None:

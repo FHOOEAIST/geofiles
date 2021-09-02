@@ -99,17 +99,23 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(len(geo_obj_file.objects[0].faces), 12)
         self.assertEqual(len(geo_obj_file.vertices), 8)
         self.assertEqual(geo_obj_file.crs, "urn:ogc:def:crs:OGC:2:84")
+        self.compare_geo_obj_files(cube, geo_obj_file)
 
-        for idx, face in enumerate(geo_obj_file.objects[0].faces):
-            for inneridx, i in enumerate(face.indices):
-                self.assertEqual(
-                    int(i), int(cube.objects[0].faces[idx].indices[inneridx])
-                )
+    def compare_geo_obj_files(self, file1: GeoObjectFile, file2: GeoObjectFile):
+        """
+        Compares the given GeoObjectFiles according to their faces and vertices
+        """
+        for obj_idx, object in enumerate(file1.objects):
+            for idx, face in enumerate(object.faces):
+                for inneridx, i in enumerate(face.indices):
+                    self.assertEqual(
+                        int(i), int(file2.objects[obj_idx].faces[idx].indices[inneridx])
+                    )
 
-        for idx, vertex in enumerate(geo_obj_file.vertices):
-            self.assertAlmostEqual(float(vertex[0]), cube.vertices[idx][0])
-            self.assertAlmostEqual(float(vertex[1]), cube.vertices[idx][1])
-            self.assertAlmostEqual(float(vertex[2]), cube.vertices[idx][2])
+        for idx, vertex in enumerate(file1.vertices):
+            self.assertAlmostEqual(float(vertex[0]), file2.vertices[idx][0])
+            self.assertAlmostEqual(float(vertex[1]), file2.vertices[idx][1])
+            self.assertAlmostEqual(float(vertex[2]), file2.vertices[idx][2])
 
     @staticmethod
     def get_ressource_file(filename: str) -> str:

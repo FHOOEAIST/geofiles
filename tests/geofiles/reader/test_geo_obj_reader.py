@@ -34,7 +34,7 @@ class TestGeoObjReader(BaseTest):
 
     def test_read2(self) -> None:
         # given
-        file = self.get_ressource_file("local.obj")
+        file = self.get_ressource_file("cube.obj")
         reader = GeoObjReader()
         cube = self.get_local_cube()
 

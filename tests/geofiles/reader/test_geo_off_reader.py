@@ -27,3 +27,16 @@ class TestGeoOffReader(BaseTest):
             geo_obj_file.origin,
             [14.2842798233032, 48.30284881591775, 279.807006835938],
         )
+
+    def test_read3(self) -> None:
+        # given
+        file = self.get_ressource_file("cube.off")
+        reader = GeoOffReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.compare_geo_obj_files(geo_obj_file, self.get_local_cube())
+
+

@@ -45,3 +45,7 @@ class TestGeoOffWriter(BaseWriterTest):
 
         # then
         self.assertTrue("Given data contains scale" in str(context.exception))
+
+    def test_write_local(self) -> None:
+        data = self.get_local_cube()
+        self._test_write(data, "cube.off")

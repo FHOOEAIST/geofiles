@@ -29,16 +29,16 @@ class GeoObjWriter(BaseWriter, ABC):
             self._write_to_file(file, "crs ", write_binary)
             self._write_to_file(file, data.crs, write_binary, True)
 
-        if data.origin is not None:
+        if data.is_geo_referenced() and data.origin is not None:
             self._write_to_file(file, "o "+" ".join([str(a) for a in data.origin]), write_binary, True)
 
-        if data.scaling is not None:
+        if data.is_geo_referenced() and data.scaling is not None:
             self._write_to_file(file, "sc "+" ".join([str(a) for a in data.scaling]), write_binary, True)
 
-        if data.translation is not None:
+        if data.is_geo_referenced() and data.translation is not None:
             self._write_to_file(file, "t "+" ".join([str(a) for a in data.translation]), write_binary, True)
 
-        if data.rotation is not None:
+        if data.is_geo_referenced() and data.rotation is not None:
             self._write_to_file(file, "r "+" ".join([str(a) for a in data.rotation]), write_binary, True)
 
         self._write_coordinates(data.vertices, file, "v ", write_binary)

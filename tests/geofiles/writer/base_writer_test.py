@@ -19,7 +19,7 @@ class BaseWriterTest(BaseTest):
                 os.remove(file)
 
     def _test_write(
-        self, data: Any, ref_file_name: str, write_binary: bool = False
+        self, data: Any, ref_file_name: str, write_binary: bool = False,
     ) -> None:
         """
         Test implementation

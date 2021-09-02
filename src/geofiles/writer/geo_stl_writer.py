@@ -30,13 +30,19 @@ class GeoStlWriter(BaseWriter, ABC):
         """
         self._contains_transformation_information(data)
 
-        origin = ""
-        if data.is_origin_based() and data.origin is not None:
-            for c in data.origin:
-                origin += str(c) + " "
-        self._write_to_file(
-            file, f"geosolid {data.crs} {origin} {self.stl_name}", write_binary, True
-        )
+        if data.is_geo_referenced():
+            origin = ""
+            if data.is_origin_based() and data.origin is not None:
+                for c in data.origin:
+                    origin += str(c) + " "
+            self._write_to_file(
+                file, f"geosolid {data.crs} {origin} {self.stl_name}", write_binary, True
+            )
+        else:
+            self._write_to_file(
+                file, f"solid {self.stl_name}", write_binary, True
+            )
+
         for obj in data.objects:
             for face in obj.faces:
                 if len(face.normal_indices) != 0:
@@ -59,8 +65,10 @@ class GeoStlWriter(BaseWriter, ABC):
                     )
                 self._write_to_file(file, "  endloop", write_binary, True)
                 self._write_to_file(file, " endfacet", write_binary, True)
-
-        self._write_to_file(file, "endgeosolid", write_binary, True)
+        if data.is_geo_referenced():
+            self._write_to_file(file, "endgeosolid", write_binary, True)
+        else:
+            self._write_to_file(file, "endsolid", write_binary, True)
 
     def get_file_type(self) -> str:
         """

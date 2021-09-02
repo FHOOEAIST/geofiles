@@ -31,16 +31,18 @@ class GeoStlReader(BaseReader, ABC):
                 break
             trimmed = line.strip()
             trimmed = " ".join(trimmed.split())
-
-            if trimmed.startswith("geosolid") or trimmed.startswith("solid"):
+            is_geo_solid = trimmed.startswith("geosolid")
+            if is_geo_solid or trimmed.startswith("solid"):
                 splits = trimmed.split(" ")
-                res.crs = splits[1]
+                if is_geo_solid:
+                    res.crs = splits[1]
                 list_len = len(splits)
                 if list_len in (5, 6):
                     res.origin = [float(a) for a in splits[2:5]]
                     if list_len == 6:
                         obj.name = splits[-1]
-                elif list_len == 2:
+
+                if list_len == 2:
                     obj.name = splits[-1]
             elif trimmed.startswith("facet"):
                 current_face = Face()

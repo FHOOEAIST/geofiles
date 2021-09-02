@@ -44,3 +44,14 @@ class TestGeoPlyReader(BaseTest):
         self.assertEqual(geo_obj_file.translation, [10, 50, 100])
         self.assertEqual(geo_obj_file.scaling, [2, 2, 2])
         self.assertEqual(geo_obj_file.rotation, [90, 0, 0])
+
+    def test_read4(self) -> None:
+        # given
+        file = self.get_ressource_file("cube.ply")
+        reader = GeoPlyReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.compare_geo_obj_files(geo_obj_file, self.get_local_cube())

@@ -31,12 +31,16 @@ class GeoPlyWriter(BaseWriter, ABC):
             for face in obj.faces:
                 faces.append(face)
         num_faces = len(faces)
-        self._write_to_file(file, "geoply", write_binary, True)
+        if data.is_geo_referenced():
+            self._write_to_file(file, "geoply", write_binary, True)
+        else:
+            self._write_to_file(file, "ply", write_binary, True)
+
         self._write_to_file(file, "format ascii 1.0", write_binary, True)
-        if data.crs is not None:
+        if data.is_geo_referenced() and data.crs is not None:
             self._write_to_file(file, f"crs {data.crs}", write_binary, True)
 
-        if data.origin is not None:
+        if data.is_geo_referenced() and data.origin is not None:
             self._write_to_file(
                 file,
                 f"origin {' '.join([str(f) for f in data.origin])}",
@@ -44,7 +48,7 @@ class GeoPlyWriter(BaseWriter, ABC):
                 True,
             )
 
-        if data.scaling is not None:
+        if data.is_geo_referenced() and data.scaling is not None:
             self._write_to_file(
                 file,
                 f"scale {' '.join([str(f) for f in data.scaling])}",
@@ -52,7 +56,7 @@ class GeoPlyWriter(BaseWriter, ABC):
                 True,
             )
 
-        if data.rotation is not None:
+        if data.is_geo_referenced() and data.rotation is not None:
             self._write_to_file(
                 file,
                 f"rotate {' '.join([str(f) for f in data.rotation])}",
@@ -60,7 +64,7 @@ class GeoPlyWriter(BaseWriter, ABC):
                 True,
             )
 
-        if data.translation is not None:
+        if data.is_geo_referenced() and data.translation is not None:
             self._write_to_file(
                 file,
                 f"translate {' '.join([str(f) for f in data.translation])}",
