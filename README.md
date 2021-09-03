@@ -52,7 +52,7 @@ t 10 -5 4
 r 90 45 10
 ```
 
-Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expression using the line prefix `e`.
+Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expressions using the line prefix `e`.
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
 ```
 e -0.5 -0.5 -0.5 0.5 0.5 0.5
@@ -107,7 +107,7 @@ rotate 90 45 10
 end_header
 ```
 
-Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expression using the `extent` header.
+Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expressions using the `extent` header.
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
 ```
 geoply
