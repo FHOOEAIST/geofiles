@@ -21,7 +21,7 @@ In this chapter you can find multiple extensions of classic geometry file format
 All of these extensions support two major features:
 
 1. Defining the coordinate reference system (CRS) of the used vertices' coordinates
-2. Defining an optional origin, which defines the model's center and allows to use relative local coordinates from this center.
+2. Defining an optional origin, which represents an absolute geo-referenced location and an implicit local Cartesian coordinate frame for the models with a metric unic.
 
 ### Geoobj
 
@@ -233,6 +233,8 @@ writer.write("mygreatfile.geoply", transformed, append_file_type=False)
   - During our research in the context of outdoor augmented reality applications, we were looking for a possibility for exchanging geo-referenced geometry models. In this context, the other named file formats come with a too high overhead (e.g. `XML` tags or not required meta information as object types like in `CityJson`) in our opinion and are for this reason not ideal.
 - You describe multiple geo-referenced file formats. Which one should I use for geo-referenced 3D models?
   - This depends on the use case. If you have to exchange the models with as little overhead as possible we recommend using the proposed `.geoply`, `.geoobj` or `.geooff` format extensions. If you require semantic expressiveness, you should prefer other formats like `CityJson` or `GML`. 
+- How are vertices defined, if I use the origin-based approach of `.geoobj`, `.geoply`, `.geooff` or `.geostl`?
+  - In the origin-based version, vertices are represented within a local Cartesian coordinate system with the defined origin as coordinate system origin (0, 0, 0). The units used in this type of coordinate system are assumed to be in **meters**. 
 
 ## Contributing
 
