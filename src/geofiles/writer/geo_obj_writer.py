@@ -58,6 +58,21 @@ class GeoObjWriter(BaseWriter, ABC):
                 True,
             )
 
+        if (
+            data.contains_extent()
+            and data.min_extent is not None
+            and data.max_extent is not None
+        ):
+            self._write_to_file(
+                file,
+                "e "
+                + " ".join([str(a) for a in data.min_extent])
+                + " "
+                + " ".join([str(a) for a in data.max_extent]),
+                write_binary,
+                True,
+            )
+
         self._write_coordinates(data.vertices, file, "v ", write_binary)
         self._write_coordinates(data.normals, file, "vn ", write_binary)
         self._write_coordinates(data.texture_coordinates, file, "vt ", write_binary)

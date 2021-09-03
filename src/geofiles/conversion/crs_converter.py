@@ -54,6 +54,10 @@ class CrsConverter:
                     self._convert_coordinate(vertex, transformer, from_wgs84, to_wgs84)
                 )
             res.vertices = converted
+
+        if data.contains_extent():
+            res.update_extent()
+
         return res
 
     @staticmethod

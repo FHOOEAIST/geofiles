@@ -55,3 +55,19 @@ class TestGeoPlyReader(BaseTest):
 
         # then
         self.compare_geo_obj_files(geo_obj_file, self.get_local_cube())
+
+    def test_read5(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_origin_extent.geoply")
+        reader = GeoPlyReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(
+            geo_obj_file.min_extent, [-0.5009357136907019, -0.49944624750201255, -0.5]
+        )
+        self.assertEqual(
+            geo_obj_file.max_extent, [0.5009357136907018, 0.4994462914230726, 0.5]
+        )

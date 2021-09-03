@@ -42,6 +42,10 @@ class GeoPlyReader(BaseReader, ABC):
                     res.translation = [float(a) for a in trimmed[10:].split(" ")]
                 elif trimmed.startswith("rotate"):
                     res.rotation = [float(a) for a in trimmed[7:].split(" ")]
+                elif trimmed.startswith("extent"):
+                    extent = [float(a) for a in trimmed[7:].split(" ")]
+                    res.min_extent = extent[:3]
+                    res.max_extent = extent[3:]
                 elif trimmed.startswith("end_header"):
                     search_for_vertices = True
             else:
