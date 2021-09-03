@@ -75,12 +75,19 @@ class GeoObjReader(BaseReader, ABC):
             # check if the current line defines the origin
             elif trimmed.startswith("o "):
                 res.origin = [float(a) for a in trimmed[2:].split(" ")]
+            # check if the current line defines a file scale
             elif trimmed.startswith("sc "):
                 res.scaling = [float(a) for a in trimmed[3:].split(" ")]
+            # check if the current line defines a file translation
             elif trimmed.startswith("t "):
                 res.translation = [float(a) for a in trimmed[2:].split(" ")]
-            elif trimmed.startswith("r"):
+            # check if the current line defines a file rotation
+            elif trimmed.startswith("r "):
                 res.rotation = [float(a) for a in trimmed[2:].split(" ")]
+            elif trimmed.startswith("e "):
+                extent = [float(a) for a in trimmed[2:].split(" ")]
+                res.min_extent = extent[:3]
+                res.max_extent = extent[3:]
             # check if the current line defines a texture coordinate
             elif trimmed.startswith("vt "):
                 coordinates = [float(a) for a in trimmed[3:].split(" ")]

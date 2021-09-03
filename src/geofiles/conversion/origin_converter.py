@@ -59,6 +59,9 @@ class OriginConverter:
 
         res.vertices = new_vertices
 
+        if data.contains_extent():
+            res.update_extent()
+
         return res
 
     @staticmethod
@@ -97,4 +100,8 @@ class OriginConverter:
                     new_vertices.append([new_vertex[1], new_vertex[0], alt])
 
         res.vertices = new_vertices
+
+        if data.contains_extent():
+            res.update_extent()
+
         return res

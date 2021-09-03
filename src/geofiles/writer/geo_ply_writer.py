@@ -72,6 +72,21 @@ class GeoPlyWriter(BaseWriter, ABC):
                 True,
             )
 
+        if (
+            data.contains_extent()
+            and data.min_extent is not None
+            and data.max_extent is not None
+        ):
+            self._write_to_file(
+                file,
+                "extent "
+                + " ".join([str(a) for a in data.min_extent])
+                + " "
+                + " ".join([str(a) for a in data.max_extent]),
+                write_binary,
+                True,
+            )
+
         self._write_to_file(file, f"element vertex {num_vertices}", write_binary, True)
         self._write_to_file(file, "property float x", write_binary, True)
         self._write_to_file(file, "property float y", write_binary, True)

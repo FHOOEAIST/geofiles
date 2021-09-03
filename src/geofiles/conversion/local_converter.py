@@ -30,6 +30,9 @@ class LocalConverter:
         if not origin_based:
             converter = OriginConverter()
             res = converter.from_origin(res)
+
+        if data.contains_extent:
+            res.update_extent()
         return res
 
     @staticmethod
@@ -51,5 +54,8 @@ class LocalConverter:
 
         res.origin = None
         res.crs = None
+
+        if data.contains_extent():
+            res.update_extent()
 
         return res

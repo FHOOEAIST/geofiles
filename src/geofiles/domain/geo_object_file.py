@@ -20,6 +20,8 @@ class GeoObjectFile:
         - vertices: List of all vertices within this GeoObjectFile
         - normals: List of all normals within this GeoObjectFile
         - texture_coordinates: List of all texture_coordinates within this GeoObjectFile
+        - min_extent: minimal geographical extent of the vertices
+        - max_extent: maximal geographical extent of the vertices
         """
         self.crs: Optional[str] = None
         self.origin: Optional[List[float]] = None
@@ -30,6 +32,8 @@ class GeoObjectFile:
         self.vertices: List[List[float]] = []
         self.normals: List[List[float]] = []
         self.texture_coordinates: List[List[float]] = []
+        self.min_extent: Optional[List[float]] = []
+        self.max_extent: Optional[List[float]] = []
 
     def is_origin_based(self) -> bool:
         """
@@ -77,3 +81,34 @@ class GeoObjectFile:
             return list_to_access[idx]
 
         raise Exception(f"Non valid index {idx}")
+
+    def contains_extent(self) -> bool:
+        """
+        Checks if this geo-referenced fle contains extent information
+        """
+        return (
+            self.min_extent is not None
+            and self.max_extent is not None
+            and len(self.min_extent) > 0
+            and len(self.max_extent) > 0
+        )
+
+    def update_extent(self) -> None:
+        """
+        Updates the min and max extent values of this geo-referenced object file
+        """
+        if len(self.vertices) > 0:
+            min_extent = self.vertices[0].copy()
+            max_extent = self.vertices[0].copy()
+
+            for vertex in self.vertices:
+                for idx, elem in enumerate(vertex):
+                    min_value = min_extent[idx]
+                    max_value = max_extent[idx]
+                    if min_value is None or elem < min_value:
+                        min_extent[idx] = elem
+                    if max_value is None or elem > max_value:
+                        max_extent[idx] = elem
+
+            self.min_extent = min_extent
+            self.max_extent = max_extent

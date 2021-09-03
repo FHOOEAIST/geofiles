@@ -83,3 +83,33 @@ class TestGeoObjectFile(BaseTest):
 
         # then
         self.assertFalse(geo_referenced)
+
+    def test_update_extent(self) -> None:
+        # given
+        cube = self.get_local_cube()
+
+        # when
+        cube.update_extent()
+
+        # then
+        self.assertEqual(cube.max_extent, [0.5, 0.5, 0.5])
+        self.assertEqual(cube.min_extent, [-0.5, -0.5, -0.5])
+
+    def test_contains_extent(self) -> None:
+        # given
+        cube = self.get_local_cube()
+
+        # when
+        cube.update_extent()
+
+        # then
+        self.assertTrue(cube.contains_extent())
+
+    def test_contains_extent2(self) -> None:
+        # given
+
+        # when
+        cube = self.get_local_cube()
+
+        # then
+        self.assertFalse(cube.contains_extent())
