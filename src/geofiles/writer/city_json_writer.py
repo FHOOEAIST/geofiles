@@ -30,10 +30,23 @@ class CityJsonWriter(BaseWriter, ABC):
         res: Dict[Any, Any] = dict()
         res["type"] = "CityJSON"
         res["version"] = "1.0"
+        metadata: Dict[Any, Any] = dict()
+        add_metadata = False
         if data.crs is not None:
-            metadata: Dict[Any, Any] = dict()
-            res["metadata"] = metadata
+            add_metadata = True
             metadata["referenceSystem"] = data.crs
+
+        if (
+            data.min_extent is not None
+            and data.max_extent is not None
+            and len(data.min_extent) > 0
+            and len(data.max_extent) > 0
+        ):
+            add_metadata = True
+            metadata["geographicalExtent"] = data.min_extent + data.max_extent
+
+        if add_metadata:
+            res["metadata"] = metadata
         objects: Dict[Any, Any] = dict()
         res["CityObjects"] = objects
         for obj in data.objects:
