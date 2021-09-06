@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker { 
-            image 'aist.fh-hagenberg.at:18444/repository/docker-util/aist-python:3.8'
+            image 'aist.fh-hagenberg.at:18444/repository/docker-util/aist-python:3.7'
             args '-u root:sudo'
             alwaysPull true
         }
