@@ -93,5 +93,7 @@ class Transformer:
             ]
             new_vertices.append(rotated)
         res.vertices = new_vertices
+        res.min_extent = []
+        res.max_extent = []
 
         return res

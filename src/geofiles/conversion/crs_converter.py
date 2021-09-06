@@ -3,7 +3,7 @@ from typing import Any, List
 
 import pyproj
 
-from geofiles.conversion.static import get_epsg_4326, get_wgs_84
+from geofiles.conversion.static import get_epsg_4326, get_wgs_84, update_min_max
 from geofiles.domain.geo_object_file import GeoObjectFile
 
 
@@ -13,7 +13,11 @@ class CrsConverter:
     """
 
     def convert(
-        self, data: GeoObjectFile, target_crs: str, alwaysxy: bool = True
+        self,
+        data: GeoObjectFile,
+        target_crs: str,
+        alwaysxy: bool = True,
+        update_extent: bool = False,
     ) -> GeoObjectFile:
         """
         Converts the given data to another coordinate reference system
@@ -23,6 +27,7 @@ class CrsConverter:
             coordinates using the traditional GIS order, that is longitude, latitude
             for geographic CRS and easting, northing for most projected CRS.
             Default is false.
+        :param update_extent: If true, extent information of the converted data is determined
         :return:
         """
         if data.crs is None:
@@ -47,17 +52,26 @@ class CrsConverter:
             res.origin = self._convert_coordinate(
                 data.origin, transformer, from_wgs84, to_wgs84
             )
+
+            if update_extent:
+                res.update_extent()
         else:
             converted = []
+            min_extent: List[float] = []
+            max_extent: List[float] = []
+            is_first = True
             for vertex in data.vertices:
-                converted.append(
-                    self._convert_coordinate(vertex, transformer, from_wgs84, to_wgs84)
+                converted_vertex = self._convert_coordinate(
+                    vertex, transformer, from_wgs84, to_wgs84
                 )
+                if is_first:
+                    min_extent = list(converted_vertex).copy()
+                    max_extent = list(converted_vertex).copy()
+                    is_first = False
+                else:
+                    update_min_max(vertex, min_extent, max_extent)
+                converted.append(converted_vertex)
             res.vertices = converted
-
-        if data.contains_extent():
-            res.update_extent()
-
         return res
 
     @staticmethod

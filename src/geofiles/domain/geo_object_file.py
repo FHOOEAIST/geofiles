@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from geofiles.conversion.static import update_min_max
 from geofiles.domain.geo_object import GeoObject
 
 
@@ -102,13 +103,7 @@ class GeoObjectFile:
             max_extent = self.vertices[0].copy()
 
             for vertex in self.vertices:
-                for idx, elem in enumerate(vertex):
-                    min_value = min_extent[idx]
-                    max_value = max_extent[idx]
-                    if min_value is None or elem < min_value:
-                        min_extent[idx] = elem
-                    if max_value is None or elem > max_value:
-                        max_extent[idx] = elem
+                update_min_max(vertex, min_extent, max_extent)
 
             self.min_extent = min_extent
             self.max_extent = max_extent

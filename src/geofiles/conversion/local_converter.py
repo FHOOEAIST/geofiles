@@ -12,7 +12,11 @@ class LocalConverter:
 
     @staticmethod
     def from_local(
-        data: GeoObjectFile, crs: str, origin: List[Any], origin_based: bool = True
+        data: GeoObjectFile,
+        crs: str,
+        origin: List[Any],
+        origin_based: bool = True,
+        update_extent: bool = False,
     ) -> GeoObjectFile:
         """
         Converts the given object file with a local coordinate system to a geo-referenced representation
@@ -20,6 +24,7 @@ class LocalConverter:
         :param crs: target crs
         :param origin: origin point used for conversion
         :param origin_based: flag that signals if the final file should be origin based or should use geo-referenced vertices
+        :param update_extent: If true, extent information of the converted data is determined
         :return: geo-referenced file based on the given origin
         """
         if data.crs is not None:
@@ -29,17 +34,18 @@ class LocalConverter:
         res.origin = origin
         if not origin_based:
             converter = OriginConverter()
-            res = converter.from_origin(res)
-
-        if data.contains_extent:
+            res = converter.from_origin(res, update_extent=update_extent)
+        elif update_extent:
             res.update_extent()
+
         return res
 
     @staticmethod
-    def to_local(data: GeoObjectFile) -> GeoObjectFile:
+    def to_local(data: GeoObjectFile, update_extent: bool = False) -> GeoObjectFile:
         """
         Converts the given geo-referenced file to a local representation
         :param data: to be converted
+        :param update_extent: If true, extent information of the converted data is determined
         :return:
         """
         if not data.is_geo_referenced():
@@ -48,14 +54,13 @@ class LocalConverter:
         res: GeoObjectFile
         if not data.is_origin_based():
             converter = OriginConverter()
-            res = converter.to_origin(data)
+            res = converter.to_origin(data, update_extent=update_extent)
         else:
             res = copy.deepcopy(data)
+            if update_extent:
+                res.update_extent()
 
         res.origin = None
         res.crs = None
-
-        if data.contains_extent():
-            res.update_extent()
 
         return res
