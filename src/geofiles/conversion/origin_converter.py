@@ -77,8 +77,6 @@ class OriginConverter:
         res.vertices = new_vertices
         res.min_extent = min_extent
         res.max_extent = max_extent
-        if data.contains_extent():
-            res.update_extent()
 
         return res
 
@@ -136,8 +134,5 @@ class OriginConverter:
             res.max_extent = max_extent
 
         res.vertices = new_vertices
-
-        if data.contains_extent():
-            res.update_extent()
 
         return res
