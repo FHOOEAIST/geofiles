@@ -29,3 +29,22 @@ def get_lon_lat(vertex: List[float], coordinate_system: str) -> List[float]:
         return [vertex[1], vertex[0]]
 
     raise Exception(f"Not supported crs {coordinate_system}")
+
+
+def update_min_max(
+    vertex: List[float], min_extent: List[float], max_extent: List[float]
+) -> None:
+    """
+    Update the min and max extent information based on the vertex
+    :param vertex: input
+    :param min_extent: current min extent
+    :param max_extent: current max extent
+    :return: None
+    """
+    for idx, elem in enumerate(vertex):
+        min_value = min_extent[idx]
+        max_value = max_extent[idx]
+        if min_value is None or elem < min_value:
+            min_extent[idx] = elem
+        if max_value is None or elem > max_value:
+            max_extent[idx] = elem
