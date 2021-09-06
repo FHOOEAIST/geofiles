@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/geofiles.svg)](https://badge.fury.io/py/geofiles)
 [![DOI](https://zenodo.org/badge/401244311.svg)](https://zenodo.org/badge/latestdoi/401244311)
 
-![logo](./documentation/logo.png)
+![logo](https://github.com/FHOOEAIST/geofiles/raw/main/documentation/logo.png)
 # Geo-referenced Geometry File Formats
 
 Classic geometry file formats as `.obj`, `.off`, `.ply`, `.stl` or `.dae` do not support the utilization of coordinate systems besides from a local system, that can not be defined more precisely.
