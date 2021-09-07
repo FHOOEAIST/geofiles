@@ -31,7 +31,10 @@ class GeoObjWriter(BaseWriter, ABC):
 
         if data.is_geo_referenced() and data.origin is not None:
             self._write_to_file(
-                file, "o " + " ".join([str(a) for a in data.origin]), write_binary, True
+                file,
+                "or " + " ".join([str(a) for a in data.origin]),
+                write_binary,
+                True,
             )
 
         if data.is_geo_referenced() and data.scaling is not None:
@@ -78,7 +81,7 @@ class GeoObjWriter(BaseWriter, ABC):
         self._write_coordinates(data.texture_coordinates, file, "vt ", write_binary)
 
         for geoobject in data.objects:
-            self._write_to_file(file, f"g {geoobject.name}", write_binary, True)
+            self._write_to_file(file, f"o {geoobject.name}", write_binary, True)
             for f in geoobject.faces:
                 self._write_to_file(file, "f ", write_binary)
                 contains_textures = len(f.texture_coordinates) != 0
