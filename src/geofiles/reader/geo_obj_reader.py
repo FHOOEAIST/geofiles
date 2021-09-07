@@ -55,7 +55,7 @@ class GeoObjReader(BaseReader, ABC):
                 current_object.faces.append(face)
                 filled_group = True
             # check if current line is a group definition
-            elif trimmed.startswith("g "):
+            elif trimmed.startswith("g ") or trimmed.startswith("o "):
                 name = trimmed[2:]
                 # if it is the first group definition and if we have not found any other definition
                 # just set the name of the current group; otherwise it is a new group
@@ -73,8 +73,8 @@ class GeoObjReader(BaseReader, ABC):
             elif trimmed.startswith("crs "):
                 res.crs = trimmed[4:]
             # check if the current line defines the origin
-            elif trimmed.startswith("o "):
-                res.origin = [float(a) for a in trimmed[2:].split(" ")]
+            elif trimmed.startswith("or "):
+                res.origin = [float(a) for a in trimmed[3:].split(" ")]
             # check if the current line defines a file scale
             elif trimmed.startswith("sc "):
                 res.scaling = [float(a) for a in trimmed[3:].split(" ")]
