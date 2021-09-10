@@ -4,7 +4,7 @@
 Size comparison using multiple obj base models.
 You can find examples e.g. here: https://github.com/alecjacobson/common-3d-test-models
 """
-
+import csv
 import logging
 import os
 from os import listdir
@@ -59,9 +59,17 @@ if __name__ == "__main__":
     number_of_jobs *= len(inputfiles)
     number_of_jobs += len(inputfiles)
 
+    number_of_vertices = dict()
     # normalize features of obj inputs by reading and writing them with framework based implementations
     for file in inputfiles:
         input_file = reader.read(join(path, file))
+        for o in input_file.objects:
+            for f in o.faces:
+                f.texture_coordinates = []
+                f.normal_indices = []
+        input_file.texture_coordinates = []
+        input_file.normals = []
+        number_of_vertices[file] = len(input_file.vertices)
         obj_writer.write(join(target_folder, file), input_file, append_file_type=False)
         done_jobs += 1
         logging.info(
@@ -128,7 +136,7 @@ if __name__ == "__main__":
     # create result.csv file with file sizes in KB
     with open(join(target_folder, "result.csv"), "w") as csvfile:
         # prepare csv header
-        csvfile.write("file,original")
+        csvfile.write("file,vertices,original")
         for extension, writer in writers.items():
             csvfile.write(f",{extension}")
             if writer.supports_origin_base():
@@ -139,6 +147,8 @@ if __name__ == "__main__":
         for key, size in sizes.items():
             origin_size = origin_based_sizes[key]
             csvfile.write(key)
+            csvfile.write(",")
+            csvfile.write(str(number_of_vertices[key]))
             csvfile.write(",")
             original_file_size = os.path.getsize(join(target_folder, key))
             csvfile.write("{:.2f}".format(original_file_size / 1024.0))
