@@ -28,12 +28,12 @@ All of these extensions support two major features:
 The `.geoobj` file format extends the classic `.obj` file format with two line-types:
 
 1. The `crs` line type is used to define the coordinate system which is used within the file
-2. The `o` line type is used to define the optional origin of the vertices
+2. The `or` line type is used to define the optional origin of the vertices
 
 Example:
 ```
 crs urn:ogc:def:crs:EPSG::4326
-o 48.3028533074941 14.2842865755919 279.307006835938
+or 48.3028533074941 14.2842865755919 279.307006835938
 ```
 
 #### Addons
