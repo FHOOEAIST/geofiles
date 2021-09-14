@@ -56,8 +56,8 @@ class OriginConverter:
 
         new_vertices = []
         geod = Geod(ellps="WGS84")
-        min_extent: List[float] = []
-        max_extent: List[float] = []
+        min_extent: List[float] = data.min_extent
+        max_extent: List[float] = data.max_extent
         is_first = True
         for vertex in data.vertices:
             lon0, lat0 = get_lon_lat(vertex, data.crs)
@@ -71,7 +71,7 @@ class OriginConverter:
                     max_extent = new_vertex.copy()
                     is_first = False
                 else:
-                    update_min_max(vertex, min_extent, max_extent)
+                    update_min_max(new_vertex, min_extent, max_extent)
             new_vertices.append(new_vertex)
 
         res.vertices = new_vertices
@@ -108,8 +108,8 @@ class OriginConverter:
         origin = [0, 0, 0]
         north_vector = [0, 1]
         if data.vertices:
-            min_extent: List[float] = []
-            max_extent: List[float] = []
+            min_extent: List[float] = data.min_extent
+            max_extent: List[float] = data.max_extent
             is_first = True
             for vertex in data.vertices:
                 distance = get_point_distance(origin, vertex)
@@ -129,7 +129,7 @@ class OriginConverter:
                         max_extent = converted.copy()
                         is_first = False
                     else:
-                        update_min_max(vertex, min_extent, max_extent)
+                        update_min_max(converted, min_extent, max_extent)
             res.min_extent = min_extent
             res.max_extent = max_extent
 
