@@ -1,3 +1,4 @@
+import logging
 from abc import ABC
 from io import TextIOWrapper
 from typing import Any
@@ -25,28 +26,54 @@ class GeoOffWriter(BaseWriter, ABC):
         :param write_binary: flag if file is a binary file
         :return:
         """
-        self._contains_transformation_information(data)
-
         num_vertices = len(data.vertices)
         faces = []
         for obj in data.objects:
             for face in obj.faces:
                 faces.append(face)
         num_faces = len(faces)
+        origin_based = data.is_origin_based()
+        contains_extent = data.contains_extent()
+        contains_scaling = data.contains_scaling()
+        contains_translation = data.contains_translation()
+        contains_rotation = data.contains_rotation()
         if data.is_geo_referenced():
-            self._write_to_file(file, "GeoOFF", write_binary, True)
+            header = "GeoOFF"
+            if origin_based:
+                header += "o"
+            if contains_extent:
+                header += "e"
+            if contains_scaling:
+                header += "s"
+            if contains_translation:
+                header += "t"
+            if contains_rotation:
+                header += "r"
+            self._write_to_file(file, header, write_binary, True)
+            self._write_to_file(file, data.crs, write_binary, True)
+            if origin_based:
+                self._write_to_file(file, " ".join([str(f) for f in data.origin]), write_binary, True)
+            if contains_extent:
+                self._write_to_file(file, " ".join([str(f) for f in data.min_extent]) + " ".join([str(f) for f in data.max_extent]), write_binary, True)
+            if contains_scaling:
+                self._write_to_file(file, " ".join([str(f) for f in data.scaling]), write_binary, True)
+            if contains_translation:
+                self._write_to_file(file, " ".join([str(f) for f in data.translation]), write_binary, True)
+            if contains_rotation:
+                self._write_to_file(file, " ".join([str(f) for f in data.rotation]), write_binary, True)
         else:
+            if origin_based:
+                raise Exception("Origin information not supported in OFF file format")
+            if contains_extent:
+                raise Exception("Extent information not supported in OFF file format")
+            if contains_scaling:
+                raise Exception("Scaling information not supported in OFF file format")
+            if contains_translation:
+                raise Exception("Translation information not supported in OFF file format")
+            if contains_rotation:
+                raise Exception("Rotation information not supported in OFF file format")
             self._write_to_file(file, "OFF", write_binary, True)
 
-        if data.crs is not None and data.origin is None:
-            self._write_to_file(file, data.crs, write_binary, True)
-        elif data.origin is not None and data.origin is not None:
-            self._write_to_file(
-                file,
-                f"{data.crs} {' '.join([str(f) for f in data.origin])}",
-                write_binary,
-                True,
-            )
         self._write_to_file(file, f"{num_vertices} {num_faces} 0", write_binary, True)
 
         for v in data.vertices:
