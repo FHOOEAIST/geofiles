@@ -29,6 +29,15 @@ class TestGeoOffWriter(BaseWriterTest):
 
         self._test_write(origin, "cube_transformed" + self.get_writer().get_file_type())
 
+    def test_write4(self) -> None:
+        data = self.get_cube()
+        data.objects += data.objects
+        with self.assertRaises(Exception) as context:
+            self._test_write(data, "cube" + self.get_writer().get_file_type())
+
+        # then
+        self.assertTrue("GeoOFF can represent only one object. Minimize the data." in str(context.exception))
+
     def test_write_local(self) -> None:
         data = self.get_local_cube()
         self._test_write(data, "cube.off")

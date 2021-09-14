@@ -28,6 +28,9 @@ class GeoStlWriter(BaseWriter, ABC):
         :param write_binary: flag if file is a binary file
         :return:
         """
+        if len(data.objects) != 1:
+            raise Exception("GeoSTL can represent only one object. Minimize the data.")
+
         self._contains_transformation_information(data)
 
         if data.is_geo_referenced():
