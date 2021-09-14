@@ -21,6 +21,10 @@ class GeoOffReader(BaseReader, ABC):
         num_of_vertices = 0
         search_for_vertices = False
         cnt = 0
+
+        headerdefinition = []
+        found_headerdefinition = False
+
         while True:
             # Get next line from file
             line = file.readline()
@@ -35,30 +39,51 @@ class GeoOffReader(BaseReader, ABC):
             if len(trimmed) == 0:
                 continue
 
-            if not search_for_vertices:
-                if next_line_crs:
-                    splits = trimmed.split(" ")
-                    res.crs = splits[0]
-                    if len(splits) > 1:
-                        res.origin = [float(a) for a in splits[1:]]
-                    next_line_definition = True
-                    next_line_crs = False
-                elif next_line_definition:
-                    split = trimmed.split(" ")
-                    num_of_vertices = int(split[0])
-                    next_line_definition = False
-                    search_for_vertices = True
-                elif trimmed.startswith("GeoOFF"):
-                    next_line_crs = True
-                elif trimmed.startswith("OFF"):
-                    next_line_definition = True
-            else:
+            if not found_headerdefinition:
+                # We have not found a header definition yet, so search for a GeoOFF or OFF header
+                idx = trimmed.find("GeoOFF")
+                if idx >= 0:
+                    # found a GeoOFF header, so will look for the crs definition + further options
+                    headerdefinition.append("crs")
+                    postfix = trimmed[idx + len("GeoOFF"):]
+                    found_headerdefinition = True
+                    for e in postfix:
+                        headerdefinition.append(e)
+                    headerdefinition.append("header")
+                elif trimmed.endswith("OFF"):
+                    # found a classic OFF file
+                    found_headerdefinition = True
+                    headerdefinition.append("header")
+            elif search_for_vertices:
+                # We already looking for vertices and faces, since we know the number of vertices, just count to know when the faces start
                 splits = trimmed.split(" ")
                 if cnt < num_of_vertices:
-                    res.vertices.append([float(a) for a in splits])
+                    coordinates = [float(a) for a in splits]
+                    res.vertices.append(coordinates[:3]) # we are only interested in the coordinates and not in optional additional information
                     cnt += 1
                 else:
                     face = Face()
                     face.indices = [int(a) + 1 for a in splits[1:]]
                     obj.faces.append(face)
+            elif found_headerdefinition:
+                element = headerdefinition.pop(0)
+                splits = trimmed.split(" ")
+
+                if element == "crs":
+                    res.crs = splits[0]
+                elif element == "header":
+                    num_of_vertices = int(splits[0])
+                    search_for_vertices = True
+                elif element == "o":
+                    res.origin = [float(a) for a in splits]
+                elif element == "e":
+                    extents = [float(a) for a in splits]
+                    res.min_extent = extents[:3]
+                    res.max_extent = extents[3:]
+                elif element == "s":
+                    res.scaling = [float(a) for a in splits]
+                elif element == "t":
+                    res.translation = [float(a) for a in splits]
+                elif element == "r":
+                    res.rotation = [float(a) for a in splits]
         return res

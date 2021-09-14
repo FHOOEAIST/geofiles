@@ -85,7 +85,7 @@ class GeoObjectFile:
 
     def contains_extent(self) -> bool:
         """
-        Checks if this geo-referenced fle contains extent information
+        Checks if this geo-referenced file contains extent information
         """
         return (
             self.min_extent is not None
@@ -93,6 +93,24 @@ class GeoObjectFile:
             and len(self.min_extent) > 0
             and len(self.max_extent) > 0
         )
+
+    def contains_scaling(self) -> bool:
+        """
+        Checks if this geo-referenced file contains global scaling information
+        """
+        return self.scaling is not None and len(self.scaling) > 0
+
+    def contains_translation(self) -> bool:
+        """
+        Checks if this geo-referenced file contains global translation information
+        """
+        return self.translation is not None and len(self.translation) > 0
+
+    def contains_rotation(self) -> bool:
+        """
+        Checks if this geo-referenced file contains global rotation information
+        """
+        return self.rotation is not None and len(self.rotation) > 0
 
     def update_extent(self) -> None:
         """
