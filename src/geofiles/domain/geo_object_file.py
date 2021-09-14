@@ -125,3 +125,30 @@ class GeoObjectFile:
 
             self.min_extent = min_extent
             self.max_extent = max_extent
+
+    def minimize(self, name:Optional[str] = None) -> None:
+        """
+        Minimizes this GeoObjectFile to one single object as required for GeoOFF and GeoPLY. Also eliminates duplicated faces
+        :param name: Name for the single object, if None the name of the first object is used
+        """
+        geoobject = GeoObject()
+
+        use_first_elements_name = False
+        if name is not None:
+            geoobject.name = name
+        else:
+            use_first_elements_name = True
+
+        face_set = set()
+        for old_object in self.objects:
+            if use_first_elements_name:
+                geoobject.name = old_object.name
+                use_first_elements_name = False
+
+            for face in old_object.faces:
+                face_set.add(face)
+
+        geoobject.faces = list(face_set)
+
+        self.objects.clear()
+        self.objects.append(geoobject)

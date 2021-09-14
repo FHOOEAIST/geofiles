@@ -1,3 +1,4 @@
+from geofiles.domain.geo_object import GeoObject
 from tests.geofiles.base_test import BaseTest
 
 
@@ -113,3 +114,28 @@ class TestGeoObjectFile(BaseTest):
 
         # then
         self.assertFalse(cube.contains_extent())
+
+    def test_minimize(self) -> None:
+        # given
+        cube = self.get_local_cube()
+        cube.objects.append(GeoObject())
+
+        # when
+        cube.minimize()
+
+        # then
+        self.assertEqual(len(cube.objects), 1)
+
+    def test_minimize_2(self) -> None:
+        # given
+        cube = self.get_local_cube()
+        cube.objects += cube.objects
+        name = "test"
+
+        # when
+        cube.minimize(name)
+
+        # then
+        self.assertEqual(len(cube.objects), 1)
+        self.assertEqual(cube.objects[0].name, name)
+        self.assertEqual(len(cube.objects[0].faces), 12)

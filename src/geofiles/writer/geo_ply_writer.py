@@ -25,6 +25,9 @@ class GeoPlyWriter(BaseWriter, ABC):
         :param write_binary: flag if file is a binary file
         :return:
         """
+        if len(data.objects) != 1:
+            raise Exception("GeoPLY can represent only one object. Minimize the data.")
+
         num_vertices = len(data.vertices)
         faces = []
         for obj in data.objects:
