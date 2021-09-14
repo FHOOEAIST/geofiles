@@ -10,29 +10,32 @@ class Transformer:
     class used to apply different transformations to given GeoObjectFile
     """
 
-    def rotate(self, data: GeoObjectFile) -> GeoObjectFile:
+    def rotate(self, data: GeoObjectFile, update_extents: bool = False) -> GeoObjectFile:
         """
         Applies the rotation defined in the given data
         :param data: to be rotated
+        :param update_extents: Flag if extents of result should be re-calculated
         :return: rotated clone of the given data
         """
-        return self.transform(data, scale=False, translate=False)
+        return self.transform(data, scale=False, translate=False, update_extents=update_extents)
 
-    def translate(self, data: GeoObjectFile) -> GeoObjectFile:
+    def translate(self, data: GeoObjectFile, update_extents: bool = False) -> GeoObjectFile:
         """
         Applies the translation defined in the given data
         :param data: to be translated
+        :param update_extents: Flag if extents of result should be re-calculated
         :return: rotated clone of the given data
         """
-        return self.transform(data, rotate=False, scale=False)
+        return self.transform(data, rotate=False, scale=False, update_extents=update_extents)
 
-    def scale(self, data: GeoObjectFile) -> GeoObjectFile:
+    def scale(self, data: GeoObjectFile, update_extents: bool = False) -> GeoObjectFile:
         """
         Applies the scaling defined in the given data
         :param data: to be rotated
+        :param update_extents: Flag if extents of result should be re-calculated
         :return: scaled clone of the given data
         """
-        return self.transform(data, rotate=False, translate=False)
+        return self.transform(data, rotate=False, translate=False, update_extents=update_extents)
 
     @staticmethod
     def transform(
@@ -40,6 +43,7 @@ class Transformer:
         scale: bool = True,
         rotate: bool = True,
         translate: bool = True,
+        update_extents: bool = False
     ) -> GeoObjectFile:
         """
         Applies the scaling, rotation and translation for the given data
@@ -47,6 +51,7 @@ class Transformer:
         :param scale: Flag if scaling should be applied
         :param rotate: Flag if rotation should be applied
         :param translate: Flag if translation should be applied
+        :param update_extents: Flag if extents of result should be re-calculated
         :return: transformed clone of the given data
         """
         if not data.is_origin_based():
@@ -95,5 +100,8 @@ class Transformer:
         res.vertices = new_vertices
         res.min_extent = []
         res.max_extent = []
+
+        if update_extents:
+            res.update_extent()
 
         return res

@@ -114,7 +114,8 @@ class GeoObjectFile:
 
     def update_extent(self) -> None:
         """
-        Updates the min and max extent values of this geo-referenced object file
+        Updates the min and max extent values of this geo-referenced object file, it does not consider if the file is origin based,
+        nor any transformation information. For a more advanced functionality use the ExtentCalculator class
         """
         if len(self.vertices) > 0:
             min_extent = self.vertices[0].copy()
