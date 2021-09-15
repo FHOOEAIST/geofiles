@@ -21,7 +21,17 @@ In this chapter you can find multiple extensions of classic geometry file format
 All of these extensions support two major features:
 
 1. Defining the coordinate reference system (CRS) of the used vertices' coordinates
-2. Defining an optional origin, which represents an absolute geo-referenced location and an implicit local Cartesian coordinate frame for the models with a metric unic.
+2. Defining an optional origin, which represents an absolute geo-referenced location and an implicit local Cartesian coordinate frame for the models with a metric unit.
+
+### Additional features
+
+Some proposed file formats support additional features such as:
+- Geographical extent
+- Transformation information (local per object or global for all vertices)
+  - Scaling factor
+  - Translation in meters
+  - Rotation in degrees
+
 
 ### GeoOBJ
 
@@ -88,10 +98,9 @@ urn:ogc:def:crs:OGC:2:84
 2 2 2
 10 50 100
 90 0 0
-8 12 0
 ```
 
-**Note:** The `.off` prefixes are currently not supported in the reader implementation.
+**Note:** The `.off` prefixes are currently not supported in the implementations.
 
 ### GeoPLY
 
@@ -159,7 +168,7 @@ The different named file formats come with a variable amount of features accordi
 | [CityJSON](https://www.cityjson.org/)                                                       | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | Any                                                                                                                                           | Yes              | Yes               | No             | No                         | Yes                 | ++                      |
 | [GeoJSON](https://geojson.org/)                                                             | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | WGS 84                                                                                                                                        | Yes              | No                | No             | No                         | No                  | +                       |
 | [GeoObj](#geoobj)                                                                           | [OBJ](http://fegemo.github.io/cefet-cg/attachments/obj-spec.pdf)                    | Text *                                                                                                   | Any                                                                                                                                           | Yes              | Yes               | Yes            | Yes                        | Yes                 | ~                       |
-| [GeoOFF](#geooff)                                                                           | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)       | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                         | No                  | -                       |
+| [GeoOFF](#geooff)                                                                           | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)       | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                        | Yes                 | -                       |
 | [GeoPly](#geoply)                                                                           | [Ply](http://graphics.stanford.edu/data/3Dscanrep/)                                 | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                        | Yes                 | ~                       |
 | [GeoStl](#geostl)                                                                           | [Stl](https://www.fabbers.com/tech/STL_Format)                                      | Text *                                                                                                   | Any                                                                                                                                           | No               | No                | Yes            | No                         | No                  | --                      |
 | [GML](https://www.ogc.org/standards/gml)                                                    | [XML](https://www.w3.org/XML/)                                                      | Text                                                                                                     | Any                                                                                                                                           | Yes              | No                | No             | No                         | No                  | ++                      |
