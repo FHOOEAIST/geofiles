@@ -23,7 +23,7 @@ All of these extensions support two major features:
 1. Defining the coordinate reference system (CRS) of the used vertices' coordinates
 2. Defining an optional origin, which represents an absolute geo-referenced location and an implicit local Cartesian coordinate frame for the models with a metric unic.
 
-### Geoobj
+### GeoOBJ
 
 The `.geoobj` file format extends the classic `.obj` file format with two line-types:
 
@@ -52,6 +52,8 @@ t 10 -5 4
 r 90 45 10
 ```
 
+Note that: if either a scaling, a translation or a rotation information is stated after a grouping element like object with the prefix `o` or grouping with the prefix `g`, the transformation is not interpreted globally, but locally for the specific group.
+
 Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expressions using the line prefix `e`.
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
 ```
@@ -61,16 +63,37 @@ e -0.5 -0.5 -0.5 0.5 0.5 0.5
 ### GeoOFF
 
 The `.geooff` file format extends the classic `.off` file. 
-For this we introduce a new file header using the `GeoOFF` prefix instead of `OFF`.
-The next non-empty line after this header is used to define the crs as well as the origin in a whitespace-separated style.
+For this we introduce a new file header using `GeoOFF` instead of `OFF`.
+The next non-empty line after this header is used to define the crs.
 
 Example:
 ```
 GeoOFF
-urn:ogc:def:crs:EPSG::4326 48.3028533074941 14.2842865755919 279.307006835938
+urn:ogc:def:crs:EPSG::4326
 ```
 
-### Geoply
+GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF` header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r]`.
+Like this GeoOFF is able to support:
+- An absolute origin using the `o` header postfix symbol
+- Extent information using the `e` header postfix symbol
+- Global scaling information using the `s` header postfix symbol
+- Global translation information using the `t` header postfix symbol
+- Global rotation information using the `r` header postfix symbol
+
+Example: 
+```
+GeoOFFostr
+urn:ogc:def:crs:OGC:2:84
+14.2842798233032 48.30284881591775 279.807006835938
+2 2 2
+10 50 100
+90 0 0
+8 12 0
+```
+
+**Note:** The `.off` prefixes are currently not supported in the reader implementation.
+
+### GeoPLY
 
 The `.geoply` file format extends the classic `.ply` file format with two header-line-types:
 
@@ -89,7 +112,7 @@ end_header
 
 #### Addons
 
-Next to the geo-referencing features, the `.geply` extension also supports exchanging `scale`, `rotation`, as well as `translation` information using the following line prefixes:
+Next to the geo-referencing features, the `.geply` extension also supports exchanging global `scale`, `rotation`, as well as `translation` information using the following line prefixes:
 
 1. `scale` for adding scale information
 2. `translate` for translation information
@@ -136,7 +159,7 @@ The different named file formats come with a variable amount of features accordi
 | [CityJSON](https://www.cityjson.org/)                                                       | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | Any                                                                                                                                           | Yes              | Yes               | No             | No                         | Yes                 | ++                      |
 | [GeoJSON](https://geojson.org/)                                                             | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | WGS 84                                                                                                                                        | Yes              | No                | No             | No                         | No                  | +                       |
 | [GeoObj](#geoobj)                                                                           | [OBJ](http://fegemo.github.io/cefet-cg/attachments/obj-spec.pdf)                    | Text *                                                                                                   | Any                                                                                                                                           | Yes              | Yes               | Yes            | Yes                        | Yes                 | ~                       |
-| [GeoOFF](#geooff)                                                                           | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)       | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | No                         | No                  | -                       |
+| [GeoOFF](#geooff)                                                                           | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)       | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                         | No                  | -                       |
 | [GeoPly](#geoply)                                                                           | [Ply](http://graphics.stanford.edu/data/3Dscanrep/)                                 | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                        | Yes                 | ~                       |
 | [GeoStl](#geostl)                                                                           | [Stl](https://www.fabbers.com/tech/STL_Format)                                      | Text *                                                                                                   | Any                                                                                                                                           | No               | No                | Yes            | No                         | No                  | --                      |
 | [GML](https://www.ogc.org/standards/gml)                                                    | [XML](https://www.w3.org/XML/)                                                      | Text                                                                                                     | Any                                                                                                                                           | Yes              | No                | No             | No                         | No                  | ++                      |

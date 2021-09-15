@@ -1,4 +1,3 @@
-import logging
 from abc import ABC
 from io import TextIOWrapper
 from typing import Any
@@ -32,6 +31,14 @@ class GeoOffWriter(BaseWriter, ABC):
         num_vertices = len(data.vertices)
         faces = []
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "GeoOFF does not support local object transformation information."
+                )
             for face in obj.faces:
                 faces.append(face)
         num_faces = len(faces)
@@ -54,16 +61,37 @@ class GeoOffWriter(BaseWriter, ABC):
                 header += "r"
             self._write_to_file(file, header, write_binary, True)
             self._write_to_file(file, data.crs, write_binary, True)
-            if origin_based:
-                self._write_to_file(file, " ".join([str(f) for f in data.origin]), write_binary, True)
-            if contains_extent:
-                self._write_to_file(file, " ".join([str(f) for f in data.min_extent]) + " ".join([str(f) for f in data.max_extent]), write_binary, True)
-            if contains_scaling:
-                self._write_to_file(file, " ".join([str(f) for f in data.scaling]), write_binary, True)
-            if contains_translation:
-                self._write_to_file(file, " ".join([str(f) for f in data.translation]), write_binary, True)
-            if contains_rotation:
-                self._write_to_file(file, " ".join([str(f) for f in data.rotation]), write_binary, True)
+            if data.origin is not None and origin_based:
+                self._write_to_file(
+                    file, " ".join([str(f) for f in data.origin]), write_binary, True
+                )
+            if (
+                data.min_extent is not None
+                and data.max_extent is not None
+                and contains_extent
+            ):
+                self._write_to_file(
+                    file,
+                    " ".join([str(f) for f in data.min_extent])
+                    + " ".join([str(f) for f in data.max_extent]),
+                    write_binary,
+                    True,
+                )
+            if data.scaling is not None and contains_scaling:
+                self._write_to_file(
+                    file, " ".join([str(f) for f in data.scaling]), write_binary, True
+                )
+            if data.translation is not None and contains_translation:
+                self._write_to_file(
+                    file,
+                    " ".join([str(f) for f in data.translation]),
+                    write_binary,
+                    True,
+                )
+            if data.rotation is not None and contains_rotation:
+                self._write_to_file(
+                    file, " ".join([str(f) for f in data.rotation]), write_binary, True
+                )
         else:
             if origin_based:
                 raise Exception("Origin information not supported in OFF file format")
@@ -72,7 +100,9 @@ class GeoOffWriter(BaseWriter, ABC):
             if contains_scaling:
                 raise Exception("Scaling information not supported in OFF file format")
             if contains_translation:
-                raise Exception("Translation information not supported in OFF file format")
+                raise Exception(
+                    "Translation information not supported in OFF file format"
+                )
             if contains_rotation:
                 raise Exception("Rotation information not supported in OFF file format")
             self._write_to_file(file, "OFF", write_binary, True)

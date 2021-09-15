@@ -48,6 +48,14 @@ class GeoStlWriter(BaseWriter, ABC):
             self._write_to_file(file, f"solid {self.stl_name}", write_binary, True)
 
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "GeoSTL does not support local object transformation information"
+                )
             for face in obj.faces:
                 if len(face.normal_indices) != 0:
                     normal: List[Any] = [0, 0, 0]

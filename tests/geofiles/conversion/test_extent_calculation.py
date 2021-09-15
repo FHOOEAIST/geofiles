@@ -15,8 +15,12 @@ class TestExtentCalculator(BaseTest):
         updated = calculator.update_extent(cube)
 
         # then
-        self.assertEqual(updated.max_extent, [14.2842865755919, 48.3028533074941, 280.307006835938])
-        self.assertEqual(updated.min_extent, [14.2842730710145, 48.3028443243414, 279.307006835938])
+        self.assertEqual(
+            updated.max_extent, [14.2842865755919, 48.3028533074941, 280.307006835938]
+        )
+        self.assertEqual(
+            updated.min_extent, [14.2842730710145, 48.3028443243414, 279.307006835938]
+        )
 
     def test_update_extent2(self) -> None:
         """
@@ -47,8 +51,14 @@ class TestExtentCalculator(BaseTest):
         updated = calculator.update_extent(cube, geospatial_extent=True)
 
         # then
-        self.assertEqual(updated.max_extent, [14.284288077687554, 48.302856204513326, 280.307006835938])
-        self.assertEqual(updated.min_extent, [14.284271568918845, 48.302854323051484, 279.307006835938])
+        self.assertEqual(
+            updated.max_extent,
+            [14.284288077687554, 48.302856204513326, 280.307006835938],
+        )
+        self.assertEqual(
+            updated.min_extent,
+            [14.284271568918845, 48.302854323051484, 279.307006835938],
+        )
 
     def test_update_extent4(self) -> None:
         """
@@ -79,9 +89,15 @@ class TestExtentCalculator(BaseTest):
         calculator = ExtentCalculator()
 
         # when
-        updated = calculator.update_extent(cube, geospatial_extent=True, include_transformation=True)
+        updated = calculator.update_extent(
+            cube, geospatial_extent=True, include_transformation=True
+        )
 
         # then
-        self.assertEqual(updated.max_extent, [14.28411731249151, 48.30275232771007, 270.307006835938])
-        self.assertEqual(updated.min_extent, [14.284095127597515, 48.30273672014227, 269.307006835938])
-
+        self.assertEqual(
+            updated.max_extent, [14.28411731249151, 48.30275232771007, 270.307006835938]
+        )
+        self.assertEqual(
+            updated.min_extent,
+            [14.284095127597515, 48.30273672014227, 269.307006835938],
+        )

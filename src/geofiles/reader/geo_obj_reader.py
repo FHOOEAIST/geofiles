@@ -77,13 +77,25 @@ class GeoObjReader(BaseReader, ABC):
                 res.origin = [float(a) for a in trimmed[3:].split(" ")]
             # check if the current line defines a file scale
             elif trimmed.startswith("sc "):
-                res.scaling = [float(a) for a in trimmed[3:].split(" ")]
+                scale = [float(a) for a in trimmed[3:].split(" ")]
+                if not found_group:
+                    res.scaling = scale
+                else:
+                    current_object.scaling = scale
             # check if the current line defines a file translation
             elif trimmed.startswith("t "):
-                res.translation = [float(a) for a in trimmed[2:].split(" ")]
+                translation = [float(a) for a in trimmed[2:].split(" ")]
+                if not found_group:
+                    res.translation = translation
+                else:
+                    current_object.translation = translation
             # check if the current line defines a file rotation
             elif trimmed.startswith("r "):
-                res.rotation = [float(a) for a in trimmed[2:].split(" ")]
+                rotation = [float(a) for a in trimmed[2:].split(" ")]
+                if not found_group:
+                    res.rotation = rotation
+                else:
+                    current_object.rotation = rotation
             elif trimmed.startswith("e "):
                 extent = [float(a) for a in trimmed[2:].split(" ")]
                 res.min_extent = extent[:3]

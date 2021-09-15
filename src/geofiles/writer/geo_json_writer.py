@@ -40,6 +40,14 @@ class GeoJsonWriter(BaseWriter, ABC):
         features: List[Any] = []
         res["features"] = features
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "GeoJSON does not support local object transformation information"
+                )
             polygon: Dict[Any, Any] = dict()
             polygon["type"] = "MultiPolygon"
             coordinates: List[Any] = []

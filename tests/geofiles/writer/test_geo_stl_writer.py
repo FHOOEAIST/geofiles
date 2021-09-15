@@ -53,7 +53,22 @@ class TestGeoStlWriter(BaseWriterTest):
             self._test_write(data, "cube" + self.get_writer().get_file_type())
 
         # then
-        self.assertTrue("GeoSTL can represent only one object. Minimize the data." in str(context.exception))
+        self.assertTrue(
+            "GeoSTL can represent only one object. Minimize the data."
+            in str(context.exception)
+        )
+
+    def test_write7(self) -> None:
+        data = self.get_cube()
+        data.objects[0].scaling = [5, 5, 5]
+        with self.assertRaises(Exception) as context:
+            self._test_write(data, "cube" + self.get_writer().get_file_type())
+
+        # then
+        self.assertTrue(
+            "GeoSTL does not support local object transformation information"
+            in str(context.exception)
+        )
 
     def test_write_local(self) -> None:
         data = self.get_local_cube()

@@ -78,8 +78,6 @@ Transform {
    ]
 }
 Transform { 
-Transform { 
-Transform { 
    translation 10 50 100
    children [
       USE OBJECT-0

@@ -31,6 +31,14 @@ class GeoPlyWriter(BaseWriter, ABC):
         num_vertices = len(data.vertices)
         faces = []
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "GeoPLY does not support local object transformation information."
+                )
             for face in obj.faces:
                 faces.append(face)
         num_faces = len(faces)

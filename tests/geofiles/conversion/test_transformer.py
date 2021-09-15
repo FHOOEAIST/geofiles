@@ -1,3 +1,5 @@
+import copy
+
 from geofiles.conversion.transformer import Transformer
 from tests.geofiles.base_test import BaseTest
 
@@ -81,3 +83,43 @@ class TestTransformer(BaseTest):
         # then
         for idx, vertex in enumerate(transformed.vertices):
             self.assertEqual(vertex, res[idx])
+
+    def test_transform2(self) -> None:
+        # given
+        cube = self.get_local_cube()
+        cube.crs = "urn:ogc:def:crs:OGC:2:84"
+        cube.origin = [14.2842798233032, 48.30284881591775, 279.807006835938]
+        cube.objects.append(copy.deepcopy(cube.objects[0]))
+        cube.objects[1].translation = [10, 10, 10]
+        transformer = Transformer()
+        cube.scaling = [2, 2, 2]
+
+        result = [
+            [-1.0, -1.0, 1.0],
+            [-1.0, -1.0, -1.0],
+            [-1.0, 1.0, -1.0],
+            [-1.0, 1.0, 1.0],
+            [1.0, -1.0, -1.0],
+            [1.0, 1.0, -1.0],
+            [1.0, -1.0, 1.0],
+            [1.0, 1.0, 1.0],
+            [9.0, 9.0, 11.0],
+            [9.0, 9.0, 9.0],
+            [9.0, 11.0, 9.0],
+            [9.0, 11.0, 11.0],
+            [11.0, 9.0, 9.0],
+            [11.0, 11.0, 9.0],
+            [11.0, 9.0, 11.0],
+            [11.0, 11.0, 11.0],
+        ]
+
+        # when
+        transformed = transformer.transform(cube, True, True, True, True, False)
+
+        # then
+        self.assertEqual(len(transformed.vertices), 16)
+        self.assertEqual(result, transformed.vertices)
+        for idx, elem in enumerate(transformed.objects[0].faces):
+            self.assertNotEqual(elem, transformed.objects[1].faces[idx])
+        self.assertEqual(transformed.min_extent, [-1.0, -1.0, -1.0])
+        self.assertEqual(transformed.max_extent, [11.0, 11.0, 11.0])

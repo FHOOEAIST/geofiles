@@ -1,6 +1,12 @@
 import unittest
+from typing import Any, List
 
-from geofiles.conversion.static import get_epsg_4326, get_lon_lat, get_wgs_84
+from geofiles.conversion.static import (
+    get_epsg_4326,
+    get_lon_lat,
+    get_wgs_84,
+    is_not_none_nor_empty,
+)
 
 
 class TestStatic(unittest.TestCase):
@@ -58,3 +64,33 @@ class TestStatic(unittest.TestCase):
 
         # then
         self.assertTrue("Not supported crs some_crs" in str(context.exception))
+
+    def test_is_not_none_nor_empty(self) -> None:
+        # given
+        test_list = [1, 2]
+
+        # when
+        res = is_not_none_nor_empty(test_list)
+
+        # then
+        self.assertTrue(res)
+
+    def test_is_not_none_nor_empty2(self) -> None:
+        # given
+        test_list: List[Any] = []
+
+        # when
+        res = is_not_none_nor_empty(test_list)
+
+        # then
+        self.assertFalse(res)
+
+    def test_is_not_none_nor_empty3(self) -> None:
+        # given
+        test_list = None
+
+        # when
+        res = is_not_none_nor_empty(test_list)
+
+        # then
+        self.assertFalse(res)

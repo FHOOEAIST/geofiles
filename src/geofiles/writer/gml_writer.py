@@ -45,6 +45,14 @@ class GmlWriter(BaseWriter, ABC):
         attributes["xmlns:gml"] = "http://www.opengis.net/gml/3.2"
         root = ET.Element("root", attributes)
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "GML does not support local object transformation information"
+                )
             solid = ET.Element("gml:Solid")
             solid.attrib = dict()
             solid.attrib["srsName"] = data.crs

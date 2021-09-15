@@ -60,3 +60,17 @@ class TestGmlWriter(BaseWriterTest):
 
         # then
         self.assertTrue("Given data contains scale" in str(context.exception))
+
+    def test_write7(self) -> None:
+        data = self.get_cube()
+        data.objects[0].scaling = [5, 5, 5]
+        with self.assertRaises(Exception) as context:
+            self._test_write(
+                data, "cube" + self.get_writer().get_file_type(), write_binary=True
+            )
+
+        # then
+        self.assertTrue(
+            "GML does not support local object transformation information"
+            in str(context.exception)
+        )

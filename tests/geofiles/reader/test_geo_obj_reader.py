@@ -106,3 +106,20 @@ class TestGeoObjReader(BaseTest):
         self.assertEqual(
             geo_obj_file.max_extent, [0.5009357136907018, 0.4994462914230726, 0.5]
         )
+
+    def test_read6(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_transformed_local.geoobj")
+        reader = GeoObjReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(
+            geo_obj_file.origin,
+            [14.2842798233032, 48.30284881591775, 279.807006835938],
+        )
+        self.assertEqual(geo_obj_file.objects[0].translation, [10, 50, 100])
+        self.assertEqual(geo_obj_file.objects[0].scaling, [2, 2, 2])
+        self.assertEqual(geo_obj_file.objects[0].rotation, [90, 0, 0])

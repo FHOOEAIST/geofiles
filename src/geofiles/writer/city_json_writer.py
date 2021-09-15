@@ -50,6 +50,14 @@ class CityJsonWriter(BaseWriter, ABC):
         objects: Dict[Any, Any] = dict()
         res["CityObjects"] = objects
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "CityJSON does not support local object transformation information"
+                )
             cityobject: Dict[Any, Any] = dict()
             if obj.name == "" or obj.name is None:
                 if random_seed is None:

@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, List, Optional
 
 
 def get_wgs_84() -> str:
@@ -32,7 +32,9 @@ def get_lon_lat(vertex: List[float], coordinate_system: str) -> List[float]:
 
 
 def update_min_max(
-    vertex: List[float], min_extent: List[float], max_extent: List[float]
+    vertex: List[float],
+    min_extent: Optional[List[float]],
+    max_extent: Optional[List[float]],
 ) -> None:
     """
     Update the min and max extent information based on the vertex
@@ -41,6 +43,9 @@ def update_min_max(
     :param max_extent: current max extent
     :return: None
     """
+    if min_extent is None or max_extent is None:
+        return
+
     for idx, elem in enumerate(vertex):
         min_value = min_extent[idx]
         max_value = max_extent[idx]
@@ -48,3 +53,12 @@ def update_min_max(
             min_extent[idx] = elem
         if max_value is None or elem > max_value:
             max_extent[idx] = elem
+
+
+def is_not_none_nor_empty(to_check: Optional[List[Any]]) -> bool:
+    """
+    Checks if the given optional list is neither None nor empty
+    :param to_check: List to be checked
+    :results: true if list is not none and list is not empty
+    """
+    return to_check is not None and len(to_check) > 0

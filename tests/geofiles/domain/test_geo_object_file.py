@@ -139,3 +139,19 @@ class TestGeoObjectFile(BaseTest):
         self.assertEqual(len(cube.objects), 1)
         self.assertEqual(cube.objects[0].name, name)
         self.assertEqual(len(cube.objects[0].faces), 12)
+
+    def test_minimize_3(self) -> None:
+        # given
+        cube = self.get_local_cube()
+        cube.objects += cube.objects
+        cube.objects[0].scaling = [5, 5, 5]
+
+        # when
+        with self.assertRaises(Exception) as context:
+            cube.minimize()
+
+        # then
+        self.assertTrue(
+            "Can not minimize GeoObjectFile containing objects with local transformation."
+            in str(context.exception)
+        )
