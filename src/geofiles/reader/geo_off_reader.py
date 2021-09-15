@@ -16,8 +16,6 @@ class GeoOffReader(BaseReader, ABC):
         res = GeoObjectFile()
         obj = GeoObject()
         res.objects.append(obj)
-        next_line_crs = False
-        next_line_definition = False
         num_of_vertices = 0
         search_for_vertices = False
         cnt = 0
@@ -45,7 +43,7 @@ class GeoOffReader(BaseReader, ABC):
                 if idx >= 0:
                     # found a GeoOFF header, so will look for the crs definition + further options
                     headerdefinition.append("crs")
-                    postfix = trimmed[idx + len("GeoOFF"):]
+                    postfix = trimmed[idx + len("GeoOFF") :]
                     found_headerdefinition = True
                     for e in postfix:
                         headerdefinition.append(e)
@@ -59,7 +57,9 @@ class GeoOffReader(BaseReader, ABC):
                 splits = trimmed.split(" ")
                 if cnt < num_of_vertices:
                     coordinates = [float(a) for a in splits]
-                    res.vertices.append(coordinates[:3]) # we are only interested in the coordinates and not in optional additional information
+                    res.vertices.append(
+                        coordinates[:3]
+                    )  # we are only interested in the coordinates and not in optional additional information
                     cnt += 1
                 else:
                     face = Face()

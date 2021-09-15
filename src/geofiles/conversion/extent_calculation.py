@@ -11,8 +11,12 @@ class ExtentCalculator:
     """
 
     @staticmethod
-    def update_extent(data: GeoObjectFile, include_transformation: bool = False, geospatial_extent: bool = False,
-                      bearing_offset: float = 0.0,) -> GeoObjectFile:
+    def update_extent(
+        data: GeoObjectFile,
+        include_transformation: bool = False,
+        geospatial_extent: bool = False,
+        bearing_offset: float = 0.0,
+    ) -> GeoObjectFile:
         """
         Updates the min and max extent values of this geo-referenced object file, also considering transformation information and origin-based representation
         :param data: Data to be updated
@@ -28,7 +32,9 @@ class ExtentCalculator:
         if include_transformation:
             # transformation requires origin based data, so convert the data to origin based
             if not origin_based:
-                temp = origin_converter.to_origin(copied_data, bearing_offset=bearing_offset)
+                temp = origin_converter.to_origin(
+                    copied_data, bearing_offset=bearing_offset
+                )
             else:
                 temp = copied_data
 
@@ -38,11 +44,13 @@ class ExtentCalculator:
                 copied_data.min_extent = transformed.min_extent
                 copied_data.max_extent = transformed.max_extent
                 return copied_data
-            else:
-                origin = origin_converter.from_origin(transformed, bearing_offset=bearing_offset, update_extent=True)
-                data.min_extent = origin.min_extent
-                data.max_extent = origin.max_extent
-                return data
+
+            origin = origin_converter.from_origin(
+                transformed, bearing_offset=bearing_offset, update_extent=True
+            )
+            data.min_extent = origin.min_extent
+            data.max_extent = origin.max_extent
+            return data
 
         if origin_based and geospatial_extent:  # global origin + global extents
             converted = origin_converter.from_origin(data, bearing_offset, True)

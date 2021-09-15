@@ -4,7 +4,6 @@
 Size comparison using multiple obj base models.
 You can find examples e.g. here: https://github.com/alecjacobson/common-3d-test-models
 """
-import csv
 import logging
 import os
 from os import listdir

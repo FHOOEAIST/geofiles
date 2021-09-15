@@ -41,6 +41,14 @@ class KmlWriter(BaseWriter, ABC):
         root = ET.Element("kml")
         root.attrib["xmlns"] = "http://www.opengis.net/kml/2.2"
         for obj in data.objects:
+            if (
+                obj.contains_scaling()
+                or obj.contains_rotation()
+                or obj.contains_translation()
+            ):
+                raise Exception(
+                    "KML does not support local object transformation information"
+                )
             placemark = ET.Element("Placemark")
             root.append(placemark)
             name = ET.Element("name")

@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from geofiles.conversion.static import update_min_max
+from geofiles.conversion.static import is_not_none_nor_empty, update_min_max
 from geofiles.domain.geo_object import GeoObject
 
 
@@ -14,9 +14,9 @@ class GeoObjectFile:
         Initializes a GeoObjectFile with the following attributes:
         - crs: name (string) of the used coordinate reference system
         - origin: geo-referenced origin (tuple) of the geo objects
-        - translation: tuple containing the local translation of origin-based geo objects
-        - rotation: tuple containing the local rotation of origin-based geo objects
-        - scaling: tuple containing the local scaling of origin-based geo objects
+        - translation: tuple containing the global translation of origin-based geo objects
+        - rotation: tuple containing the global rotation of origin-based geo objects
+        - scaling: tuple containing the global scaling of origin-based geo objects
         - objects: List of all geo-objects within this GeoObjectFile
         - vertices: List of all vertices within this GeoObjectFile
         - normals: List of all normals within this GeoObjectFile
@@ -87,30 +87,27 @@ class GeoObjectFile:
         """
         Checks if this geo-referenced file contains extent information
         """
-        return (
-            self.min_extent is not None
-            and self.max_extent is not None
-            and len(self.min_extent) > 0
-            and len(self.max_extent) > 0
+        return is_not_none_nor_empty(self.min_extent) and is_not_none_nor_empty(
+            self.max_extent
         )
 
     def contains_scaling(self) -> bool:
         """
         Checks if this geo-referenced file contains global scaling information
         """
-        return self.scaling is not None and len(self.scaling) > 0
+        return is_not_none_nor_empty(self.scaling)
 
     def contains_translation(self) -> bool:
         """
         Checks if this geo-referenced file contains global translation information
         """
-        return self.translation is not None and len(self.translation) > 0
+        return is_not_none_nor_empty(self.translation)
 
     def contains_rotation(self) -> bool:
         """
         Checks if this geo-referenced file contains global rotation information
         """
-        return self.rotation is not None and len(self.rotation) > 0
+        return is_not_none_nor_empty(self.rotation)
 
     def update_extent(self) -> None:
         """
@@ -127,7 +124,7 @@ class GeoObjectFile:
             self.min_extent = min_extent
             self.max_extent = max_extent
 
-    def minimize(self, name:Optional[str] = None) -> None:
+    def minimize(self, name: Optional[str] = None) -> None:
         """
         Minimizes this GeoObjectFile to one single object as required for GeoOFF and GeoPLY. Also eliminates duplicated faces
         :param name: Name for the single object, if None the name of the first object is used
@@ -142,6 +139,14 @@ class GeoObjectFile:
 
         face_set = set()
         for old_object in self.objects:
+            if (
+                old_object.contains_translation()
+                or old_object.contains_scaling()
+                or old_object.contains_rotation()
+            ):
+                raise Exception(
+                    "Can not minimize GeoObjectFile containing objects with local transformation."
+                )
             if use_first_elements_name:
                 geoobject.name = old_object.name
                 use_first_elements_name = False

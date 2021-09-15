@@ -56,8 +56,8 @@ class OriginConverter:
 
         new_vertices = []
         geod = Geod(ellps="WGS84")
-        min_extent: List[float] = data.min_extent
-        max_extent: List[float] = data.max_extent
+        min_extent: Optional[List[float]] = data.min_extent
+        max_extent: Optional[List[float]] = data.max_extent
         is_first = True
         for vertex in data.vertices:
             lon0, lat0 = get_lon_lat(vertex, data.crs)
@@ -108,8 +108,8 @@ class OriginConverter:
         origin = [0, 0, 0]
         north_vector = [0, 1]
         if data.vertices:
-            min_extent: List[float] = data.min_extent
-            max_extent: List[float] = data.max_extent
+            min_extent: Optional[List[float]] = data.min_extent
+            max_extent: Optional[List[float]] = data.max_extent
             is_first = True
             for vertex in data.vertices:
                 distance = get_point_distance(origin, vertex)

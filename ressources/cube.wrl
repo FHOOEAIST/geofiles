@@ -7,7 +7,7 @@ EXTERNPROTO GeoCoordinate [
 ] [ "urn:web3d:geovrml:1.0/protos/GeoCoordinate.wrl"
  "file:///C|/Program%20Files/GeoVRML/1.0/protos/GeoCoordinate.wrl"
  "http://www.geovrml.org/1.0/protos/GeoCoordinate.wrl" ]
-Shape {
+DEF OBJECT-0 Shape {
    geometry IndexedFaceSet {
       coord GeoCoordinate {
          geoSystem [ "GDC" ]
