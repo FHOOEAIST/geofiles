@@ -48,7 +48,7 @@ or 48.3028533074941 14.2842865755919 279.307006835938
 
 #### Addons
 
-Next to the geo-referencing features, the `.geoobj` extension also supports exchanging `scale`, `rotation`, as well as `translation` information in the `origin-based` variant using the following line prefixes:
+Next to the geo-referencing features, the `.geoobj` extension also supports exchanging `scale`, `rotation`, as well as `translation` information using the following line prefixes:
 
 1. `sc` for adding scale information (`s` is already defined in `.obj` for smoothing groups)
 2. `t` for translation information
@@ -149,7 +149,7 @@ extent -0.5 -0.5 -0.5 0.5 0.5 0.5
 end_header
 ```
 
-### Geostl
+### GeoSTL
 
 The `.geostl` file format extends the classic `.stl` file using the `geosolid` root element.
 Followed by the `geosolid` prefix of the file format a meta-data tuple is introduced.
@@ -169,8 +169,8 @@ The different named file formats come with a variable amount of features accordi
 | [GeoJSON](https://geojson.org/)                                                             | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | WGS 84                                                                                                                                        | Yes              | No                | No             | No                         | No                  | +                       |
 | [GeoObj](#geoobj)                                                                           | [OBJ](http://fegemo.github.io/cefet-cg/attachments/obj-spec.pdf)                    | Text *                                                                                                   | Any                                                                                                                                           | Yes              | Yes               | Yes            | Yes                        | Yes                 | ~                       |
 | [GeoOFF](#geooff)                                                                           | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)       | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                        | Yes                 | -                       |
-| [GeoPly](#geoply)                                                                           | [Ply](http://graphics.stanford.edu/data/3Dscanrep/)                                 | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                        | Yes                 | ~                       |
-| [GeoStl](#geostl)                                                                           | [Stl](https://www.fabbers.com/tech/STL_Format)                                      | Text *                                                                                                   | Any                                                                                                                                           | No               | No                | Yes            | No                         | No                  | --                      |
+| [GeoPLY](#geoply)                                                                           | [PLY](http://graphics.stanford.edu/data/3Dscanrep/)                                 | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes               | Yes            | Yes                        | Yes                 | ~                       |
+| [GeoSTL](#geostl)                                                                          | [STL](https://www.fabbers.com/tech/STL_Format)                                      | Text *                                                                                                   | Any                                                                                                                                           | No               | No                | Yes            | No                         | No                  | --                      |
 | [GML](https://www.ogc.org/standards/gml)                                                    | [XML](https://www.w3.org/XML/)                                                      | Text                                                                                                     | Any                                                                                                                                           | Yes              | No                | No             | No                         | No                  | ++                      |
 | [KML](https://developers.google.com/kml/documentation/kmlreference)                         | [XML](https://www.w3.org/XML/)                                                      | Text or compressed ([KMZ](https://www.google.com/earth/outreach/learn/packaging-content-in-a-kmz-file/)) | WGS 84                                                                                                                                        | Yes              | No                | No             | No                         | No                  | ++                      |
 | [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf)                      | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec)                                 | Text or Binary                                                                                           | WGS84 / EPSG4326 / UTM                                                                                                                        | Yes              | Yes               | Yes            | Yes                        | Yes                 | +                       |
@@ -260,6 +260,23 @@ origin_based.translation = [5, 10, -5]
 origin_based.rotation = [45, 30, 90]
 transformed = transformer.transform(origin_based)
 
+```
+
+### Determining Geographical Extent
+
+The geographical extent of a file can be determined in two ways:
+1. Only searching for the min and max coordinates of the values (not considering transformation or origin information)
+2. Determining the geographical extent considering all available meta information
+
+Depending on the use case one variant is more suitable than the other. If you are going to ignore transformation information in your application, the additional overhead of the second method is not required, otherwise if you want to know the extents considering this meta information you have to use the `ExtentCalculator` class.
+
+```python
+# 1. Classic geographical extent 
+geoObjFile: GeoObjectFile = ...
+geoObjFile.update_extent()
+
+# 2. Using the ExtentCalculator
+objFileWithExtents = ExtentCalculator.update_extent(geoObjFile, True, True)
 ```
 
 ### Exporting files
