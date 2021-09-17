@@ -300,6 +300,8 @@ writer.write("mygreatfile.geoply", transformed, append_file_type=False)
   - This depends on the use case. If you have to exchange the models with as little overhead as possible we recommend using the proposed `.geoply`, `.geoobj` or `.geooff` format extensions. If you require semantic expressiveness, you should prefer other formats like `CityJson` or `GML`. 
 - How are vertices defined, if I use the origin-based approach of `.geoobj`, `.geoply`, `.geooff` or `.geostl`?
   - In the origin-based version, vertices are represented within a local Cartesian coordinate system with the defined origin as coordinate system origin (0, 0, 0). The units used in this type of coordinate system are assumed to be in **meters**. 
+- How is the transformation information defined?
+  - The proposed transformation information is separated into tuples (one value per axis) for translation, rotation and scale. For the translation, meter based offsets are intended to be used, the rotation is based on degrees and the scale tuple is represented using numeric factors.
 
 ## Contributing
 
