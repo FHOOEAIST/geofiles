@@ -62,7 +62,7 @@ t 10 -5 4
 r 90 45 10
 ```
 
-Note that: if either a scaling, a translation or a rotation information is stated after a grouping element like object with the prefix `o` or grouping with the prefix `g`, the transformation is not interpreted globally, but locally for the specific group.
+Note that: if either a scaling, a translation or a rotation information is stated after an object definition with the prefix `o`, the transformation is not interpreted globally, but locally for the specific object.
 
 Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expressions using the line prefix `e`.
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
