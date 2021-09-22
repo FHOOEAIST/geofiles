@@ -116,8 +116,8 @@ class GeoObjectFile:
         nor any transformation information. For a more advanced functionality use the ExtentCalculator class
         """
         if len(self.vertices) > 0:
-            min_extent = copy.deepcopy(self.vertices[0])
-            max_extent = copy.deepcopy(self.vertices[0])
+            min_extent = list(copy.deepcopy(self.vertices[0]))
+            max_extent = list(copy.deepcopy(self.vertices[0]))
 
             for vertex in self.vertices:
                 update_min_max(vertex, min_extent, max_extent)
