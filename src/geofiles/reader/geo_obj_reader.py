@@ -37,7 +37,7 @@ class GeoObjReader(BaseReader, ABC):
             trimmed = " ".join(trimmed.split())
             # check if current line is a classic vertex
             if trimmed.startswith("v "):
-                coordinates = [float(a) for a in trimmed[2:].split(" ")]
+                coordinates = list([float(a) for a in trimmed[2:].split(" ")])
                 res.vertices.append(coordinates)
             # check if current line is a face defintion
             elif trimmed.startswith("f "):
