@@ -1,3 +1,4 @@
+import copy
 from typing import List, Optional
 
 from geofiles.conversion.static import is_not_none_nor_empty, update_min_max
@@ -115,8 +116,8 @@ class GeoObjectFile:
         nor any transformation information. For a more advanced functionality use the ExtentCalculator class
         """
         if len(self.vertices) > 0:
-            min_extent = self.vertices[0].copy()
-            max_extent = self.vertices[0].copy()
+            min_extent = copy.deepcopy(self.vertices[0])
+            max_extent = copy.deepcopy(self.vertices[0])
 
             for vertex in self.vertices:
                 update_min_max(vertex, min_extent, max_extent)
