@@ -238,6 +238,20 @@ with open(path) as file:
     geoObjFile: GeoObjectFile = reader.read(file)
 ```
 
+Next to file imports, the framework also supports to read geometric objects from strings:
+
+```python
+geoobj = """
+         crs urn:ogc:def:crs:OGC:2:84
+         v 14.2842865755919 48.3028533074941 279.307006835938
+         v 14.2842865755919 48.3028533074941 280.307006835938
+         v 14.2842865755907 48.3028443243414 280.307006835938
+         o cube
+         f 1 2 3
+         """
+geoObjFile: GeoObjectFile = reader.read_string(file)
+```
+
 ### Converting
 
 The present framework supports different conversion methodologies as converting from one to another coordinate reference system.
