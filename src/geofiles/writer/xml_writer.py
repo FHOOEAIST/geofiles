@@ -24,7 +24,9 @@ class XmlWriter(BaseWriter, ABC):
     ) -> str:
         et = self.create_xml(data, random_seed)
         encoding = "ascii" if write_binary else "utf8"
-        return str(ET.tostring(et.getroot(), encoding=encoding, method="xml"))
+        return str(
+            ET.tostring(et.getroot(), encoding=encoding, method="xml").decode(encoding)
+        )
 
     def _write(
         self,

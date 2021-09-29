@@ -1,3 +1,8 @@
+# flake8: noqa
+# pylint: skip-file
+
+import random
+
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.gml_writer import GmlWriter
 from tests.geofiles.writer.base_writer_test import BaseWriterTest
@@ -80,3 +85,18 @@ class TestGmlWriter(BaseWriterTest):
             "GML does not support local object transformation information"
             in str(context.exception)
         )
+
+    def test_write_to_string(self) -> None:
+        # given
+        data = self.get_cube()
+        compare = """<?xml version='1.0' encoding='utf8'?>
+<root xmlns:gml="http://www.opengis.net/gml/3.2"><gml:Solid srsDimension="3" srsName="urn:ogc:def:crs:OGC:2:84"><gml:exterior><gml:CompositeSurface><gml:surfaceMember><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842865755919,48.3028533074941,279.307006835938 14.2842865755919,48.3028533074941,280.307006835938 14.2842865755907,48.3028443243414,280.307006835938 14.2842865755919,48.3028533074941,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842865755919,48.3028533074941,279.307006835938 14.2842865755907,48.3028443243414,280.307006835938 14.2842865755907,48.3028443243414,279.307006835938 14.2842865755919,48.3028533074941,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842865755919,48.3028533074941,280.307006835938 14.2842730710145,48.3028533074941,280.307006835938 14.2842730710157,48.3028443243414,280.307006835938 14.2842865755919,48.3028533074941,280.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842865755919,48.3028533074941,280.307006835938 14.2842730710157,48.3028443243414,280.307006835938 14.2842865755907,48.3028443243414,280.307006835938 14.2842865755919,48.3028533074941,280.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842730710145,48.3028533074941,280.307006835938 14.2842730710145,48.3028533074941,279.307006835938 14.2842730710157,48.3028443243414,279.307006835938 14.2842730710145,48.3028533074941,280.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842730710145,48.3028533074941,280.307006835938 14.2842730710157,48.3028443243414,279.307006835938 14.2842730710157,48.3028443243414,280.307006835938 14.2842730710145,48.3028533074941,280.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842730710145,48.3028533074941,279.307006835938 14.2842865755919,48.3028533074941,279.307006835938 14.2842865755907,48.3028443243414,279.307006835938 14.2842730710145,48.3028533074941,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842730710145,48.3028533074941,279.307006835938 14.2842865755907,48.3028443243414,279.307006835938 14.2842730710157,48.3028443243414,279.307006835938 14.2842730710145,48.3028533074941,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842865755907,48.3028443243414,279.307006835938 14.2842865755907,48.3028443243414,280.307006835938 14.2842730710157,48.3028443243414,280.307006835938 14.2842865755907,48.3028443243414,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842865755907,48.3028443243414,279.307006835938 14.2842730710157,48.3028443243414,280.307006835938 14.2842730710157,48.3028443243414,279.307006835938 14.2842865755907,48.3028443243414,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842730710145,48.3028533074941,279.307006835938 14.2842730710145,48.3028533074941,280.307006835938 14.2842865755919,48.3028533074941,280.307006835938 14.2842730710145,48.3028533074941,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon><gml:Polygon gml:id="bdd640fb-0667-4ad1-9c80-317fa3b1799d"><gml:exterior><gml:LinearRing><gml:posList>14.2842730710145,48.3028533074941,279.307006835938 14.2842865755919,48.3028533074941,280.307006835938 14.2842865755919,48.3028533074941,279.307006835938 14.2842730710145,48.3028533074941,279.307006835938</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:CompositeSurface></gml:exterior></gml:Solid></root>"""
+        rd = random.Random()
+        rd.seed(42)
+        # when
+        string_rep = self.get_writer().write_to_string(
+            data, write_binary=False, random_seed=rd.getrandbits(128)
+        )
+
+        # then
+        self.assertEqual(string_rep, compare.strip())
