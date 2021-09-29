@@ -1,25 +1,22 @@
-import json
 from abc import ABC
-from io import TextIOWrapper
 from typing import Any, Dict, List
 
 from geofiles.conversion.static import get_wgs_84
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
+from geofiles.writer.json_writer import JsonWriter
 
 
-class GeoJsonWriter(BaseWriter, ABC):
+class GeoJsonWriter(JsonWriter, BaseWriter, ABC):
     """
     Writer implementation for creating GeoJSON geometry files
     """
 
-    def _write(
+    def create_json(
         self,
-        file: TextIOWrapper,
         data: GeoObjectFile,
-        write_binary: bool,
         random_seed: Any,
-    ) -> None:
+    ) -> Dict[Any, Any]:
         """
         Write implementation
         :param file: target to be written
@@ -61,7 +58,7 @@ class GeoJsonWriter(BaseWriter, ABC):
                 coordinates.append([f])
             features.append(polygon)
 
-        json.dump(res, file)
+        return res
 
     def get_file_type(self) -> str:
         """

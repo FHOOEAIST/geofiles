@@ -1,25 +1,19 @@
 import xml.etree.ElementTree as ET
 from abc import ABC
-from io import TextIOWrapper
 from typing import Any
 
 from geofiles.conversion.static import get_wgs_84
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
+from geofiles.writer.xml_writer import XmlWriter
 
 
-class KmlWriter(BaseWriter, ABC):
+class KmlWriter(XmlWriter, BaseWriter, ABC):
     """
     Writer implementation for creating KML geometry files
     """
 
-    def _write(
-        self,
-        file: TextIOWrapper,
-        data: GeoObjectFile,
-        write_binary: bool,
-        random_seed: Any,
-    ) -> None:
+    def create_xml(self, data: GeoObjectFile, random_seed: Any) -> ET.ElementTree:
         """
         Write implementation
         :param file: target to be written
@@ -28,9 +22,6 @@ class KmlWriter(BaseWriter, ABC):
         :return:
         """
         self._contains_transformation_information(data)
-
-        if "b" not in file.mode.lower():
-            raise Exception("File must be opened in binary mode for KML")
 
         if data.crs != get_wgs_84():
             raise Exception("Kml requires WGS:84 coordinate system")
@@ -80,8 +71,7 @@ class KmlWriter(BaseWriter, ABC):
                 for coord in coords:
                     coordinates.text += str(coord) + " "
 
-        tree = ET.ElementTree(root)
-        tree.write(file, encoding="ascii", xml_declaration=True)
+        return ET.ElementTree(root)
 
     def get_file_type(self) -> str:
         """
