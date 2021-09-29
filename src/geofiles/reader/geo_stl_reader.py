@@ -1,6 +1,5 @@
 from abc import ABC
-from io import TextIOWrapper
-from typing import Any, Dict
+from typing import Any, Dict, Iterable
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -13,7 +12,7 @@ class GeoStlReader(BaseReader, ABC):
     Reader implementaiton for geo-referenced .stl files (.geostl)
     """
 
-    def _read(self, file: TextIOWrapper) -> GeoObjectFile:
+    def _read(self, file: Iterable[str]) -> GeoObjectFile:
 
         res = GeoObjectFile()
         obj = GeoObject()
@@ -21,15 +20,10 @@ class GeoStlReader(BaseReader, ABC):
         vertices: Dict[Any, Any] = dict()
         cnt = 1
         current_face: Face
-        while True:
-            # Get next line from file
-            line = file.readline()
-
-            # if line is empty
-            # end of file is reached
-            if not line:
-                break
+        for line in file:
             trimmed = line.strip()
+            if not trimmed:
+                continue
             trimmed = " ".join(trimmed.split())
             is_geo_solid = trimmed.startswith("geosolid")
             if is_geo_solid or trimmed.startswith("solid"):
