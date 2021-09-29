@@ -1,25 +1,22 @@
-import json
 import uuid
 from abc import ABC
-from io import TextIOWrapper
 from typing import Any, Dict, List
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
+from geofiles.writer.json_writer import JsonWriter
 
 
-class CityJsonWriter(BaseWriter, ABC):
+class CityJsonWriter(JsonWriter, BaseWriter, ABC):
     """
     Writer implementation for creating GeoJSON geometry files
     """
 
-    def _write(
+    def create_json(
         self,
-        file: TextIOWrapper,
         data: GeoObjectFile,
-        write_binary: bool,
         random_seed: Any,
-    ) -> None:
+    ) -> Dict[Any, Any]:
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
 
@@ -86,7 +83,7 @@ class CityJsonWriter(BaseWriter, ABC):
                 boundaries.append([boundary])
         res["vertices"] = data.vertices
 
-        json.dump(res, file)
+        return res
 
     def get_file_type(self) -> str:
         """

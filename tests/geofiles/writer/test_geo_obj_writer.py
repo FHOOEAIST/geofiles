@@ -54,3 +54,36 @@ class TestGeoObjWriter(BaseWriterTest):
     def test_write_local(self) -> None:
         data = self.get_local_cube()
         self._test_write(data, "cube.obj")
+
+    def test_write_to_string(self) -> None:
+        # given
+        data = self.get_cube()
+        compare = """
+crs urn:ogc:def:crs:OGC:2:84
+v 14.2842865755919 48.3028533074941 279.307006835938
+v 14.2842865755919 48.3028533074941 280.307006835938
+v 14.2842865755907 48.3028443243414 280.307006835938
+v 14.2842865755907 48.3028443243414 279.307006835938
+v 14.2842730710145 48.3028533074941 280.307006835938
+v 14.2842730710157 48.3028443243414 280.307006835938
+v 14.2842730710145 48.3028533074941 279.307006835938
+v 14.2842730710157 48.3028443243414 279.307006835938
+o cube
+f 1 2 3
+f 1 3 4
+f 2 5 6
+f 2 6 3
+f 5 7 8
+f 5 8 6
+f 7 1 4
+f 7 4 8
+f 4 3 6
+f 4 6 8
+f 7 5 2
+f 7 2 1"""
+
+        # when
+        string_rep = self.get_writer().write_to_string(data)
+
+        # then
+        self.assertEqual(string_rep.strip(), compare.strip())

@@ -1,7 +1,7 @@
 import math
 from abc import ABC, abstractmethod
-from io import TextIOWrapper
-from typing import Any
+from io import StringIO, TextIOWrapper
+from typing import Any, Union
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 
@@ -59,7 +59,7 @@ class BaseWriter(ABC):
     @abstractmethod
     def _write(
         self,
-        file: TextIOWrapper,
+        file: Union[TextIOWrapper, StringIO],
         data: GeoObjectFile,
         write_binary: bool,
         random_seed: Any,
@@ -81,6 +81,21 @@ class BaseWriter(ABC):
         """
         return ""
 
+    def write_to_string(
+        self, data: GeoObjectFile, write_binary: bool = False, random_seed: Any = None
+    ) -> str:
+        """
+        Write to string implementation
+        :param data: content to be written
+        :param write_binary: flag if file should be written in binary style (only used if file-parameter is a path)
+        :param random_seed: may be used by the writer for e.g. IDs
+        :return:
+        """
+        to_write = StringIO("")
+        self._write(to_write, data, write_binary, random_seed)
+        to_write.seek(0)
+        return "".join(to_write.readlines())
+
     def supports_origin_base(self) -> bool:  # pylint: disable=R0201
         """
         :return: true if file format supports origin based representation
@@ -89,7 +104,7 @@ class BaseWriter(ABC):
 
     def _write_to_file(
         self,
-        file: TextIOWrapper,
+        file: Union[TextIOWrapper, StringIO],
         data: Any,
         write_binary: bool,
         append_new_line: bool = False,

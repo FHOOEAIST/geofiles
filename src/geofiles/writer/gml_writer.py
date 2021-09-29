@@ -1,25 +1,19 @@
 import uuid
 import xml.etree.ElementTree as ET
 from abc import ABC
-from io import TextIOWrapper
 from typing import Any
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
+from geofiles.writer.xml_writer import XmlWriter
 
 
-class GmlWriter(BaseWriter, ABC):
+class GmlWriter(XmlWriter, BaseWriter, ABC):
     """
     Writer implementation for creating GML geometry files
     """
 
-    def _write(
-        self,
-        file: TextIOWrapper,
-        data: GeoObjectFile,
-        write_binary: bool,
-        random_seed: Any,
-    ) -> None:
+    def create_xml(self, data: GeoObjectFile, random_seed: Any) -> ET.ElementTree:
         """
         Write implementation
         :param file: target to be written
@@ -31,9 +25,6 @@ class GmlWriter(BaseWriter, ABC):
             raise Exception("Geo-referenced data must not be origin based")
 
         self._contains_transformation_information(data)
-
-        if "b" not in file.mode.lower():
-            raise Exception("File must be opened in binary mode for GML")
 
         if data.crs is None:
             raise Exception("File must be geo-referenced")
@@ -89,8 +80,7 @@ class GmlWriter(BaseWriter, ABC):
                 vertex = [str(a) for a in data.get_vertex(face.indices[0])]
                 coordinates.text += ",".join(vertex)
 
-        tree = ET.ElementTree(root)
-        tree.write(file, encoding="ascii", xml_declaration=True)
+        return ET.ElementTree(root)
 
     def get_file_type(self) -> str:
         """

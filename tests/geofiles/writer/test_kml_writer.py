@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.kml_writer import KmlWriter
 from tests.geofiles.writer.base_writer_test import BaseWriterTest
@@ -19,9 +21,7 @@ class TestKmlWriter(BaseWriterTest):
             self._test_write(data, "cube" + self.get_writer().get_file_type())
 
         # then
-        self.assertTrue(
-            "File must be opened in binary mode for KML" in str(context.exception)
-        )
+        self.assertTrue("File must be opened in binary mode" in str(context.exception))
 
     def test_write3(self) -> None:
         data = self.get_cube()
