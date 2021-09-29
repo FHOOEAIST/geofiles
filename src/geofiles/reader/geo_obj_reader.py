@@ -1,5 +1,5 @@
 from abc import ABC
-from io import TextIOWrapper
+from typing import Iterable
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -12,7 +12,7 @@ class GeoObjReader(BaseReader, ABC):
     Reader implementaiton for geo-referenced .obj files
     """
 
-    def _read(self, file: TextIOWrapper) -> GeoObjectFile:
+    def _read(self, file: Iterable[str]) -> GeoObjectFile:
         """
         Reads a given .geoobj file
         :param file: to be read (may be a string representing the path or an opened file instance)
@@ -25,15 +25,10 @@ class GeoObjReader(BaseReader, ABC):
         found_group = False
         filled_group = False
 
-        while True:
-            # Get next line from file
-            line = file.readline()
-
-            # if line is empty
-            # end of file is reached
-            if not line:
-                break
+        for line in file:
             trimmed = line.strip()
+            if not trimmed:
+                continue
             trimmed = " ".join(trimmed.split())
             # check if current line is a classic vertex
             if trimmed.startswith("v "):

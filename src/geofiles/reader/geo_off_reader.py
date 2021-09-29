@@ -1,5 +1,5 @@
 from abc import ABC
-from io import TextIOWrapper
+from typing import Iterable
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -12,7 +12,7 @@ class GeoOffReader(BaseReader, ABC):
     Reader implementaiton for geo-referenced .off files (.geooff)
     """
 
-    def _read(self, file: TextIOWrapper) -> GeoObjectFile:
+    def _read(self, file: Iterable[str]) -> GeoObjectFile:
         res = GeoObjectFile()
         obj = GeoObject()
         res.objects.append(obj)
@@ -23,19 +23,11 @@ class GeoOffReader(BaseReader, ABC):
         headerdefinition = []
         found_headerdefinition = False
 
-        while True:
-            # Get next line from file
-            line = file.readline()
-
-            # if line is empty
-            # end of file is reached
-            if not line:
-                break
+        for line in file:
             trimmed = line.strip()
-            trimmed = " ".join(trimmed.split())
-
-            if len(trimmed) == 0:
+            if not trimmed:
                 continue
+            trimmed = " ".join(trimmed.split())
 
             if not found_headerdefinition:
                 # We have not found a header definition yet, so search for a GeoOFF or OFF header

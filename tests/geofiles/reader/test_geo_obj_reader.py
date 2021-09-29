@@ -123,3 +123,81 @@ class TestGeoObjReader(BaseTest):
         self.assertEqual(geo_obj_file.objects[0].translation, [10, 50, 100])
         self.assertEqual(geo_obj_file.objects[0].scaling, [2, 2, 2])
         self.assertEqual(geo_obj_file.objects[0].rotation, [90, 0, 0])
+
+    def test_read_string(self) -> None:
+        # given
+        input_str = """
+            crs urn:ogc:def:crs:OGC:2:84
+            v 14.2842865755919 48.3028533074941 279.307006835938
+            v 14.2842865755919 48.3028533074941 280.307006835938
+            v 14.2842865755907 48.3028443243414 280.307006835938
+            v 14.2842865755907 48.3028443243414 279.307006835938
+            v 14.2842730710145 48.3028533074941 280.307006835938
+            v 14.2842730710157 48.3028443243414 280.307006835938
+            v 14.2842730710145 48.3028533074941 279.307006835938
+            v 14.2842730710157 48.3028443243414 279.307006835938
+            o cube
+            f 1 2 3
+            f 1 3 4
+            f 2 5 6
+            f 2 6 3
+            f 5 7 8
+            f 5 8 6
+            f 7 1 4
+            f 7 4 8
+            f 4 3 6
+            f 4 6 8
+            f 7 5 2
+            f 7 2 1
+            """
+        reader = GeoObjReader()
+
+        # when
+        geo_obj_file = reader.read_string(input_str)
+
+        # then
+        self.assertTrue(geo_obj_file.is_geo_referenced())
+        self.assertFalse(geo_obj_file.is_origin_based())
+        self.assertEqual(len(geo_obj_file.objects), 1)
+        self.assertEqual(geo_obj_file.objects[0].name, "cube")
+        self.assertEqual(len(geo_obj_file.objects[0].faces), 12)
+        self.assertEqual(len(geo_obj_file.vertices), 8)
+
+    def test_read_strings(self) -> None:
+        # given
+        input_str = """
+            crs urn:ogc:def:crs:OGC:2:84
+            v 14.2842865755919 48.3028533074941 279.307006835938
+            v 14.2842865755919 48.3028533074941 280.307006835938
+            v 14.2842865755907 48.3028443243414 280.307006835938
+            v 14.2842865755907 48.3028443243414 279.307006835938
+            v 14.2842730710145 48.3028533074941 280.307006835938
+            v 14.2842730710157 48.3028443243414 280.307006835938
+            v 14.2842730710145 48.3028533074941 279.307006835938
+            v 14.2842730710157 48.3028443243414 279.307006835938
+            o cube
+            f 1 2 3
+            f 1 3 4
+            f 2 5 6
+            f 2 6 3
+            f 5 7 8
+            f 5 8 6
+            f 7 1 4
+            f 7 4 8
+            f 4 3 6
+            f 4 6 8
+            f 7 5 2
+            f 7 2 1
+            """
+        reader = GeoObjReader()
+
+        # when
+        geo_obj_file = reader.read_strings(input_str.split("\n"))
+
+        # then
+        self.assertTrue(geo_obj_file.is_geo_referenced())
+        self.assertFalse(geo_obj_file.is_origin_based())
+        self.assertEqual(len(geo_obj_file.objects), 1)
+        self.assertEqual(geo_obj_file.objects[0].name, "cube")
+        self.assertEqual(len(geo_obj_file.objects[0].faces), 12)
+        self.assertEqual(len(geo_obj_file.vertices), 8)

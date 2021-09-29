@@ -1,5 +1,5 @@
 from abc import ABC
-from io import TextIOWrapper
+from typing import Iterable
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -12,22 +12,18 @@ class GeoPlyReader(BaseReader, ABC):
     Reader implementaiton for geo-referenced .ply files (.geoply)
     """
 
-    def _read(self, file: TextIOWrapper) -> GeoObjectFile:
+    def _read(self, file: Iterable[str]) -> GeoObjectFile:
         res = GeoObjectFile()
         obj = GeoObject()
         res.objects.append(obj)
         num_of_vertices = 0
         search_for_vertices = False
         cnt = 0
-        while True:
-            # Get next line from file
-            line = file.readline()
 
-            # if line is empty
-            # end of file is reached
-            if not line:
-                break
+        for line in file:
             trimmed = line.strip()
+            if not trimmed:
+                continue
             trimmed = " ".join(trimmed.split())
             if not search_for_vertices:
                 if trimmed.startswith("crs"):
