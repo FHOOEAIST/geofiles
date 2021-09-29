@@ -1,4 +1,6 @@
+# flake8: noqa
 # pylint: skip-file
+import random
 
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.kml_writer import KmlWriter
@@ -82,3 +84,66 @@ class TestKmlWriter(BaseWriterTest):
             "KML does not support local object transformation information"
             in str(context.exception)
         )
+
+    def test_write_to_string(self) -> None:
+        # given
+        data = self.get_cube()
+        compare = """<?xml version='1.0' encoding='utf8'?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Placemark><name>cube</name><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842865755919 48.3028533074941 279.307006835938 
+14.2842865755919 48.3028533074941 280.307006835938 
+14.2842865755907 48.3028443243414 280.307006835938 
+14.2842865755919 48.3028533074941 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842865755919 48.3028533074941 279.307006835938 
+14.2842865755907 48.3028443243414 280.307006835938 
+14.2842865755907 48.3028443243414 279.307006835938 
+14.2842865755919 48.3028533074941 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842865755919 48.3028533074941 280.307006835938 
+14.2842730710145 48.3028533074941 280.307006835938 
+14.2842730710157 48.3028443243414 280.307006835938 
+14.2842865755919 48.3028533074941 280.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842865755919 48.3028533074941 280.307006835938 
+14.2842730710157 48.3028443243414 280.307006835938 
+14.2842865755907 48.3028443243414 280.307006835938 
+14.2842865755919 48.3028533074941 280.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842730710145 48.3028533074941 280.307006835938 
+14.2842730710145 48.3028533074941 279.307006835938 
+14.2842730710157 48.3028443243414 279.307006835938 
+14.2842730710145 48.3028533074941 280.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842730710145 48.3028533074941 280.307006835938 
+14.2842730710157 48.3028443243414 279.307006835938 
+14.2842730710157 48.3028443243414 280.307006835938 
+14.2842730710145 48.3028533074941 280.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842730710145 48.3028533074941 279.307006835938 
+14.2842865755919 48.3028533074941 279.307006835938 
+14.2842865755907 48.3028443243414 279.307006835938 
+14.2842730710145 48.3028533074941 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842730710145 48.3028533074941 279.307006835938 
+14.2842865755907 48.3028443243414 279.307006835938 
+14.2842730710157 48.3028443243414 279.307006835938 
+14.2842730710145 48.3028533074941 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842865755907 48.3028443243414 279.307006835938 
+14.2842865755907 48.3028443243414 280.307006835938 
+14.2842730710157 48.3028443243414 280.307006835938 
+14.2842865755907 48.3028443243414 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842865755907 48.3028443243414 279.307006835938 
+14.2842730710157 48.3028443243414 280.307006835938 
+14.2842730710157 48.3028443243414 279.307006835938 
+14.2842865755907 48.3028443243414 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842730710145 48.3028533074941 279.307006835938 
+14.2842730710145 48.3028533074941 280.307006835938 
+14.2842865755919 48.3028533074941 280.307006835938 
+14.2842730710145 48.3028533074941 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><extrude>0</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>
+14.2842730710145 48.3028533074941 279.307006835938 
+14.2842865755919 48.3028533074941 280.307006835938 
+14.2842865755919 48.3028533074941 279.307006835938 
+14.2842730710145 48.3028533074941 279.307006835938 </coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark></kml>"""
+        rd = random.Random()
+        rd.seed(42)
+        # when
+        string_rep = self.get_writer().write_to_string(
+            data, write_binary=False, random_seed=rd.getrandbits(128)
+        )
+
+        # then
+        self.assertEqual(string_rep, compare.strip())

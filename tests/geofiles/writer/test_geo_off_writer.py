@@ -56,3 +56,36 @@ class TestGeoOffWriter(BaseWriterTest):
     def test_write_local(self) -> None:
         data = self.get_local_cube()
         self._test_write(data, "cube.off")
+
+    def test_write_to_string(self) -> None:
+        # given
+        data = self.get_cube()
+        compare = """GeoOFF
+urn:ogc:def:crs:OGC:2:84
+8 12 0
+14.2842865755919 48.3028533074941 279.307006835938
+14.2842865755919 48.3028533074941 280.307006835938
+14.2842865755907 48.3028443243414 280.307006835938
+14.2842865755907 48.3028443243414 279.307006835938
+14.2842730710145 48.3028533074941 280.307006835938
+14.2842730710157 48.3028443243414 280.307006835938
+14.2842730710145 48.3028533074941 279.307006835938
+14.2842730710157 48.3028443243414 279.307006835938
+3 0 1 2
+3 0 2 3
+3 1 4 5
+3 1 5 2
+3 4 6 7
+3 4 7 5
+3 6 0 3
+3 6 3 7
+3 3 2 5
+3 3 5 7
+3 6 4 1
+3 6 1 0"""
+
+        # when
+        string_rep = self.get_writer().write_to_string(data)
+
+        # then
+        self.assertEqual(string_rep.strip(), compare.strip())
