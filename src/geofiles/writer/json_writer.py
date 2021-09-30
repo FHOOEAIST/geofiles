@@ -13,7 +13,7 @@ class JsonWriter(BaseWriter, ABC):
     """
 
     @abstractmethod
-    def create_json(self, data: GeoObjectFile, random_seed: Any) -> Dict[Any, Any]:
+    def create_json(self, data: GeoObjectFile, random_seed: Any = None) -> Dict[Any, Any]:
         """
         Creates a json representation of the given GeoObjectFile
         """

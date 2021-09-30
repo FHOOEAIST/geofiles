@@ -13,7 +13,7 @@ class XmlWriter(BaseWriter, ABC):
     """
 
     @abstractmethod
-    def create_xml(self, data: GeoObjectFile, random_seed: Any) -> ET.ElementTree:
+    def create_xml(self, data: GeoObjectFile, random_seed: Any = None) -> ET.ElementTree:
         """
         Creates a json representation of the given GeoObjectFile
         """

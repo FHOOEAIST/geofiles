@@ -306,6 +306,23 @@ writer = GeoPlyWriter()
 writer.write("mygreatfile.geoply", transformed, append_file_type=False)
 ```
 
+Alternativley, the writers can also be used to create file format specific outputs like JSON (for GeoJSON, CityJSON, ...), XML (for GML, KML) or just string ouput:
+
+```python
+writer = GeoPlyWriter()
+string_output = writer.write_to_string(transformed)
+```
+
+```python
+writer = GeoJsonWriter()
+json_output = writer.create_json(transformed)
+```
+
+```python
+writer = GmlWriter()
+xml_output = writer.create_xml(transformed)
+```
+
 ## FAQ
 
 - Why yet another 3D geometry file format like `.geoobj`?
