@@ -62,7 +62,7 @@ class BaseReader(ABC):
     @staticmethod
     def _split_str(string: str, sep: str = "\n") -> Generator[str, None, None]:
         """
-        Lazy function (generator) to read a string line by line seperated by the given sep symbol
+        Lazy function (generator) to read a string line by line separated by the given sep symbol
         :param string: to be read
         """
         # warning: does not yet work if sep is a lookahead like `(?=b)`
