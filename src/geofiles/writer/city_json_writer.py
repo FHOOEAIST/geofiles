@@ -15,7 +15,7 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
     def create_json(
         self,
         data: GeoObjectFile,
-        random_seed: Any,
+        random_seed: Any = None,
     ) -> Dict[Any, Any]:
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")

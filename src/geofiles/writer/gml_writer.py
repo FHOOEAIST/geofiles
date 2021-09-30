@@ -13,14 +13,9 @@ class GmlWriter(XmlWriter, BaseWriter, ABC):
     Writer implementation for creating GML geometry files
     """
 
-    def create_xml(self, data: GeoObjectFile, random_seed: Any) -> ET.ElementTree:
-        """
-        Write implementation
-        :param file: target to be written
-        :param data: content to be written
-        :param write_binary: flag if file is a binary file
-        :return:
-        """
+    def create_xml(
+        self, data: GeoObjectFile, random_seed: Any = None
+    ) -> ET.ElementTree:
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
 
