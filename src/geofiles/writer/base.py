@@ -89,7 +89,7 @@ class BaseWriter(ABC):
         :param data: content to be written
         :param write_binary: flag if file should be written in binary style (only used if file-parameter is a path)
         :param random_seed: may be used by the writer for e.g. IDs
-        :return:
+        :return: string representation of the given data
         """
         to_write = StringIO("")
         self._write(to_write, data, write_binary, random_seed)
