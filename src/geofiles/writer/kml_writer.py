@@ -13,14 +13,9 @@ class KmlWriter(XmlWriter, BaseWriter, ABC):
     Writer implementation for creating KML geometry files
     """
 
-    def create_xml(self, data: GeoObjectFile, random_seed: Any) -> ET.ElementTree:
-        """
-        Write implementation
-        :param file: target to be written
-        :param data: content to be written
-        :param write_binary: flag if file is a binary file
-        :return:
-        """
+    def create_xml(
+        self, data: GeoObjectFile, random_seed: Any = None
+    ) -> ET.ElementTree:
         self._contains_transformation_information(data)
 
         if data.crs != get_wgs_84():

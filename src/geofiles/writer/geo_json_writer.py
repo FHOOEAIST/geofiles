@@ -15,15 +15,8 @@ class GeoJsonWriter(JsonWriter, BaseWriter, ABC):
     def create_json(
         self,
         data: GeoObjectFile,
-        random_seed: Any,
+        random_seed: Any = None,
     ) -> Dict[Any, Any]:
-        """
-        Write implementation
-        :param file: target to be written
-        :param data: content to be written
-        :param write_binary: flag if file is a binary file
-        :return:
-        """
         if data.crs != get_wgs_84():
             raise Exception("GeoJSON (RFC 7946) requires WGS:84 coordinate system")
 

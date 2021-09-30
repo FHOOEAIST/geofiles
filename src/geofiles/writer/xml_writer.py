@@ -13,9 +13,13 @@ class XmlWriter(BaseWriter, ABC):
     """
 
     @abstractmethod
-    def create_xml(self, data: GeoObjectFile, random_seed: Any = None) -> ET.ElementTree:
+    def create_xml(
+        self, data: GeoObjectFile, random_seed: Any = None
+    ) -> ET.ElementTree:
         """
         Creates a xml representation of the given GeoObjectFile
+        :param data: to be written to xml
+        :param random_seed: used for id generation
         """
         return ET.ElementTree()
 
