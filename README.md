@@ -306,7 +306,7 @@ writer = GeoPlyWriter()
 writer.write("mygreatfile.geoply", transformed, append_file_type=False)
 ```
 
-Alternativley, the writers can also be used to create file format specific outputs like JSON (for GeoJSON, CityJSON, ...), XML (for GML, KML) or just string ouput:
+Alternatively, the writers can also be used to create file format specific output like JSON (for GeoJSON, CityJSON, ...), XML (for GML, KML, ...) or just string:
 
 ```python
 writer = GeoPlyWriter()
