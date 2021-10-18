@@ -1,29 +1,27 @@
 import json
 from abc import ABC
-from typing import Iterable, List, Any
+from typing import Iterable, List, Any, Dict
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
+from geofiles.reader.json_reader import JsonReader
 
 
-class CityJsonReader(BaseReader, ABC):
+class CityJsonReader(JsonReader, BaseReader, ABC):
     """
     Reader implementation for CityJSON files
     Note: That there will be semantic loss if reading a CityJSON file (object classes, etc.)
     """
 
-    def _read(self, file: Iterable[str]) -> GeoObjectFile:
-       json_file = "\n".join(file)
-       loaded: dict = json.loads(json_file)
-
+    def _read_json(self, json_dict: Dict[Any, Any]) -> GeoObjectFile:
        result = GeoObjectFile()
 
-       if not loaded.get("metadata"):
+       if not json_dict.get("metadata"):
            raise Exception("No metadata defined (at least reference system is required)")
 
-       metadata = loaded["metadata"]
+       metadata = json_dict["metadata"]
 
        if metadata.get("referenceSystem"):
            result.crs = metadata.get("referenceSystem")
@@ -35,13 +33,13 @@ class CityJsonReader(BaseReader, ABC):
            result.min_extent = extents[:3]
            result.max_extent = extents[3:]
 
-       if loaded.get("vertices"):
-           result.vertices = loaded["vertices"]
+       if json_dict.get("vertices"):
+           result.vertices = json_dict["vertices"]
        else:
            raise Exception("Undefined vertices in input file.")
 
-       if loaded.get("CityObjects"):
-            city_objects = loaded["CityObjects"]
+       if json_dict.get("CityObjects"):
+            city_objects = json_dict["CityObjects"]
             for city_object_name, city_object in city_objects.items():
                 geo_object = GeoObject()
                 result.objects.append(geo_object)
