@@ -53,11 +53,13 @@ class TestGeoJsonReader(BaseTest):
             j = json.load(json_file)
             j["type"] = "test"
             reader = GeoJsonReader()
-            cube = self.get_cube()
 
             # when
             with self.assertRaises(Exception) as context:
-                geo_obj_file = reader.read_string(json.dumps(j))
+                reader.read_string(json.dumps(j))
 
             # then
-            self.assertTrue("Only GeoJSONs with type FeatureCollection are supported" in str(context.exception))
+            self.assertTrue(
+                "Only GeoJSONs with type FeatureCollection are supported"
+                in str(context.exception)
+            )

@@ -15,10 +15,10 @@ class XmlReader(BaseReader, ABC):
         xml_file = "".join(file)
         tree = ET.fromstring(xml_file)
 
-        return self._read_xml(tree)
+        return self.read_xml(tree)
 
     @abstractmethod
-    def _read_xml(self, xml: ET.Element) -> GeoObjectFile:
+    def read_xml(self, xml: ET.Element) -> GeoObjectFile:
         """
         Read implementation for xml based files
         :param xml: parsed element tree representation
@@ -28,22 +28,23 @@ class XmlReader(BaseReader, ABC):
 
     def remove_namespaces(self, el: ET.Element) -> None:
         """
-            Recursively search this element tree, removing namespaces.
-            Source: https://stackoverflow.com/a/32552776
-            :param el: Element for which namespace should be removed
-            :return: None
+        Recursively search this element tree, removing namespaces.
+        Source: https://stackoverflow.com/a/32552776
+        :param el: Element for which namespace should be removed
+        :return: None
         """
         if el.tag.startswith("{"):
-            el.tag = el.tag.split('}', 1)[1]  # strip namespace
+            el.tag = el.tag.split("}", 1)[1]  # strip namespace
         for k in el.attrib.keys():
             if k.startswith("{"):
-                k2 = k.split('}', 1)[1]
+                k2 = k.split("}", 1)[1]
                 el.attrib[k2] = el.attrib[k]
                 del el.attrib[k]
         for child in el:
             self.remove_namespaces(child)
 
-    def _get_attribute(self, xml: ET.Element, attribute_name: str) -> Optional[str]:
+    @staticmethod
+    def _get_attribute(xml: ET.Element, attribute_name: str) -> Optional[str]:
         """
         Get an attribute by name ignoring the namespace
         :param xml: element containing the attribute

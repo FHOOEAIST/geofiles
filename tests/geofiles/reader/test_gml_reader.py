@@ -1,6 +1,7 @@
+import xml.etree.ElementTree as ET
+
 from geofiles.reader.gml_reader import GmlReader
 from tests.geofiles.base_test import BaseTest
-import xml.etree.ElementTree as ET
 
 
 class TestGmlReader(BaseTest):
@@ -60,7 +61,10 @@ class TestGmlReader(BaseTest):
 
         # when
         with self.assertRaises(Exception) as context:
-            geo_obj_file = reader._read_xml(root)
+            reader.read_xml(root)
 
         # then
-        self.assertTrue("Found non uniform CRS definition in Solid elements. Currently not supported in this implementation." in str(context.exception))
+        self.assertTrue(
+            "Found non uniform CRS definition in Solid elements. Currently not supported in this implementation."
+            in str(context.exception)
+        )

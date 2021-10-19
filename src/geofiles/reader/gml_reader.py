@@ -1,6 +1,6 @@
-from abc import ABC
 import xml.etree.ElementTree as ET
-from typing import List, Any, Dict
+from abc import ABC
+from typing import Any, Dict, List
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -21,7 +21,7 @@ class GmlReader(XmlReader, BaseReader, ABC):
         """
         self.unique_vertices = False
 
-    def _read_xml(self, xml: ET.Element) -> GeoObjectFile:
+    def read_xml(self, xml: ET.Element) -> GeoObjectFile:
         result = GeoObjectFile()
         self.remove_namespaces(xml)
 
@@ -35,7 +35,9 @@ class GmlReader(XmlReader, BaseReader, ABC):
             result.crs = self._get_attribute(first_solid, "srsName")
             for solid in solids:
                 if self._get_attribute(solid, "srsName") != result.crs:
-                    raise Exception("Found non uniform CRS definition in Solid elements. Currently not supported in this implementation.")
+                    raise Exception(
+                        "Found non uniform CRS definition in Solid elements. Currently not supported in this implementation."
+                    )
                 geo_object = GeoObject()
 
                 polygons = solid.findall(".//Polygon")
@@ -44,11 +46,18 @@ class GmlReader(XmlReader, BaseReader, ABC):
                     poslists = polygon.findall(".//exterior/LinearRing/posList")
                     face_object = Face()
                     for poslist in poslists:
-                        splits = poslist.text.split(" ")
-                        splits.pop()
-                        for split in splits:
-                            coordinate = [float(a) for a in split.split(",")]
-                            self._filter_faces(self.unique_vertices, coordinate, face_object, vertex_list, vertex_indices)
+                        if poslist is not None and poslist.text is not None:
+                            splits = poslist.text.split(" ")
+                            splits.pop()
+                            for split in splits:
+                                coordinate = [float(a) for a in split.split(",")]
+                                self._filter_faces(
+                                    self.unique_vertices,
+                                    coordinate,
+                                    face_object,
+                                    vertex_list,
+                                    vertex_indices,
+                                )
                     geo_object.faces.append(face_object)
                 result.objects.append(geo_object)
 
