@@ -228,8 +228,8 @@ pip install geofiles
 
 ### Importing files
 
-The present project supports multiple reader implementations for importing (geo-referenced) geometry files (`.obj`, `.geoobj`,  `.ply`, `.geoply`, `.off`, `.geooff`, `.stl`, `.geostl`).
-Using one of these readers is the entrypoint to the framework and allows to create an in-memory geometry model using the `GeoObjectFile` class. Note that only a subset of the features of the named files are currently supported. So reading files with non-supported features may result in a loss of information (e.g. smoothing groups in `.obj`, or exact property definitions of `.ply`)
+The present project supports multiple reader implementations for importing (geo-referenced) geometry files (`.obj`, `.geoobj`,  `.ply`, `.geoply`, `.off`, `.geooff`, `.stl`, `.geostl`, `CityJSON`, `GeoJSON`, `KML`, `GML`).
+Using one of these readers is the entrypoint to the framework and allows to create an in-memory geometry model using the `GeoObjectFile` class. Note that only a subset of the features of the named files are currently supported. So reading files with non-supported features may result in a loss of information (e.g. smoothing groups in `.obj`, exact property definitions of `.ply` or classes of CityObjects in `CityJSON`, etc.)
 
 ```python
 reader = GeoObjReader()
@@ -297,10 +297,9 @@ objFileWithExtents = ExtentCalculator.update_extent(geoObjFile, True, True)
 
 Finally, the in-memory model representations can be re-written to your hard drive using one of the writer implementations. 
 Note:
-1. That you can find more writers than readers in this project for evaluation purposes. The additional writers only use a minimal subset of the specific file format's features as base for comparison and are not complete. 
-2. That some file formats presuppose a specific CRS (e.g. `.kml` requires vertices in `Wgs84` representation)
-3. Most file formats do not support transformation (scale, rotation, translation) meta-information. A model's vertices have to be transformed first before exported to such a file format.
-4. The writers will automatically append the specific file type (unless you set `append_file_type` to `False`)
+1. That some file formats presuppose a specific CRS (e.g. `.kml` requires vertices in `Wgs84` representation)
+2. Most file formats do not support transformation (scale, rotation, translation) meta-information. A model's vertices have to be transformed first before exported to such a file format.
+3. The writers will automatically append the specific file type (unless you set `append_file_type` to `False`)
 ```python
 writer = GeoPlyWriter()
 writer.write("mygreatfile.geoply", transformed, append_file_type=False)
