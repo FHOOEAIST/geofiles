@@ -23,6 +23,9 @@ class TestGeoJsonReader(BaseTest):
         self.assertEqual(len(geo_obj_file.vertices), 8)
         self.assertEqual(geo_obj_file.crs, "urn:ogc:def:crs:OGC:2:84")
 
+        for vertex in geo_obj_file.vertices:
+            self.assertTrue(vertex in cube.vertices)
+
     def test_read2(self) -> None:
         # given
         file = self.get_ressource_file("cube.geo.json")
@@ -39,6 +42,9 @@ class TestGeoJsonReader(BaseTest):
         self.assertEqual(len(geo_obj_file.objects[0].faces), 12)
         self.assertEqual(len(geo_obj_file.vertices), 36)
         self.assertEqual(geo_obj_file.crs, "urn:ogc:def:crs:OGC:2:84")
+
+        for vertex in geo_obj_file.vertices:
+            self.assertTrue(vertex in cube.vertices)
 
     def test_read3(self) -> None:
         # given
