@@ -1,6 +1,6 @@
 from abc import ABC
 import xml.etree.ElementTree as ET
-from typing import Optional, List, Any, Dict
+from typing import List, Any, Dict
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -8,10 +8,11 @@ from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
 from geofiles.reader.xml_reader import XmlReader
 
+
 class GmlReader(XmlReader, BaseReader, ABC):
     """
-    Reader implementation for GeoJSON files
-    Note: That only certain FeatureCollection GeoJSONs with Polygons or MultiPolygons are supported
+    Reader implementation for GML files
+    Note: That only Solids containing Polygons are supported. Additionally, only the Exterior Linearrings are considered.
     """
 
     def __init__(self):
@@ -33,7 +34,7 @@ class GmlReader(XmlReader, BaseReader, ABC):
             first_solid = solids[0]
             result.crs = self._get_attribute(first_solid, "srsName")
             for solid in solids:
-                if self._get_attribute(first_solid, "srsName") != result.crs:
+                if self._get_attribute(solid, "srsName") != result.crs:
                     raise Exception("Found non uniform CRS definition in Solid elements. Currently not supported in this implementation.")
                 geo_object = GeoObject()
 

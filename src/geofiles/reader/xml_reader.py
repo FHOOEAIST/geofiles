@@ -43,7 +43,6 @@ class XmlReader(BaseReader, ABC):
         for child in el:
             self.remove_namespaces(child)
 
-
     def _get_attribute(self, xml: ET.Element, attribute_name: str) -> Optional[str]:
         """
         Get an attribute by name ignoring the namespace

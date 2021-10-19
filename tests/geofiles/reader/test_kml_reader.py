@@ -1,13 +1,12 @@
-from geofiles.reader.gml_reader import GmlReader
+from geofiles.reader.kml_reader import KmlReader
 from tests.geofiles.base_test import BaseTest
-import xml.etree.ElementTree as ET
 
 
-class TestGmlReader(BaseTest):
+class TestKmlReader(BaseTest):
     def test_read(self) -> None:
         # given
-        file = self.get_ressource_file("cube.gml")
-        reader = GmlReader()
+        file = self.get_ressource_file("cube.kml")
+        reader = KmlReader()
         reader.unique_vertices = True
         cube = self.get_cube()
 
@@ -27,8 +26,8 @@ class TestGmlReader(BaseTest):
 
     def test_read2(self) -> None:
         # given
-        file = self.get_ressource_file("cube.gml")
-        reader = GmlReader()
+        file = self.get_ressource_file("cube.kml")
+        reader = KmlReader()
         cube = self.get_cube()
 
         # when
@@ -44,23 +43,3 @@ class TestGmlReader(BaseTest):
 
         for vertex in geo_obj_file.vertices:
             self.assertTrue(vertex in cube.vertices)
-
-    def test_read3(self) -> None:
-        # given
-        file = self.get_ressource_file("cube.gml")
-        tree = ET.parse(file)
-        root = tree.getroot()
-        solid = ET.Element("Solid")
-        solid.attrib = dict()
-        solid.attrib["srsName"] = "something"
-        solid.attrib["srsDimension"] = "3"
-        root.append(solid)
-
-        reader = GmlReader()
-
-        # when
-        with self.assertRaises(Exception) as context:
-            geo_obj_file = reader._read_xml(root)
-
-        # then
-        self.assertTrue("Found non uniform CRS definition in Solid elements. Currently not supported in this implementation." in str(context.exception))
