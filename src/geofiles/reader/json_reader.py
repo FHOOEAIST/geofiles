@@ -1,14 +1,16 @@
 import json
-import re
 from abc import ABC, abstractmethod
-from io import TextIOWrapper
-from typing import Any, Generator, Iterable, List, Dict
+from typing import Any, Iterable, Dict
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
 
 
 class JsonReader(BaseReader, ABC):
+    """
+    Base class for reading json-based files
+    """
+
     def _read(self, file: Iterable[str]) -> GeoObjectFile:
         json_file = "\n".join(file)
         loaded: dict = json.loads(json_file)

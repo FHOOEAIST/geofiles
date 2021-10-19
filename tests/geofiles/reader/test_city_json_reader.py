@@ -72,7 +72,6 @@ class TestCityJsonReader(BaseTest):
             j = json.load(json_file)
             del j["metadata"]
             reader = CityJsonReader()
-            cube = self.get_cube()
 
             # when
             with self.assertRaises(Exception) as context:
@@ -90,7 +89,6 @@ class TestCityJsonReader(BaseTest):
             metadata["yo"] = "test"
             del metadata["referenceSystem"]
             reader = CityJsonReader()
-            cube = self.get_cube()
 
             # when
             with self.assertRaises(Exception) as context:
@@ -106,7 +104,6 @@ class TestCityJsonReader(BaseTest):
             j = json.load(json_file)
             del j["vertices"]
             reader = CityJsonReader()
-            cube = self.get_cube()
 
             # when
             with self.assertRaises(Exception) as context:
@@ -122,7 +119,6 @@ class TestCityJsonReader(BaseTest):
             j = json.load(json_file)
             del j["CityObjects"]
             reader = CityJsonReader()
-            cube = self.get_cube()
 
             # when
             with self.assertRaises(Exception) as context:

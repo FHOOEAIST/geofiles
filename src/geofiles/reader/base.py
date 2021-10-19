@@ -1,8 +1,9 @@
 import re
 from abc import ABC, abstractmethod
 from io import TextIOWrapper
-from typing import Any, Generator, Iterable, List
+from typing import Any, Generator, Iterable, List, Dict
 
+from geofiles.domain.face import Face
 from geofiles.domain.geo_object_file import GeoObjectFile
 
 
@@ -80,3 +81,27 @@ class BaseReader(ABC):
         :return: Domain representation of the GeoObjectFile
         """
         return GeoObjectFile()
+
+
+    def _filter_faces(self, unique_vertices: bool, coordinate: List[Any], face_object: Face,
+                      vertex_list: List[List[Any]], vertex_indices: Dict[str, int]) -> None:
+        """
+        Implementation for filtering non_unique vertices
+        :param unique_vertices: Flag if vertices should be filtered
+        :param coordinate: Current coordinate
+        :param face_object: Current face
+        :param vertex_list: List of all resulting vertices
+        :param vertex_indices: Dictionary mapping already known vertices (in str representation) with their idx in the list
+        :return: None
+        """
+        if unique_vertices:
+            str_rep = "-".join([str(a) for a in coordinate])
+            if not vertex_indices.get(str_rep):
+                vertex_indices[str_rep] = len(vertex_list) + 1
+                vertex_list.append(coordinate)
+
+            vertex_index = vertex_indices[str_rep]
+            face_object.indices.append(vertex_index + 1)
+        else:
+            face_object.indices.append(len(vertex_list))
+            vertex_list.append(coordinate)
