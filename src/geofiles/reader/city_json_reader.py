@@ -1,6 +1,5 @@
-import json
 from abc import ABC
-from typing import Iterable, List, Any, Dict
+from typing import Any, Dict, List
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
@@ -15,30 +14,32 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
     Note: That there will be semantic loss if reading a CityJSON file (object classes, etc.)
     """
 
-    def _read_json(self, json_dict: Dict[Any, Any]) -> GeoObjectFile:
-       result = GeoObjectFile()
+    def read_json(self, json_dict: Dict[Any, Any]) -> GeoObjectFile:
+        result = GeoObjectFile()
 
-       if not json_dict.get("metadata"):
-           raise Exception("No metadata defined (at least reference system is required)")
+        if not json_dict.get("metadata"):
+            raise Exception(
+                "No metadata defined (at least reference system is required)"
+            )
 
-       metadata = json_dict["metadata"]
+        metadata = json_dict["metadata"]
 
-       if metadata.get("referenceSystem"):
-           result.crs = metadata.get("referenceSystem")
-       else:
-           raise Exception("Unknown reference system in input file.")
+        if metadata.get("referenceSystem"):
+            result.crs = metadata.get("referenceSystem")
+        else:
+            raise Exception("Unknown reference system in input file.")
 
-       if metadata.get("geographicalExtent"):
-           extents = metadata["geographicalExtent"]
-           result.min_extent = extents[:3]
-           result.max_extent = extents[3:]
+        if metadata.get("geographicalExtent"):
+            extents = metadata["geographicalExtent"]
+            result.min_extent = extents[:3]
+            result.max_extent = extents[3:]
 
-       if json_dict.get("vertices"):
-           result.vertices = json_dict["vertices"]
-       else:
-           raise Exception("Undefined vertices in input file.")
+        if json_dict.get("vertices"):
+            result.vertices = json_dict["vertices"]
+        else:
+            raise Exception("Undefined vertices in input file.")
 
-       if json_dict.get("CityObjects"):
+        if json_dict.get("CityObjects"):
             city_objects = json_dict["CityObjects"]
             for city_object_name, city_object in city_objects.items():
                 geo_object = GeoObject()
@@ -49,25 +50,29 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
                     for geometry_object in geometry:
                         boundaries = geometry_object.get("boundaries")
                         if boundaries:
-                            faces = []
+                            faces: List[Face] = []
                             self.get_values_of_most_inner_array(boundaries, faces)
                             geo_object.faces = faces
-       else:
-           raise Exception("No city objects defined")
+        else:
+            raise Exception("No city objects defined")
 
-       return result
+        return result
 
-    def get_values_of_most_inner_array(self, input: List[Any], res: List[Any]) -> None:
+    def get_values_of_most_inner_array(
+        self, input_list: List[Any], res: List[Any]
+    ) -> None:
         """
         iterates the given list and fills the res list with the most inner values
+        :param input_list: to be iterated
+        :param res: Result list containing the most inner list elements
         """
-        if len(input) > 0:
-            elem = input[0]
+        if len(input_list) > 0:
+            elem = input_list[0]
             if isinstance(elem, list):
-                for element in input:
+                for element in input_list:
                     self.get_values_of_most_inner_array(element, res)
             else:
                 face = Face()
-                for e in input:
+                for e in input_list:
                     face.indices.append(e + 1)
                 res.append(face)

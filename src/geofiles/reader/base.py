@@ -1,7 +1,7 @@
 import re
 from abc import ABC, abstractmethod
 from io import TextIOWrapper
-from typing import Any, Generator, Iterable, List, Dict
+from typing import Any, Dict, Generator, Iterable, List
 
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -82,9 +82,14 @@ class BaseReader(ABC):
         """
         return GeoObjectFile()
 
-
-    def _filter_faces(self, unique_vertices: bool, coordinate: List[Any], face_object: Face,
-                      vertex_list: List[List[Any]], vertex_indices: Dict[str, int]) -> None:
+    @staticmethod
+    def _filter_faces(
+        unique_vertices: bool,
+        coordinate: List[Any],
+        face_object: Face,
+        vertex_list: List[List[Any]],
+        vertex_indices: Dict[str, int],
+    ) -> None:
         """
         Implementation for filtering non_unique vertices
         :param unique_vertices: Flag if vertices should be filtered

@@ -1,6 +1,6 @@
-from abc import ABC
 import xml.etree.ElementTree as ET
-from typing import List, Any, Dict
+from abc import ABC
+from typing import Any, Dict, List
 
 from geofiles.conversion.static import get_wgs_84
 from geofiles.domain.face import Face
@@ -22,7 +22,7 @@ class KmlReader(XmlReader, BaseReader, ABC):
         """
         self.unique_vertices = False
 
-    def _read_xml(self, xml: ET.Element) -> GeoObjectFile:
+    def read_xml(self, xml: ET.Element) -> GeoObjectFile:
         result = GeoObjectFile()
         result.crs = get_wgs_84()
 
@@ -34,18 +34,28 @@ class KmlReader(XmlReader, BaseReader, ABC):
             geo_object = GeoObject()
             result.objects.append(geo_object)
             names = placemark.findall(".//name")
-            if len(names) == 1:
+            if len(names) == 1 and names[0].text:
                 geo_object.name = names[0].text
             polygons = placemark.findall(".//Polygon")
             for polygon in polygons:
-                coordinates = polygon.findall("./outerBoundaryIs/LinearRing/coordinates")
-                if len(coordinates) == 1:
+                coordinates = polygon.findall(
+                    "./outerBoundaryIs/LinearRing/coordinates"
+                )
+                if len(coordinates) == 1 and coordinates[0].text:
                     face_object = Face()
                     splitted_coordinates = coordinates[0].text.split("\n")
                     splitted_coordinates.pop()
                     for splitted_coordinate in [a for a in splitted_coordinates if a]:
-                        splitted = [float(a) for a in splitted_coordinate.split(" ") if a]
-                        self._filter_faces(self.unique_vertices, splitted, face_object, vertex_list, vertex_indices)
+                        splitted = [
+                            float(a) for a in splitted_coordinate.split(" ") if a
+                        ]
+                        self._filter_faces(
+                            self.unique_vertices,
+                            splitted,
+                            face_object,
+                            vertex_list,
+                            vertex_indices,
+                        )
                     geo_object.faces.append(face_object)
 
         result.vertices = vertex_list

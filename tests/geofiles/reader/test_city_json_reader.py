@@ -75,10 +75,13 @@ class TestCityJsonReader(BaseTest):
 
             # when
             with self.assertRaises(Exception) as context:
-                geo_obj_file = reader.read_string(json.dumps(j))
+                reader.read_string(json.dumps(j))
 
             # then
-            self.assertTrue("No metadata defined (at least reference system is required)" in str(context.exception))
+            self.assertTrue(
+                "No metadata defined (at least reference system is required)"
+                in str(context.exception)
+            )
 
     def test_read_string3(self) -> None:
         # given
@@ -92,10 +95,12 @@ class TestCityJsonReader(BaseTest):
 
             # when
             with self.assertRaises(Exception) as context:
-                geo_obj_file = reader.read_string(json.dumps(j))
+                reader.read_string(json.dumps(j))
 
             # then
-            self.assertTrue("Unknown reference system in input file." in str(context.exception))
+            self.assertTrue(
+                "Unknown reference system in input file." in str(context.exception)
+            )
 
     def test_read_string4(self) -> None:
         # given
@@ -107,10 +112,12 @@ class TestCityJsonReader(BaseTest):
 
             # when
             with self.assertRaises(Exception) as context:
-                geo_obj_file = reader.read_string(json.dumps(j))
+                reader.read_string(json.dumps(j))
 
             # then
-            self.assertTrue("Undefined vertices in input file." in str(context.exception))
+            self.assertTrue(
+                "Undefined vertices in input file." in str(context.exception)
+            )
 
     def test_read_string5(self) -> None:
         # given
@@ -122,7 +129,7 @@ class TestCityJsonReader(BaseTest):
 
             # when
             with self.assertRaises(Exception) as context:
-                geo_obj_file = reader.read_string(json.dumps(j))
+                reader.read_string(json.dumps(j))
 
             # then
             self.assertTrue("No city objects defined" in str(context.exception))
