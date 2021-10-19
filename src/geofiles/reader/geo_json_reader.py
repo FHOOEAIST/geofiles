@@ -52,18 +52,7 @@ class GeoJsonReader(JsonReader, BaseReader, ABC):
                     face_object = Face()
                     geo_object.faces.append(face_object)
                     for idx, coordinate in enumerate(face):
-                        if self.unique_vertices:
-                            str_rep = "-".join([str(a) for a in coordinate])
-                            if not vertex_indices.get(str_rep):
-                                vertex_indices[str_rep] = len(vertex_list) + 1
-                                vertex_list.append(coordinate)
-
-                            vertex_index = vertex_indices[str_rep]
-                            face_object.indices.append(vertex_index+1)
-                        else:
-                            face_object.indices.append(len(vertex_list))
-                            vertex_list.append(coordinate)
-
+                        self._filter_faces(self.unique_vertices, coordinate, face_object, vertex_list, vertex_indices)
         result.vertices = vertex_list
         return result
 
