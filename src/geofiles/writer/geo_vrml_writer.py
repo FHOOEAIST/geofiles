@@ -1,7 +1,7 @@
 import math
 from abc import ABC
 from io import TextIOWrapper
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 from geofiles.conversion.calculation import convert_obj_index
 from geofiles.conversion.static import get_wgs_84
