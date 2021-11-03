@@ -1,7 +1,7 @@
 import math
 from abc import ABC
 from io import TextIOWrapper
-from typing import Any, List
+from typing import Any, List, Dict
 
 from geofiles.conversion.calculation import convert_obj_index
 from geofiles.conversion.static import get_wgs_84
@@ -109,7 +109,7 @@ class GeoVrmlWriter(BaseWriter, ABC):
 
         for obj in data.objects:
             local_vertices: List[Any] = []
-            vertex_mapping = dict()
+            vertex_mapping: Dict[int, int] = dict()
             for face in obj.faces:
                 for idx in face.indices:
                     if vertex_mapping.get(idx) is None:
