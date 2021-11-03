@@ -112,7 +112,7 @@ class GeoVrmlWriter(BaseWriter, ABC):
             vertex_mapping = dict()
             for face in obj.faces:
                 for idx in face.indices:
-                    if vertex_mapping.get(idx) == None:
+                    if vertex_mapping.get(idx) is None:
                         vertex_mapping[idx] = len(local_vertices)
                         local_vertices.append(data.get_vertex(idx))
 
