@@ -112,8 +112,9 @@ class GeoVrmlWriter(BaseWriter, ABC):
             vertex_mapping = dict()
             for face in obj.faces:
                 for idx in face.indices:
-                    vertex_mapping[idx] = len(local_vertices)
-                    local_vertices.append(data.get_vertex(idx))
+                    if vertex_mapping.get(idx) == None:
+                        vertex_mapping[idx] = len(local_vertices)
+                        local_vertices.append(data.get_vertex(idx))
 
             self._write_to_file(
                 file, f"DEF OBJECT-{i} Shape " + "{", write_binary, True
