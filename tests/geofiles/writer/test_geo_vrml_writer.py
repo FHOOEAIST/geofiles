@@ -84,5 +84,4 @@ DEF OBJECT-0 Shape {
         string_rep = self.get_writer().write_to_string(data)
 
         # then
-        print(string_rep.strip())
         self.assertEqual(string_rep.strip(), compare.strip())
