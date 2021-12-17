@@ -48,7 +48,7 @@ class TestGeoJsonReader(BaseTest):
 
     def test_read3(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         with open(file) as json_file:
             j = json.load(json_file)
             j["type"] = "test"

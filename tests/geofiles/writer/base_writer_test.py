@@ -1,7 +1,7 @@
 import os
 import random
 from collections import Counter, OrderedDict
-from typing import Any
+from typing import Any, Optional
 
 from geofiles.writer.base import BaseWriter
 from tests.geofiles.base_test import BaseTest
@@ -23,15 +23,20 @@ class BaseWriterTest(BaseTest):
         data: Any,
         ref_file_name: str,
         write_binary: bool = False,
+        writer_to_use: Optional[BaseWriter] = None,
     ) -> None:
         """
         Test implementation
         :param ref_file_name: name of the reference file for comparison
         :param data: data to be written
+        :param writer_to_use: Writer to be used (if None self.get_writer() is used)
         :return: None
         """
         # given
-        writer: BaseWriter = self.get_writer()
+        if writer_to_use is None:
+            writer: BaseWriter = self.get_writer()
+        else:
+            writer = writer_to_use
         file = BaseTest.get_test_file(writer)
         ref = self.get_ressource_file(ref_file_name)
 

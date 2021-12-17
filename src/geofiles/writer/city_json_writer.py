@@ -1,5 +1,6 @@
 import uuid
 from abc import ABC
+from enum import Enum
 from typing import Any, Dict, List
 
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -7,10 +8,25 @@ from geofiles.writer.base import BaseWriter
 from geofiles.writer.json_writer import JsonWriter
 
 
+class CityJsonVersion(Enum):
+    """
+    Enum defining the CityJSON version
+    """
+
+    V1_0 = 0  # V 1.0
+    V1_1 = 1  # V 1.1
+
+
 class CityJsonWriter(JsonWriter, BaseWriter, ABC):
     """
     Writer implementation for creating GeoJSON geometry files
     """
+
+    def __init__(self, version: CityJsonVersion = CityJsonVersion.V1_1):
+        """
+        :param version: The CityJSON version to be used
+        """
+        self.version = version
 
     def create_json(
         self,
@@ -20,18 +36,51 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
         if data.is_origin_based():
             raise Exception("Geo-referenced data must not be origin based")
 
-        self._contains_transformation_information(data)
+        if data.contains_rotation():
+            raise Exception("CityJSON does not support rotational information")
 
         num_vertices = len(data.vertices)
 
         res: Dict[Any, Any] = dict()
         res["type"] = "CityJSON"
-        res["version"] = "1.0"
+
+        if self.version == CityJsonVersion.V1_1:
+            res["version"] = "1.1"
+        else:
+            res["version"] = "1.0"
+
         metadata: Dict[Any, Any] = dict()
         add_metadata = False
         if data.crs is not None:
             add_metadata = True
             metadata["referenceSystem"] = data.crs
+
+        transform = dict()
+        set_scale = False
+        if data.contains_scaling():
+            scale = data.scaling
+            set_scale = True
+        elif self.version == CityJsonVersion.V1_1:
+            # scale is mandatory in CityJSON 1.1
+            scale = [1, 1, 1]
+            set_scale = True
+
+        set_translate = False
+        if data.contains_translation():
+            translate = data.translation
+            set_translate = True
+        elif self.version == CityJsonVersion.V1_1:
+            # translation is mandatory in CityJSON 1.1
+            translate = [0, 0, 0]
+            set_translate = True
+
+        if set_scale:
+            transform["scale"] = scale
+        if set_translate:
+            transform["translate"] = translate
+
+        if len(transform) != 0:
+            res["transform"] = transform
 
         if (
             data.min_extent is not None
