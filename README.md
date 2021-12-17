@@ -213,10 +213,7 @@ You can find the used obj files [here](https://github.com/alecjacobson/common-3d
 | xyzrgb_dragon  | 125066   | 9283.49  | 13455.47 | 59107.69 | 12234.45 | 9283.57       | 11990.17 | 9039.29       | 11990.32 | 9039.44       | 58735.04 | 41041.19      | 55643.19 | 37949.77       | 92555.01 | 94019.69  |
 **Note:** Sizes are in KiloByte (KB)
 
-**Note 2:** Some results are below the baseline. There are different reasons for this:
-- **GeoOFF** and **GeoPLY** are for example smaller compared to the input OBJ file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands of lines.
-- In some examples (e.g. horse.obj) the size difference can be lead back to the number of decimal places. While the input file uses 17 decimal places for local coordinates, our framework uses a maximum of 13 decimal places for geo-referenced coordinates.
-
+**Note 2:** Some results are below the baseline. GeoOFF and GeoPLY are for example smaller compared to the input OBJ file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands of lines.
 
 ## Getting started
 
