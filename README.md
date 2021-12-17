@@ -211,6 +211,7 @@ You can find the used obj files [here](https://github.com/alecjacobson/common-3d
 | teapot         | 3644     | 202.44   | 341.20   | 1489.62  | 309.19   | 202.52        | 302.07   | 195.40        | 302.22   | 195.55        | 1481.45  | 937.85        | 1377.37  | 834.21         | 2335.36  | 2372.23   |
 | woody          | 694      | 36.33    | 63.44    | 297.24   | 56.92    | 36.42         | 55.56    | 35.06         | 55.71    | 35.22         | 295.92   | 186.12        | 272.54   | 163.17         | 466.95   | 474.21    |
 | xyzrgb_dragon  | 125066   | 9283.49  | 13455.47 | 59107.69 | 12234.45 | 9283.57       | 11990.17 | 9039.29       | 11990.32 | 9039.44       | 58735.04 | 41041.19      | 55643.19 | 37949.77       | 92555.01 | 94019.69  |
+
 **Note:** Sizes are in KiloByte (KB)
 
 **Note 2:** Some results are below the baseline. GeoOFF and GeoPLY are for example smaller compared to the input OBJ file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands of lines.
