@@ -66,6 +66,14 @@ if __name__ == "__main__":
             for f in o.faces:
                 f.texture_coordinates = []
                 f.normal_indices = []
+        new_vertices = []
+        # normalize the vertices to 13 decimal places
+        for vertex in input_file.vertices:
+            new_vertex = []
+            for c in vertex:
+                new_vertex.append(round(c, 13))
+            new_vertices.append(new_vertex)
+        input_file.vertices = new_vertices
         input_file.texture_coordinates = []
         input_file.normals = []
         number_of_vertices[file] = len(input_file.vertices)
