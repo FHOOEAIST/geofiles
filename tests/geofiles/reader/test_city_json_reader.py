@@ -7,7 +7,7 @@ from tests.geofiles.base_test import BaseTest
 class TestCityJsonReader(BaseTest):
     def test_read(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         reader = CityJsonReader()
         cube = self.get_cube()
 
@@ -36,7 +36,7 @@ class TestCityJsonReader(BaseTest):
 
     def test_read_string(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         with open(file) as json_file:
             j = json.load(json_file)
             reader = CityJsonReader()
@@ -67,7 +67,7 @@ class TestCityJsonReader(BaseTest):
 
     def test_read_string2(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         with open(file) as json_file:
             j = json.load(json_file)
             del j["metadata"]
@@ -85,7 +85,7 @@ class TestCityJsonReader(BaseTest):
 
     def test_read_string3(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         with open(file) as json_file:
             j = json.load(json_file)
             metadata = j["metadata"]
@@ -104,7 +104,7 @@ class TestCityJsonReader(BaseTest):
 
     def test_read_string4(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         with open(file) as json_file:
             j = json.load(json_file)
             del j["vertices"]
@@ -121,7 +121,7 @@ class TestCityJsonReader(BaseTest):
 
     def test_read_string5(self) -> None:
         # given
-        file = self.get_ressource_file("cube.city.json")
+        file = self.get_ressource_file("cube1-0.city.json")
         with open(file) as json_file:
             j = json.load(json_file)
             del j["CityObjects"]
