@@ -51,7 +51,7 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
         if data.contains_scaling():
             scale = data.scaling
             set_scale = True
-        elif self.version == CityJsonVersion.V1_1:
+        elif self.version != CityJsonVersion.V1_0:
             # scale is mandatory in CityJSON 1.1
             scale = [1, 1, 1]
             set_scale = True
@@ -60,7 +60,7 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
         if data.contains_translation():
             translate = data.translation
             set_translate = True
-        elif self.version == CityJsonVersion.V1_1:
+        elif self.version != CityJsonVersion.V1_0:
             # translation is mandatory in CityJSON 1.1
             translate = [0, 0, 0]
             set_translate = True
