@@ -216,6 +216,8 @@ You can find the used obj files [here](https://github.com/alecjacobson/common-3d
 
 **Note 2:** Some results are below the baseline. GeoOFF and GeoPLY are for example smaller compared to the input OBJ file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands of lines.
 
+An interactive visualization of the size comparison can be found [here](https://fhooeaist.github.io/geofiles/).
+
 ## Getting started
 
 To set up and use the project have a look at the detailed description [here](./documentation/Tox.md)
