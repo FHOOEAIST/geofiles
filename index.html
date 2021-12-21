@@ -15,10 +15,14 @@
     }
 
     function toRelative(){
-        document.getElementById("iframe").src = "relative.html"
+        document.getElementById("iframe").src = "relative_original.html"
+    }
+
+    function toRelative2(){
+        document.getElementById("iframe").src = "relative_vertices.html"
     }
 </script>
-<span class="badge badge-info">Visualization mode:</span> <button onclick="toAbsolute()" class="btn btn-primary">Absolute</button> <button onclick="toRelative()" class="btn btn-primary">Relative</button> <br>
+<span class="badge badge-info">Visualization mode:</span> <button onclick="toAbsolute()" class="btn btn-primary">Absolute</button> <button onclick="toRelative()" class="btn btn-primary">Relative (Baseline)</button> <button onclick="toRelative2()" class="btn btn-primary">Relative (Vertices)</button> <br>
 
 <iframe id="iframe" src="absolute.html" style="margin: 0; width:98vw; height: 94vh; border: 0;">
 
