@@ -1,20 +1,11 @@
 import uuid
 from abc import ABC
-from enum import Enum
 from typing import Any, Dict, List
 
+from geofiles.domain.file_version import CityJsonVersion
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.json_writer import JsonWriter
-
-
-class CityJsonVersion(Enum):
-    """
-    Enum defining the CityJSON version
-    """
-
-    V1_0 = 0  # V 1.0
-    V1_1 = 1  # V 1.1
 
 
 class CityJsonWriter(JsonWriter, BaseWriter, ABC):

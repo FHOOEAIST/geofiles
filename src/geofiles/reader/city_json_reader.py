@@ -2,6 +2,7 @@ from abc import ABC
 from typing import Any, Dict, List
 
 from geofiles.domain.face import Face
+from geofiles.domain.file_version import CityJsonVersion
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
@@ -14,6 +15,18 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
     Note: That there will be semantic loss if reading a CityJSON file (object classes, etc.)
     """
 
+    def __init__(
+        self,
+        version: CityJsonVersion = CityJsonVersion.V1_1,
+        ignore_mandatory_transform: bool = False,
+    ):
+        """
+        :param version: The CityJSON version to be used
+        :param ignore_mandatory_transform: Starting with CityJSON v1.1 the Transform information is mandatory. Ignore this, when reading the file.
+        """
+        self.version = version
+        self.ignore_mandatory_transform = ignore_mandatory_transform
+
     def read_json(self, json_dict: Dict[Any, Any]) -> GeoObjectFile:
         result = GeoObjectFile()
 
@@ -23,6 +36,20 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
             )
 
         metadata = json_dict["metadata"]
+
+        transform = json_dict.get("transform")
+        if (
+            self.version != CityJsonVersion.V1_0
+            and transform is None
+            and not self.ignore_mandatory_transform
+        ):
+            raise Exception("Transform information is mandatory in CityJSON >= 1.1")
+
+        if transform is not None:
+            translate = transform["translate"]
+            result.translation = translate
+            scale = transform["scale"]
+            result.scaling = scale
 
         if metadata.get("referenceSystem"):
             result.crs = metadata.get("referenceSystem")
