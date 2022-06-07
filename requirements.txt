@@ -7,5 +7,5 @@ click==8.0.1
 colorama==0.4.4
 jsonref==0.2
 jsonschema==3.2.0
-pyrsistent==0.18.0
+pyrsistent==0.18.1
 six==1.16.0
