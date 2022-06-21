@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Iterable
 
 
 def get_wgs_84() -> str:
@@ -62,3 +62,14 @@ def is_not_none_nor_empty(to_check: Optional[List[Any]]) -> bool:
     :results: true if list is not none and list is not empty
     """
     return to_check is not None and len(to_check) > 0
+
+
+def pairwise(iterable: Iterable):
+    """
+    Method for a pairwise access of an iterable
+    :param iterable: to be iterated
+    :returns: (x, y) pairs of iterable
+    """
+
+    a = iter(iterable)
+    return zip(a, a)

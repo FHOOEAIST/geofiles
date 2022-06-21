@@ -97,14 +97,18 @@ class GeoPlyWriter(BaseWriter, ABC):
                 write_binary,
                 True,
             )
-        if len(data.objects[0].meta_information) != 0:
-            to_write = []
-            for k, v in data.objects[0].meta_information.items():
-                if type(v) is tuple:
-                    to_write.append(f"({k} {'|'.join(v)}")
-                else:
-                    to_write.append(f"{k} {v}")
-            self._write_to_file(file, f"meta {' '.join(to_write)}", write_binary, True)
+        if not data.is_default_translation_unit():
+            self._write_to_file(file, f"tu {data.translation_unit}", write_binary, True)
+
+        if not data.is_default_rotation_unit():
+            self._write_to_file(file, f"ru {data.rotation_unit}", write_binary, True)
+
+        for k, v in data.objects[0].meta_information:
+            if type(v) is tuple:
+                to_write = f"{' '.join(v)}"
+            else:
+                to_write = f"{v}"
+            self._write_to_file(file, f"meta {k} {to_write}", write_binary, True)
 
         self._write_to_file(file, f"element vertex {num_vertices}", write_binary, True)
         self._write_to_file(file, "property float x", write_binary, True)

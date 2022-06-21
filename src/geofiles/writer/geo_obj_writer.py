@@ -78,6 +78,12 @@ class GeoObjWriter(BaseWriter, ABC):
                 True,
             )
 
+        if not data.is_default_translation_unit():
+            self._write_to_file(file, f"tu {data.translation_unit}", write_binary, True)
+
+        if not data.is_default_rotation_unit():
+            self._write_to_file(file, f"ru {data.translation_unit}", write_binary, True)
+
         self._write_coordinates(data.vertices, file, "v ", write_binary)
         self._write_coordinates(data.normals, file, "vn ", write_binary)
         self._write_coordinates(data.texture_coordinates, file, "vt ", write_binary)
