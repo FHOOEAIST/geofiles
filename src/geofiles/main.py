@@ -76,6 +76,8 @@ if __name__ == "__main__":
         input_file.vertices = new_vertices
         input_file.texture_coordinates = []
         input_file.normals = []
+        if len(input_file.objects) > 1:
+            input_file.minimize()
         number_of_vertices[file] = len(input_file.vertices)
         obj_writer.write(join(target_folder, file), input_file, append_file_type=False)
         done_jobs += 1
@@ -104,6 +106,7 @@ if __name__ == "__main__":
     sizes = dict()
     origin_based_sizes = dict()
     for file in inputfiles:
+
         sizes_for_file = dict()
         origin_based_sizes_for_file = dict()
         # read normalized input file
@@ -115,6 +118,9 @@ if __name__ == "__main__":
 
         # write the geo-referenced representation using every configured writer
         for key, value in writers.items():
+            logging.info(
+                f"Step {done_jobs} of {number_of_jobs} starting: ({file}, {type(value).__name__})"
+            )
             value: BaseWriter = value
             folder = join(target_folder, key)
             os.makedirs(folder, exist_ok=True)

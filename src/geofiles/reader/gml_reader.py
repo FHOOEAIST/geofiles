@@ -24,33 +24,70 @@ class GmlReader(XmlReader, BaseReader, ABC):
     def read_xml(self, xml: ET.Element) -> GeoObjectFile:
         result = GeoObjectFile()
         self.remove_namespaces(xml)
+        self._internal_read_xml(result, xml, ".//Solid")
+        return result
 
-        solids = xml.findall(".//Solid")
+    def _internal_decorate_object(self, xml_object: ET.Element, geo_object: GeoObject) -> None:
+        """
+        Internal method for decorating the current GeoObject
+        :param xml_object: current xml object
+        :param geo_object: current geo object
+        """
+        pass
+
+    def _internal_read_xml(self, result: GeoObjectFile, xml: ET.Element, baseelements: str) -> None:
+        """
+        Internal method for reading a gml xml file
+        :param result: The resulting GeoObjectfiled
+        :param xml: root element
+        :param baseelements: xpath string defining the base elements
+        """
+        solids = xml.findall(baseelements)
 
         vertex_list: List[List[Any]] = []
+        if len(result.vertices) != 0:
+            vertex_list = result.vertices.copy()
         vertex_indices: Dict[str, int] = dict()
 
         if len(solids) > 0:
             first_solid = solids[0]
-            result.crs = self._get_attribute(first_solid, "srsName")
+            crs = self._get_attribute(first_solid, "srsName")
+            if crs is not None:
+                result.crs = crs
             for solid in solids:
-                if self._get_attribute(solid, "srsName") != result.crs:
+                solid_crs = self._get_attribute(solid, "srsName")
+                if solid_crs != None and solid_crs != result.crs:
                     raise Exception(
                         "Found non uniform CRS definition in Solid elements. Currently not supported in this implementation."
                     )
                 geo_object = GeoObject()
-
+                self._internal_decorate_object(solid, geo_object)
                 polygons = solid.findall(".//Polygon")
 
                 for polygon in polygons:
-                    poslists = polygon.findall(".//exterior/LinearRing/posList")
-                    face_object = Face()
-                    for poslist in poslists:
-                        if poslist is not None and poslist.text is not None:
-                            splits = poslist.text.split(" ")
-                            splits.pop()
-                            for split in splits:
-                                coordinate = [float(a) for a in split.split(",")]
+                    linearrings = polygon.findall(".//exterior/LinearRing")
+                    for linearring in linearrings:
+                        face_object = Face()
+                        poslists = linearring.findall("./posList")
+                        for poslist in poslists:
+                            if poslist is not None and poslist.text is not None:
+                                splits = poslist.text.split(" ")
+                                splits.pop()
+                                for split in splits:
+                                    coordinate = [float(a) for a in split.split(",")]
+                                    self._filter_faces(
+                                        self.unique_vertices,
+                                        coordinate,
+                                        face_object,
+                                        vertex_list,
+                                        vertex_indices,
+                                    )
+
+                        positions = linearring.findall("./pos")
+                        for position in positions:
+                            if position is not None and position.text is not None:
+                                splits = position.text.split(" ")
+                                coordinate = [float(a) for a in splits]
                                 self._filter_faces(
                                     self.unique_vertices,
                                     coordinate,
@@ -58,8 +95,7 @@ class GmlReader(XmlReader, BaseReader, ABC):
                                     vertex_list,
                                     vertex_indices,
                                 )
-                    geo_object.faces.append(face_object)
+                        geo_object.faces.append(face_object)
                 result.objects.append(geo_object)
 
         result.vertices = vertex_list
-        return result
