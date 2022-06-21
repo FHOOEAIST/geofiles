@@ -52,7 +52,9 @@ class BaseWriterTest(BaseTest):
             random_seed=rd.getrandbits(128),
         )
 
-        # then
+        print(file)
+
+        #then
         self.assertTrue(os.path.exists(file))
         with open(file) as f1, open(ref) as f2:
             self.assertEqual(OrderedDict(Counter(f1)), OrderedDict(Counter(f2)))

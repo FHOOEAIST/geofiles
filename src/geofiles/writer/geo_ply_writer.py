@@ -103,7 +103,7 @@ class GeoPlyWriter(BaseWriter, ABC):
         if not data.is_default_rotation_unit():
             self._write_to_file(file, f"ru {data.rotation_unit}", write_binary, True)
 
-        for k, v in data.objects[0].meta_information:
+        for k, v in data.objects[0].meta_information.items():
             if type(v) is tuple:
                 to_write = f"{' '.join(v)}"
             else:

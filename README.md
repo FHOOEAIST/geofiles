@@ -32,7 +32,9 @@ Some proposed file formats support additional features such as:
   - Translation
   - Rotation
 - Arbitrary meta information:
-  - Global per file (such as translation or rotation units)
+  - Global per file such as:
+    - Translation unit: any unit can be used. The present project only supports transformations with metres (m)
+    - Rotation unit: any unit can be used. The present project only supports transformations with degrees (deg)
   - Local per object (such as type information)
 
 
@@ -58,7 +60,7 @@ Next to the geo-referencing features, the `.geoobj` extension also supports exch
 3. `r` for rotation angular information
 4. `tu` for defining the file's translation unit (default is metres `m`)
 5. `ru` for defining the file's rotation unit (default is degrees `deg`)
-6. `m` for arbitrary meta information
+6. `m` for arbitrary meta information. Every meta entry contains a key as first element followed by one or more values
 
 Example:
 
@@ -66,6 +68,9 @@ Example:
 sc 1.5 2 5
 t 10 -5 4
 r 90 45 10
+tu inch
+ru rad
+m axis_ordering x y z
 ```
 
 Note that: if either a scaling, a translation or a rotation information is stated after an object definition with the prefix `o`, the transformation is not interpreted globally, but locally for the specific object.
@@ -104,12 +109,13 @@ Like this GeoOFF is able to support:
 
 Example: 
 ```
-GeoOFFostr
+GeoOFFostrm
 urn:ogc:def:crs:OGC:2:84
 14.2842798233032 48.30284881591775 279.807006835938
 2 2 2
 10 50 100
 90 0 0
+tu inch type genericobject axis_ordering x|y|z
 ```
 
 **Note:** The `.off` prefixes are currently not supported in the implementations.
@@ -154,6 +160,7 @@ rotate 90 45 10
 tu m
 ru deg
 meta type genericobject
+meta axis_ordering x y z
 ...
 end_header
 ```
