@@ -107,7 +107,7 @@ class GeoOffWriter(BaseWriter, ABC):
                 to_write = []
                 for k, v in meta_information.items():
                     if type(v) is tuple:
-                        to_write.append(f"({k} {'|'.join(v)}")
+                        to_write.append(f"{k} {'|'.join(v)}")
                     else:
                         to_write.append(f"{k} {v}")
                 self._write_to_file(

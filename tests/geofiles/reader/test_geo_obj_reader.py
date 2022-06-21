@@ -124,6 +124,40 @@ class TestGeoObjReader(BaseTest):
         self.assertEqual(geo_obj_file.objects[0].scaling, [2, 2, 2])
         self.assertEqual(geo_obj_file.objects[0].rotation, [90, 0, 0])
 
+    def test_read7(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_meta.geoobj")
+        reader = GeoObjReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(
+            geo_obj_file.rotation_unit, "rad"
+        )
+        self.assertEqual(
+            geo_obj_file.translation_unit, "inch"
+        )
+        self.assertEqual(geo_obj_file.objects[0].meta_information["type"], "GenericObject")
+
+    def test_read8(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_meta2.geoobj")
+        reader = GeoObjReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(
+            geo_obj_file.rotation_unit, "rad"
+        )
+        self.assertEqual(
+            geo_obj_file.translation_unit, "inch"
+        )
+        self.assertEqual(geo_obj_file.objects[0].meta_information["axis_ordering"], ("x", "y", "z"))
+
     def test_read_string(self) -> None:
         # given
         input_str = """

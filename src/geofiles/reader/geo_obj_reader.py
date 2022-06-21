@@ -107,10 +107,10 @@ class GeoObjReader(BaseReader, ABC):
                 filled_group = True
             elif trimmed.startswith("m "):
                 splits = trimmed.split(" ")
-                if len(splits) == 2:
-                    current_object.meta_information[splits[0]] = splits[1]
-                elif len(splits) > 2:
-                    current_object.meta_information[splits[0]] = tuple(splits[2:])
+                if len(splits) == 3:
+                    current_object.meta_information[splits[1]] = splits[2]
+                elif len(splits) > 3:
+                    current_object.meta_information[splits[1]] = tuple(splits[2:])
             elif trimmed.startswith("tu "):
                 res.translation_unit = trimmed[3:]
             elif trimmed.startswith("ru "):

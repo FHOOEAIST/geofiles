@@ -48,12 +48,10 @@ class GeoPlyReader(BaseReader, ABC):
                     res.rotation_unit = trimmed[3:]
                 elif trimmed.startswith("meta"):
                     splits = trimmed.split(" ")
-                    k = splits[1]
-                    v = splits[2]
-                    if len(v) > 1:
-                        obj.meta_information[k] = tuple(v)
+                    if len(splits) > 3:
+                        obj.meta_information[splits[1]] = tuple(splits[2:])
                     else:
-                        obj.meta_information[k] = v
+                        obj.meta_information[splits[1]] = splits[2]
                 elif trimmed.startswith("end_header"):
                     search_for_vertices = True
             else:

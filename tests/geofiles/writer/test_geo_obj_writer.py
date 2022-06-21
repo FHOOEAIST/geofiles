@@ -51,6 +51,19 @@ class TestGeoObjWriter(BaseWriterTest):
             origin, "cube_transformed_local" + self.get_writer().get_file_type()
         )
 
+    def test_write6(self) -> None:
+        data = self.get_cube()
+        data.translation_unit = "inch"
+        data.rotation_unit = "rad"
+        data.objects[0].meta_information["type"] = "GenericObject"
+        data.objects[0].meta_information["axis_ordering"] = ("x", "y", "z")
+        converter = OriginConverter()
+        origin = converter.to_origin(data)
+
+        self._test_write(
+            origin, "cube_meta2" + self.get_writer().get_file_type()
+        )
+
     def test_write_local(self) -> None:
         data = self.get_local_cube()
         self._test_write(data, "cube.obj")

@@ -71,3 +71,37 @@ class TestGeoOffReader(BaseTest):
         self.assertEqual(
             geo_obj_file.max_extent, [0.5009357136907018, 0.4994462914230726, 0.5]
         )
+
+    def test_read6(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_meta.geooff")
+        reader = GeoOffReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(
+            geo_obj_file.rotation_unit, "rad"
+        )
+        self.assertEqual(
+            geo_obj_file.translation_unit, "inch"
+        )
+        self.assertEqual(geo_obj_file.objects[0].meta_information["type"], "GenericObject")
+
+    def test_read7(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_meta2.geooff")
+        reader = GeoOffReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(
+            geo_obj_file.rotation_unit, "rad"
+        )
+        self.assertEqual(
+            geo_obj_file.translation_unit, "inch"
+        )
+        self.assertEqual(geo_obj_file.objects[0].meta_information["axis_ordering"], ("x", "y", "z"))
