@@ -103,7 +103,7 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
                     objects[str(uuid.UUID(int=random_seed, version=4))] = cityobject
             else:
                 objects[obj.name] = cityobject
-            cityobject["type"] = "GenericCityObject"
+            cityobject["type"] = obj.get_meta_information_or_default("type", "GenericCityObject")
             geometries: List[Any] = []
             cityobject["geometry"] = geometries
             geometry: Dict[Any, Any] = dict()

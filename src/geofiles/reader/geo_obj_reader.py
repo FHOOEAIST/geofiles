@@ -9,7 +9,7 @@ from geofiles.reader.base import BaseReader
 
 class GeoObjReader(BaseReader, ABC):
     """
-    Reader implementaiton for geo-referenced .obj files
+    Reader implementation for geo-referenced .obj files
     """
 
     def _read(self, file: Iterable[str]) -> GeoObjectFile:
@@ -105,6 +105,12 @@ class GeoObjReader(BaseReader, ABC):
                 coordinates = [float(a) for a in trimmed[3:].split(" ")]
                 res.normals.append(coordinates)
                 filled_group = True
+            elif trimmed.startswith("m "):
+                splits = trimmed.split(" ")
+                if len(splits) == 2:
+                    current_object.meta_information[splits[0]] = splits[1]
+                elif len(splits) > 2:
+                    current_object.meta_information[splits[0]] = tuple(splits[2:])
 
         if last_added_object is not current_object:
             res.objects.append(current_object)

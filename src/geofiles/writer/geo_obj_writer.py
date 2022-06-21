@@ -85,36 +85,42 @@ class GeoObjWriter(BaseWriter, ABC):
         for geoobject in data.objects:
             if len(geoobject.faces) == 0:
                 self._write_to_file(file, f"g {geoobject.name}", write_binary, True)
-                if geo_referenced:
-                    self._write_transformation(geoobject, file, write_binary)
             else:
                 self._write_to_file(file, f"o {geoobject.name}", write_binary, True)
-                if geo_referenced:
-                    self._write_transformation(geoobject, file, write_binary)
-                for f in geoobject.faces:
-                    self._write_to_file(file, "f ", write_binary)
-                    contains_textures = len(f.texture_coordinates) != 0
-                    contains_normals = len(f.normal_indices) != 0
-                    index_len = len(f.indices)
-                    for i, idx in enumerate(f.indices):
-                        self._write_to_file(file, idx, write_binary)
 
-                        if contains_textures or contains_normals:
-                            self._write_to_file(file, "/", write_binary)
+            if geo_referenced:
+                self._write_transformation(geoobject, file, write_binary)
+            for k, v in geoobject.meta_information.items():
+                if type(v) is tuple:
+                    to_write = ' '.join(v)
+                else:
+                    to_write = str(v)
+                self._write_to_file(file, f"m {k} {to_write}", write_binary, True)
 
-                        if contains_textures:
-                            self._write_to_file(
-                                file, f.texture_coordinates[i], write_binary
-                            )
+            for f in geoobject.faces:
+                self._write_to_file(file, "f ", write_binary)
+                contains_textures = len(f.texture_coordinates) != 0
+                contains_normals = len(f.normal_indices) != 0
+                index_len = len(f.indices)
+                for i, idx in enumerate(f.indices):
+                    self._write_to_file(file, idx, write_binary)
 
-                        if contains_normals:
-                            self._write_to_file(file, "/", write_binary)
-                            self._write_to_file(file, f.normal_indices[i], write_binary)
+                    if contains_textures or contains_normals:
+                        self._write_to_file(file, "/", write_binary)
 
-                        if i < index_len - 1:
-                            self._write_to_file(file, " ", write_binary)
+                    if contains_textures:
+                        self._write_to_file(
+                            file, f.texture_coordinates[i], write_binary
+                        )
 
-                    self._write_to_file(file, "", write_binary, True)
+                    if contains_normals:
+                        self._write_to_file(file, "/", write_binary)
+                        self._write_to_file(file, f.normal_indices[i], write_binary)
+
+                    if i < index_len - 1:
+                        self._write_to_file(file, " ", write_binary)
+
+                self._write_to_file(file, "", write_binary, True)
 
     def _write_transformation(
         self, geoobj: GeoObject, file: TextIOWrapper, write_binary: bool

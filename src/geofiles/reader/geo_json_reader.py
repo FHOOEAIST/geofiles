@@ -54,6 +54,7 @@ class GeoJsonReader(JsonReader, BaseReader, ABC):
                         faces.append(inner_coordinates[: len(inner_coordinates) - 1])
 
                     geo_object = GeoObject()
+                    geo_object.set_type(feature_type)
                     result.objects.append(geo_object)
                     for face in faces:
                         face_object = Face()

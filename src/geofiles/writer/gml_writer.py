@@ -39,7 +39,7 @@ class GmlWriter(XmlWriter, BaseWriter, ABC):
                 raise Exception(
                     "GML does not support local object transformation information"
                 )
-            solid = ET.Element("gml:Solid")
+            solid = ET.Element(obj.get_meta_information_or_default("type", "gml:Solid"))
             solid.attrib = dict()
             solid.attrib["srsName"] = data.crs
             solid.attrib["srsDimension"] = "3"

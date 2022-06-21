@@ -30,7 +30,9 @@ class GeoOffWriter(BaseWriter, ABC):
 
         num_vertices = len(data.vertices)
         faces = []
+        meta_information = dict()
         for obj in data.objects:
+            meta_information = obj.meta_information
             if (
                 obj.contains_scaling()
                 or obj.contains_rotation()
@@ -47,7 +49,7 @@ class GeoOffWriter(BaseWriter, ABC):
         contains_scaling = data.contains_scaling()
         contains_translation = data.contains_translation()
         contains_rotation = data.contains_rotation()
-        if data.is_geo_referenced():
+        if data.is_geo_referenced() or len(meta_information) != 0:
             header = "GeoOFF"
             if origin_based:
                 header += "o"
@@ -59,6 +61,8 @@ class GeoOffWriter(BaseWriter, ABC):
                 header += "t"
             if contains_rotation:
                 header += "r"
+            if len(meta_information) != 0:
+                header += "m"
             self._write_to_file(file, header, write_binary, True)
             self._write_to_file(file, data.crs, write_binary, True)
             if data.origin is not None and origin_based:
@@ -92,6 +96,17 @@ class GeoOffWriter(BaseWriter, ABC):
                 self._write_to_file(
                     file, " ".join([str(f) for f in data.rotation]), write_binary, True
                 )
+            if len(meta_information) != 0:
+                to_write = []
+                for k, v in meta_information.items():
+                    if type(v) is tuple:
+                        to_write.append(f"({k} {'|'.join(v)}")
+                    else:
+                        to_write.append(f"{k} {v}")
+                self._write_to_file(
+                    file, " ".join(to_write), write_binary, True
+                )
+
         else:
             if origin_based:
                 raise Exception("Origin information not supported in OFF file format")
@@ -105,6 +120,8 @@ class GeoOffWriter(BaseWriter, ABC):
                 )
             if contains_rotation:
                 raise Exception("Rotation information not supported in OFF file format")
+            if len(meta_information) != 0:
+                raise Exception("OFF file format does not support meta information")
             self._write_to_file(file, "OFF", write_binary, True)
 
         self._write_to_file(file, f"{num_vertices} {num_faces} 0", write_binary, True)
