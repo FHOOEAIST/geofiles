@@ -36,6 +36,20 @@ class GeoObjectFile:
         self.texture_coordinates: List[List[float]] = []
         self.min_extent: Optional[List[float]] = []
         self.max_extent: Optional[List[float]] = []
+        self.translation_unit = "m"
+        self.rotation_unit = "deg"
+
+    def is_default_translation_unit(self) -> bool:
+        """
+        :returns: true iff file uses metres as translation unit
+        """
+        return self.translation_unit == "m"
+
+    def is_default_rotation_unit(self) -> bool:
+        """
+        :returns: true iff file uses degree as rotation unit
+        """
+        return self.rotation_unit == "deg"
 
     def is_origin_based(self) -> bool:
         """

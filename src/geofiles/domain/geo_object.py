@@ -50,15 +50,11 @@ class GeoObject:
         """
         return is_not_none_nor_empty(self.rotation) and self.rotation != [0.0, 0.0, 0.0]
 
-    def get_type(self) -> Optional[str]:
+    def get_type(self) -> Any:
         """
         Returns the type definition of the object
         """
-
-        val = self.meta_information.get("type")
-        if val is None:
-            return None
-        return str(val)
+        return self.get_meta_information_or_default("type", None)
 
     def set_type(self, val: str) -> None:
         """
@@ -66,32 +62,6 @@ class GeoObject:
         :param val: value to be set
         """
         self.meta_information["type"] = val
-
-    def get_translation_unit(self) -> str:
-        """
-        Returns the unit used for translations (default metres)
-        """
-        return str(self.get_meta_information_or_default("translation_unit", "m"))
-
-    def set_translation_unit(self, val: str) -> None:
-        """
-        Setter for the translation unit
-        :param val: value to be set
-        """
-        self.meta_information["translation_unit"] = val
-
-    def get_rotation_unit(self) -> str:
-        """
-        Returns the unit used for rotation (default degrees)
-        """
-        return str(self.get_meta_information_or_default("rotation_unit", "deg"))
-
-    def set_rotation_unit(self, val: str) -> None:
-        """
-        Setter for the rotation unit
-        :param val: value to be set
-        """
-        self.meta_information["rotation_unit"] = val
 
     def get_meta_information_or_default(self, key: str, default: Any) -> Any:
         """

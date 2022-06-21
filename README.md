@@ -29,8 +29,11 @@ Some proposed file formats support additional features such as:
 - Geographical extent
 - Transformation information (local per object or global for all vertices)
   - Scaling factor
-  - Translation in meters
-  - Rotation in degrees
+  - Translation
+  - Rotation
+- Arbitrary meta information:
+  - Global per file (such as translation or rotation units)
+  - Local per object (such as type information)
 
 
 ### GeoOBJ
@@ -53,6 +56,9 @@ Next to the geo-referencing features, the `.geoobj` extension also supports exch
 1. `sc` for adding scale information (`s` is already defined in `.obj` for smoothing groups)
 2. `t` for translation information
 3. `r` for rotation angular information
+4. `tu` for defining the file's translation unit (default is metres `m`)
+5. `ru` for defining the file's rotation unit (default is degrees `deg`)
+6. `m` for arbitrary meta information
 
 Example:
 
@@ -89,6 +95,12 @@ Like this GeoOFF is able to support:
 - Global scaling information using the `s` header postfix symbol
 - Global translation information using the `t` header postfix symbol
 - Global rotation information using the `r` header postfix symbol
+- Arbitrary meta information using the `m` header postfix symbol
+  - Defined as blank-separated list of key/value pairs
+  - Values may be again list of values that are separated with a pipe symbol `|`
+  - Reserved keys:
+    - `tu` for defining the translation unit (default is metres `m`)
+    - `ru` for defining the rotation unit (default is degrees `deg`)
 
 Example: 
 ```
@@ -126,6 +138,10 @@ Next to the geo-referencing features, the `.geply` extension also supports excha
 1. `scale` for adding scale information
 2. `translate` for translation information
 3. `rotate` for rotation angular information
+4. `meta` for arbitrary meta information. Every meta entry contains a key as first element followed by one or more values
+5. `tu` for defining the translation unit (default is metres `m`)
+6. `ru` for defining the rotation unit (default is degrees `deg`)
+
 
 Example:
 
@@ -135,6 +151,9 @@ geoply
 scale 1.5 2 5
 translate 10 -5 4
 rotate 90 45 10
+tu m
+ru deg
+meta type genericobject
 ...
 end_header
 ```
@@ -336,7 +355,9 @@ xml_output = writer.create_xml(transformed)
   - The local coordinate system uses the x-axis as abscissa axis (width information), y-axis as ordinate axis (length information) and z-axis as applicate axis (height information).
   - The units used in this type of coordinate system are assumed to be in **meters**. 
 - How is the transformation information defined?
-  - The proposed transformation information is separated into tuples (one value per axis) for translation, rotation and scale. For the translation, meter based offsets are intended to be used, the rotation is based on degrees and the scale tuple is represented using numeric factors.
+  - The proposed transformation information is separated into tuples (one value per axis) for translation, rotation and scale. 
+  - Per default: For the translation, meter based offsets are intended to be used, the rotation is based on degrees and the scale tuple is represented using numeric factors.
+  - `GeoOBJ`, `GeoOFF` and `GeoPLY` support to change the used unit for translation/rotation information
 
 ## Contributing
 

@@ -111,6 +111,10 @@ class GeoObjReader(BaseReader, ABC):
                     current_object.meta_information[splits[0]] = splits[1]
                 elif len(splits) > 2:
                     current_object.meta_information[splits[0]] = tuple(splits[2:])
+            elif trimmed.startswith("tu "):
+                res.translation_unit = trimmed[3:]
+            elif trimmed.startswith("ru "):
+                res.rotation_unit = trimmed[3:]
 
         if last_added_object is not current_object:
             res.objects.append(current_object)

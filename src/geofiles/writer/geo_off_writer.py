@@ -96,6 +96,13 @@ class GeoOffWriter(BaseWriter, ABC):
                 self._write_to_file(
                     file, " ".join([str(f) for f in data.rotation]), write_binary, True
                 )
+
+            if not data.is_default_translation_unit():
+                meta_information["tu"] = data.translation_unit
+
+            if not data.is_default_rotation_unit():
+                meta_information["ru"] = data.rotation_unit
+
             if len(meta_information) != 0:
                 to_write = []
                 for k, v in meta_information.items():

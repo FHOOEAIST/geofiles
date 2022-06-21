@@ -1,11 +1,11 @@
 from abc import ABC
 from typing import Iterable
 
+from geofiles.conversion.static import pairwise
 from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
-from geofiles.utility.utility import pairwise
 
 
 class GeoOffReader(BaseReader, ABC):
@@ -81,11 +81,16 @@ class GeoOffReader(BaseReader, ABC):
                     res.rotation = [float(a) for a in splits]
                 elif element == "m":
                     for k, v in pairwise(splits):
-                        s = str(v)
-                        if "|" in s:
-                            obj.meta_information[k] = tuple(s.split("|"))
+                        if k == "tu":
+                            res.translation_unit = v
+                        elif k == "ru":
+                            res.rotation_unit = v
                         else:
-                            obj.meta_information[k] = s
+                            s = str(v)
+                            if "|" in s:
+                                obj.meta_information[k] = tuple(s.split("|"))
+                            else:
+                                obj.meta_information[k] = s
 
         return res
 
