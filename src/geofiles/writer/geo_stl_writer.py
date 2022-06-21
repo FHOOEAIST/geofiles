@@ -31,6 +31,9 @@ class GeoStlWriter(BaseWriter, ABC):
         if len(data.objects) != 1:
             raise Exception("GeoSTL can represent only one object. Minimize the data.")
 
+        if len(data.objects[0].meta_information) > 0:
+            raise Exception("GeoSTL does not support meta information.")
+
         self._contains_transformation_information(data)
 
         if data.is_geo_referenced():

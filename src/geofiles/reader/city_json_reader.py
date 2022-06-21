@@ -70,6 +70,7 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
             city_objects = json_dict["CityObjects"]
             for city_object_name, city_object in city_objects.items():
                 geo_object = GeoObject()
+                geo_object.set_type(city_object["type"])
                 result.objects.append(geo_object)
                 geo_object.name = city_object_name
                 geometry = city_object.get("geometry")

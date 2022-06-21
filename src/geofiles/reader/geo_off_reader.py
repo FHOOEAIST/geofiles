@@ -5,6 +5,7 @@ from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
+from geofiles.utility.utility import pairwise
 
 
 class GeoOffReader(BaseReader, ABC):
@@ -78,4 +79,13 @@ class GeoOffReader(BaseReader, ABC):
                     res.translation = [float(a) for a in splits]
                 elif element == "r":
                     res.rotation = [float(a) for a in splits]
+                elif element == "m":
+                    for k, v in pairwise(splits):
+                        s = str(v)
+                        if "|" in s:
+                            obj.meta_information[k] = tuple(s.split("|"))
+                        else:
+                            obj.meta_information[k] = s
+
         return res
+

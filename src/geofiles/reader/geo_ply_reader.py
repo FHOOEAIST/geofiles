@@ -5,6 +5,7 @@ from geofiles.domain.face import Face
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.reader.base import BaseReader
+from geofiles.utility.utility import pairwise
 
 
 class GeoPlyReader(BaseReader, ABC):
@@ -42,6 +43,14 @@ class GeoPlyReader(BaseReader, ABC):
                     extent = [float(a) for a in trimmed[7:].split(" ")]
                     res.min_extent = extent[:3]
                     res.max_extent = extent[3:]
+                elif trimmed.startswith("meta"):
+                    splits = trimmed.split(" ")
+                    for k, v in pairwise(splits[1:]):
+                        s = str(v)
+                        if "|" in s:
+                            obj.meta_information[k] = tuple(s.split("|"))
+                        else:
+                            obj.meta_information[k] = s
                 elif trimmed.startswith("end_header"):
                     search_for_vertices = True
             else:
