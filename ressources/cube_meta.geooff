@@ -1,7 +1,9 @@
-GeoOFFom
+GeoOFFommm
 urn:ogc:def:crs:OGC:2:84
 14.2842798233032 48.30284881591775 279.807006835938
-type GenericObject tu inch ru rad
+type GenericObject
+tu inch
+ru rad
 8 12 0
 -0.5009357136907019 -0.4994462475020125 0.5
 -0.5009357136907019 -0.4994462475020125 -0.5

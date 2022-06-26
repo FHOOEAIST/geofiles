@@ -30,19 +30,18 @@ class GeoOffWriter(BaseWriter, ABC):
 
         num_vertices = len(data.vertices)
         faces = []
-        meta_information = dict()
-        for obj in data.objects:
-            meta_information = obj.meta_information
-            if (
-                obj.contains_scaling()
-                or obj.contains_rotation()
-                or obj.contains_translation()
-            ):
-                raise Exception(
-                    "GeoOFF does not support local object transformation information."
-                )
-            for face in obj.faces:
-                faces.append(face)
+        obj = data.objects[0]
+        meta_information = obj.meta_information.copy()
+        if (
+            obj.contains_scaling()
+            or obj.contains_rotation()
+            or obj.contains_translation()
+        ):
+            raise Exception(
+                "GeoOFF does not support local object transformation information."
+            )
+        for face in obj.faces:
+            faces.append(face)
         num_faces = len(faces)
         origin_based = data.is_origin_based()
         contains_extent = data.contains_extent()
@@ -61,7 +60,13 @@ class GeoOffWriter(BaseWriter, ABC):
                 header += "t"
             if contains_rotation:
                 header += "r"
-            if len(meta_information) != 0:
+            for idx in range(0, len(meta_information)):
+                header += "m"
+            if not data.is_default_translation_unit():
+                meta_information["tu"] = data.translation_unit
+                header += "m"
+            if not data.is_default_rotation_unit():
+                meta_information["ru"] = data.rotation_unit
                 header += "m"
             self._write_to_file(file, header, write_binary, True)
             self._write_to_file(file, data.crs, write_binary, True)
@@ -97,23 +102,15 @@ class GeoOffWriter(BaseWriter, ABC):
                     file, " ".join([str(f) for f in data.rotation]), write_binary, True
                 )
 
-            if not data.is_default_translation_unit():
-                meta_information["tu"] = data.translation_unit
-
-            if not data.is_default_rotation_unit():
-                meta_information["ru"] = data.rotation_unit
-
-            if len(meta_information) != 0:
-                to_write = []
-                for k, v in meta_information.items():
-                    if type(v) is tuple:
-                        to_write.append(f"{k} {'|'.join(v)}")
-                    else:
-                        to_write.append(f"{k} {v}")
-                self._write_to_file(
-                    file, " ".join(to_write), write_binary, True
-                )
-
+            for k, v in meta_information.items():
+                if type(v) is tuple:
+                    self._write_to_file(
+                        file, f"{k} {' '.join(v)}", write_binary, True
+                    )
+                else:
+                    self._write_to_file(
+                        file, f"{k} {v}", write_binary, True
+                    )
         else:
             if origin_based:
                 raise Exception("Origin information not supported in OFF file format")

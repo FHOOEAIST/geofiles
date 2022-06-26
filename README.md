@@ -100,22 +100,24 @@ Like this GeoOFF is able to support:
 - Global scaling information using the `s` header postfix symbol
 - Global translation information using the `t` header postfix symbol
 - Global rotation information using the `r` header postfix symbol
-- Arbitrary meta information using the `m` header postfix symbol
+- Arbitrary meta information using the `m` header postfix symbol (which can occur multiple times)
   - Defined as blank-separated list of key/value pairs
-  - Values may be again list of values that are separated with a pipe symbol `|`
+  - Values may be again a list of values that are separated with a whitespace
   - Reserved keys:
     - `tu` for defining the translation unit (default is metres `m`)
     - `ru` for defining the rotation unit (default is degrees `deg`)
 
 Example: 
 ```
-GeoOFFostrm
+GeoOFFostrmmm
 urn:ogc:def:crs:OGC:2:84
 14.2842798233032 48.30284881591775 279.807006835938
 2 2 2
 10 50 100
 90 0 0
-tu inch type genericobject axis_ordering x|y|z
+tu inch 
+type genericobject 
+axis_ordering x y z
 ```
 
 **Note:** The `.off` prefixes are currently not supported in the implementations.
