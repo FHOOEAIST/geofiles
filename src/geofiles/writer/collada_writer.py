@@ -1,7 +1,7 @@
+import datetime
 import uuid
 import xml.etree.ElementTree as ET
 from abc import ABC
-import datetime
 from typing import Any, Optional
 
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -27,7 +27,8 @@ class ColladaWriter(XmlWriter, BaseWriter, ABC):
         root = ET.Element("COLLADA")
         root.attrib["xmlns"] = "https://www.khronos.org/files/collada_schema_1_5"
         root.attrib["version"] = "1.5.0"
-        root.attrib["crs"] = data.crs
+        if data.crs is not None:
+            root.attrib["crs"] = data.crs
 
         asset = ET.Element("asset")
         root.append(asset)
@@ -109,12 +110,12 @@ class ColladaWriter(XmlWriter, BaseWriter, ABC):
 
             float_array = ET.Element("float_array")
             source.append(float_array)
-            float_array_id =  f"ID-array-{float_array_cnt}"
-            float_array_cnt+=1
+            float_array_id = f"ID-array-{float_array_cnt}"
+            float_array_cnt += 1
             float_array.attrib["id"] = float_array_id
             flat_list = [str(x) for xs in data.vertices for x in xs]
-            l = len(flat_list)
-            float_array.attrib["count"] = str(l)
+            listlen = len(flat_list)
+            float_array.attrib["count"] = str(listlen)
             float_array.text = " ".join(flat_list)
 
             technique_common = ET.Element("technique_common")
@@ -122,7 +123,7 @@ class ColladaWriter(XmlWriter, BaseWriter, ABC):
 
             accessor = ET.Element("accessor")
             accessor.attrib["source"] = f"#{float_array_id}"
-            accessor.attrib["count"] = str(int(l / 3))
+            accessor.attrib["count"] = str(int(listlen / 3))
             accessor.attrib["stride"] = "3"
             technique_common.append(accessor)
 
@@ -162,7 +163,7 @@ class ColladaWriter(XmlWriter, BaseWriter, ABC):
             face_indices = []
             for face in geoobj.faces:
                 for idx in face.indices:
-                    face_indices.append(str(idx-1))
+                    face_indices.append(str(idx - 1))
             p.text = " ".join(face_indices)
 
         return ET.ElementTree(root)

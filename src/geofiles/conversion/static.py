@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Iterable
+from typing import Any, Iterable, List, Optional
 
 
 def get_wgs_84() -> str:
@@ -64,7 +64,7 @@ def is_not_none_nor_empty(to_check: Optional[List[Any]]) -> bool:
     return to_check is not None and len(to_check) > 0
 
 
-def pairwise(iterable: Iterable):
+def pairwise(iterable: Iterable[Any]) -> Any:
     """
     Method for a pairwise access of an iterable
     :param iterable: to be iterated
@@ -73,3 +73,13 @@ def pairwise(iterable: Iterable):
 
     a = iter(iterable)
     return zip(a, a)
+
+
+def triplewise(iterable: Iterable[Any]) -> Any:
+    """
+    Method for a triplewise access of an iterable
+    :param iterable: to be iterated
+    :returns: (x, y) pairs of iterable
+    """
+    a = iter(iterable)
+    return zip(a, a, a)

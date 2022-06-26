@@ -39,7 +39,9 @@ class GeoJsonWriter(JsonWriter, BaseWriter, ABC):
                     "GeoJSON does not support local object transformation information"
                 )
             polygon: Dict[Any, Any] = dict()
-            polygon["type"] = obj.get_meta_information_or_default("type", "MultiPolygon")
+            polygon["type"] = obj.get_meta_information_or_default(
+                "type", "MultiPolygon"
+            )
             coordinates: List[Any] = []
             polygon["coordinates"] = coordinates
             for face in obj.faces:

@@ -35,7 +35,9 @@ class KmlWriter(XmlWriter, BaseWriter, ABC):
                 raise Exception(
                     "KML does not support local object transformation information"
                 )
-            placemark = ET.Element(obj.get_meta_information_or_default("type", "Placemark"))
+            placemark = ET.Element(
+                obj.get_meta_information_or_default("type", "Placemark")
+            )
             root.append(placemark)
             name = ET.Element("name")
             name.text = obj.name

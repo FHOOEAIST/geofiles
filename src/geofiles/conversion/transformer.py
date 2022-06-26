@@ -97,10 +97,14 @@ class Transformer:
             raise Exception("Function only supported for origin based representations")
 
         if not data.is_default_rotation_unit():
-            raise Exception("Function only supported for rotation information using degrees (deg)")
+            raise Exception(
+                "Function only supported for rotation information using degrees (deg)"
+            )
 
         if not data.is_default_translation_unit():
-            raise Exception("Function only supported for translation information using metres (m)")
+            raise Exception(
+                "Function only supported for translation information using metres (m)"
+            )
 
         res = copy.deepcopy(data)
         scaling: List[float]
