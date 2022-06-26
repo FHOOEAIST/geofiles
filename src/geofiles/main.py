@@ -14,6 +14,8 @@ from geofiles.conversion.local_converter import LocalConverter
 from geofiles.reader.geo_obj_reader import GeoObjReader
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.city_json_writer import CityJsonWriter
+from geofiles.writer.citygml_writer import CityGmlWriter
+from geofiles.writer.collada_writer import ColladaWriter
 from geofiles.writer.geo_json_writer import GeoJsonWriter
 from geofiles.writer.geo_obj_writer import GeoObjWriter
 from geofiles.writer.geo_off_writer import GeoOffWriter
@@ -47,6 +49,8 @@ if __name__ == "__main__":
     writers["geovrml"] = GeoVrmlWriter()
     writers["gml"] = GmlWriter()
     writers["kml"] = KmlWriter()
+    writers["citygml"] = CityGmlWriter()
+    writers["collada"] = ColladaWriter()
 
     # get the number of conversions
     done_jobs = 0
@@ -101,6 +105,8 @@ if __name__ == "__main__":
     encoding["geovrml"] = False
     encoding["gml"] = True
     encoding["kml"] = True
+    encoding["citygml"] = True
+    encoding["collada"] = True
 
     # prepare result dictionary of file sizes
     sizes = dict()
