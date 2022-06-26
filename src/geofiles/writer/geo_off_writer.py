@@ -60,7 +60,7 @@ class GeoOffWriter(BaseWriter, ABC):
                 header += "t"
             if contains_rotation:
                 header += "r"
-            for idx in range(0, len(meta_information)):
+            for _ in range(0, len(meta_information)):
                 header += "m"
             if not data.is_default_translation_unit():
                 meta_information["tu"] = data.translation_unit
@@ -103,14 +103,10 @@ class GeoOffWriter(BaseWriter, ABC):
                 )
 
             for k, v in meta_information.items():
-                if type(v) is tuple:
-                    self._write_to_file(
-                        file, f"{k} {' '.join(v)}", write_binary, True
-                    )
+                if isinstance(v, tuple):
+                    self._write_to_file(file, f"{k} {' '.join(v)}", write_binary, True)
                 else:
-                    self._write_to_file(
-                        file, f"{k} {v}", write_binary, True
-                    )
+                    self._write_to_file(file, f"{k} {v}", write_binary, True)
         else:
             if origin_based:
                 raise Exception("Origin information not supported in OFF file format")

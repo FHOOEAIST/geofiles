@@ -54,7 +54,7 @@ class BaseWriterTest(BaseTest):
 
         print(file)
 
-        #then
+        # then
         self.assertTrue(os.path.exists(file))
         with open(file) as f1, open(ref) as f2:
             self.assertEqual(OrderedDict(Counter(f1)), OrderedDict(Counter(f2)))

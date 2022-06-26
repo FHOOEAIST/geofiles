@@ -15,7 +15,7 @@ class GmlReader(XmlReader, BaseReader, ABC):
     Note: That only Solids containing Polygons are supported. Additionally, only the Exterior Linearrings are considered.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         unique_vertices: defines that read vertices have to be unique
         """
@@ -27,15 +27,19 @@ class GmlReader(XmlReader, BaseReader, ABC):
         self._internal_read_xml(result, xml, ".//Solid")
         return result
 
-    def _internal_decorate_object(self, xml_object: ET.Element, geo_object: GeoObject) -> None:
+    def _internal_decorate_object(
+        self, xml_object: ET.Element, geo_object: GeoObject
+    ) -> None:
         """
         Internal method for decorating the current GeoObject
         :param xml_object: current xml object
         :param geo_object: current geo object
         """
-        pass
+        return None
 
-    def _internal_read_xml(self, result: GeoObjectFile, xml: ET.Element, baseelements: str) -> None:
+    def _internal_read_xml(
+        self, result: GeoObjectFile, xml: ET.Element, baseelements: str
+    ) -> None:
         """
         Internal method for reading a gml xml file
         :param result: The resulting GeoObjectfiled
@@ -56,7 +60,7 @@ class GmlReader(XmlReader, BaseReader, ABC):
                 result.crs = crs
             for solid in solids:
                 solid_crs = self._get_attribute(solid, "srsName")
-                if solid_crs != None and solid_crs != result.crs:
+                if solid_crs is not None and solid_crs != result.crs:
                     raise Exception(
                         "Found non uniform CRS definition in Solid elements. Currently not supported in this implementation."
                     )

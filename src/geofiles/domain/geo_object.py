@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from geofiles.conversion.static import is_not_none_nor_empty
 from geofiles.domain.face import Face

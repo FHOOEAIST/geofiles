@@ -97,8 +97,8 @@ class GeoObjWriter(BaseWriter, ABC):
             if geo_referenced:
                 self._write_transformation(geoobject, file, write_binary)
             for k, v in geoobject.meta_information.items():
-                if type(v) is tuple:
-                    to_write = ' '.join(v)
+                if isinstance(v, tuple):
+                    to_write = " ".join(v)
                 else:
                     to_write = str(v)
                 self._write_to_file(file, f"m {k} {to_write}", write_binary, True)
