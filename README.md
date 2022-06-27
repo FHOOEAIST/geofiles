@@ -93,7 +93,7 @@ GeoOFF
 urn:ogc:def:crs:EPSG::4326
 ```
 
-GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF` header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r]`.
+GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF` header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r][m*]`.
 Like this GeoOFF is able to support:
 - An absolute origin using the `o` header postfix symbol
 - Extent information using the `e` header postfix symbol
@@ -101,8 +101,8 @@ Like this GeoOFF is able to support:
 - Global translation information using the `t` header postfix symbol
 - Global rotation information using the `r` header postfix symbol
 - Arbitrary meta information using the `m` header postfix symbol (which can occur multiple times)
-  - Defined as blank-separated list of key/value pairs
-  - Values may be again a list of values that are separated with a whitespace
+  - Defined as blank-separated list of key/value pairs like `key value`
+  - Values may be again a list of values that are separated with a whitespace like `key value1 value2 value3`
   - Reserved keys:
     - `tu` for defining the translation unit (default is metres `m`)
     - `ru` for defining the rotation unit (default is degrees `deg`)
