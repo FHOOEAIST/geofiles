@@ -165,7 +165,7 @@ if __name__ == "__main__":
         # write csv values (file name followed by writer specific sizes
         for key, size in sizes.items():
             origin_size = origin_based_sizes[key]
-            csvfile.write(key)
+            csvfile.write(key.replace(".obj", ""))
             csvfile.write(",")
             csvfile.write(str(number_of_vertices[key]))
             csvfile.write(",")
