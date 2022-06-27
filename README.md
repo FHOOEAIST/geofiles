@@ -246,6 +246,8 @@ You can find most of the used obj files [here](https://github.com/alecjacobson/c
 | teapot                                        | 3644     | 202.44   | 341.26   | 1489.62   | 309.19   | 202.52        | 302.07   | 195.40        | 302.22   | 195.55        | 1481.45   | 937.85        | 354.97   | 248.73         | 2335.36   | 2372.23   | 2337.50   | 281.07   |
 | woody                                         | 694      | 36.33    | 63.50    | 297.24    | 56.92    | 36.42         | 55.56    | 35.06         | 55.71    | 35.22         | 295.92    | 186.12        | 66.09    | 46.01          | 466.95    | 474.21    | 469.08    | 52.25    |
 | xyzrgb_dragon                                 | 125066   | 9280.75  | 13452.33 | 59080.21  | 12231.71 | 9280.83       | 11987.42 | 9036.55       | 11987.57 | 9036.70       | 58707.68  | 41024.43      | 13811.48 | 10864.75       | 92511.88  | 93975.87  | 92514.01  | 11134.29 |
+
+
 **Note:** Sizes are in KiloByte (KB)
 
 **Note 2:** Some results are below the baseline. GeoOFF and GeoPLY are for example smaller compared to the input OBJ file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands of lines.
