@@ -83,6 +83,19 @@ class TestCityJsonReader(BaseTest):
             in str(context.exception)
         )
 
+    def test_read5(self) -> None:
+        # given
+        file = self.get_ressource_file("cube_origin_extent.city.json")
+        reader = CityJsonReader(use_transform_for_origin=True)
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertAlmostEqual(float(geo_obj_file.origin[0]), 14.2842798233032)
+        self.assertAlmostEqual(float(geo_obj_file.origin[1]), 48.30284881591775)
+        self.assertAlmostEqual(float(geo_obj_file.origin[2]), 279.807006835938)
+
     def test_read_string(self) -> None:
         # given
         file = self.get_ressource_file("cube1-0.city.json")

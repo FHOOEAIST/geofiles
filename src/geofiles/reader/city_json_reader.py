@@ -19,13 +19,16 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
         self,
         version: CityJsonVersion = CityJsonVersion.V1_1,
         ignore_mandatory_transform: bool = False,
+        use_transform_for_origin: bool = False
     ):
         """
         :param version: The CityJSON version to be used
         :param ignore_mandatory_transform: Starting with CityJSON v1.1 the Transform information is mandatory. Ignore this, when reading the file.
+        :param use_transform_for_origin: If true, reader will use transform information as origin information
         """
         self.version = version
         self.ignore_mandatory_transform = ignore_mandatory_transform
+        self.use_transform_for_origin = use_transform_for_origin
 
     def read_json(self, json_dict: Dict[Any, Any]) -> GeoObjectFile:
         result = GeoObjectFile()
@@ -47,7 +50,10 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
 
         if transform is not None:
             translate = transform["translate"]
-            result.translation = translate
+            if self.use_transform_for_origin:
+                result.origin = translate
+            else:
+                result.translation = translate
             scale = transform["scale"]
             result.scaling = scale
 
@@ -104,3 +110,9 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
                 for e in input_list:
                     face.indices.append(e + 1)
                 res.append(face)
+
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if writer supports origin based representation
+        """
+        return self.use_transform_for_origin
