@@ -137,3 +137,9 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
         :return: the supported file type of this writer
         """
         return ".city.json"
+
+    def supports_origin_base(self) -> bool:
+        """
+        :return: true if writer supports origin based representation
+        """
+        return self.use_transform_for_origin
