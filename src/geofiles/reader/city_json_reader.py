@@ -19,7 +19,7 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
         self,
         version: CityJsonVersion = CityJsonVersion.V1_1,
         ignore_mandatory_transform: bool = False,
-        use_transform_for_origin: bool = False
+        use_transform_for_origin: bool = False,
     ):
         """
         :param version: The CityJSON version to be used
