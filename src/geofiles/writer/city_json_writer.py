@@ -13,18 +13,20 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
     Writer implementation for creating GeoJSON geometry files
     """
 
-    def __init__(self, version: CityJsonVersion = CityJsonVersion.V1_1):
+    def __init__(self, version: CityJsonVersion = CityJsonVersion.V1_1, use_transform_for_origin: bool = False):
         """
         :param version: The CityJSON version to be used
+        :param use_transform_for_origin: If true, writer will use transform information as origin information
         """
         self.version = version
+        self.use_transform_for_origin = use_transform_for_origin
 
     def create_json(
         self,
         data: GeoObjectFile,
         random_seed: Any = None,
     ) -> Dict[Any, Any]:
-        if data.is_origin_based():
+        if data.is_origin_based() and not self.use_transform_for_origin:
             raise Exception("Geo-referenced data must not be origin based")
 
         if data.contains_rotation():
@@ -48,26 +50,29 @@ class CityJsonWriter(JsonWriter, BaseWriter, ABC):
 
         transform = dict()
         set_scale = False
+        scale = [1, 1, 1]
         if data.contains_scaling():
             scale = data.scaling
             set_scale = True
         elif self.version != CityJsonVersion.V1_0:
             # scale is mandatory in CityJSON 1.1
-            scale = [1, 1, 1]
             set_scale = True
 
         set_translate = False
+        translate = [0, 0, 0]
         if data.contains_translation():
             translate = data.translation
             set_translate = True
         elif self.version != CityJsonVersion.V1_0:
             # translation is mandatory in CityJSON 1.1
-            translate = [0, 0, 0]
             set_translate = True
 
         if set_scale:
             transform["scale"] = scale
-        if set_translate:
+
+        if self.use_transform_for_origin and data.is_origin_based():
+            transform["translate"] = [a + b for a, b in zip(translate, data.origin)]
+        elif set_translate:
             transform["translate"] = translate
 
         if len(transform) != 0:
