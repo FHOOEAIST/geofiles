@@ -41,6 +41,7 @@ if __name__ == "__main__":
     # setup remaining writers
     writers: Dict[str, BaseWriter] = dict()
     writers["cityjson"] = CityJsonWriter()
+    writers["cityjson-origin"] = CityJsonWriter(use_transform_for_origin=True)
     writers["geojson"] = GeoJsonWriter()
     writers["geoobj"] = obj_writer
     writers["geooff"] = GeoOffWriter()
@@ -97,6 +98,7 @@ if __name__ == "__main__":
     # prepare encodings
     encoding = dict()
     encoding["cityjson"] = False
+    encoding["cityjson-origin"] = False
     encoding["geojson"] = False
     encoding["geoobj"] = False
     encoding["geooff"] = False

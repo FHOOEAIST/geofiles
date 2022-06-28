@@ -70,6 +70,17 @@ class TestCityJsonWriter(BaseWriterTest):
             origin, "cube_origin_extent" + self.get_writer().get_file_type(), writer_to_use=CityJsonWriter(use_transform_for_origin=True)
         )
 
+    def test_write7(self) -> None:
+        data = self.get_cube()
+        data.translation = [5, 5, 5]
+        converter = OriginConverter()
+        origin = converter.to_origin(data)
+        origin.update_extent()
+
+        self._test_write(
+            origin, "cube_origin_extent2" + self.get_writer().get_file_type(), writer_to_use=CityJsonWriter(use_transform_for_origin=True)
+        )
+
     def test_write_to_string(self) -> None:
         # given
         data = self.get_cube()
