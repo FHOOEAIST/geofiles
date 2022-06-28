@@ -1,3 +1,4 @@
+# pylint: disable=R0201
 import xml.etree.ElementTree as ET
 from abc import ABC
 from typing import Any, Dict, List
@@ -27,13 +28,11 @@ class GmlReader(XmlReader, BaseReader, ABC):
         self._internal_read_xml(result, xml, ".//Solid")
         return result
 
-    def _internal_decorate_object(
-        self, xml_object: ET.Element, geo_object: GeoObject
-    ) -> None:
+    def _internal_decorate_object(self, _: ET.Element, __: GeoObject) -> None:
         """
         Internal method for decorating the current GeoObject
-        :param xml_object: current xml object
-        :param geo_object: current geo object
+        :param _: current xml object
+        :param __: current geo object
         """
         return None
 
