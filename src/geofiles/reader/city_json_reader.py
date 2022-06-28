@@ -110,9 +110,3 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
                 for e in input_list:
                     face.indices.append(e + 1)
                 res.append(face)
-
-    def supports_origin_base(self) -> bool:
-        """
-        :return: true if writer supports origin based representation
-        """
-        return self.use_transform_for_origin
