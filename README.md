@@ -31,11 +31,12 @@ Some proposed file formats support additional features such as:
   - Scaling factor
   - Translation
   - Rotation
-- Arbitrary meta information:
+- Arbitrary meta information, with three fixed keys:
   - Global per file such as:
-    - Translation unit: any unit can be used. The present project only supports transformations with metres (m)
-    - Rotation unit: any unit can be used. The present project only supports transformations with degrees (deg)
-  - Local per object (such as type information)
+    - Translation unit (`tu`): any unit can be used. The present project only supports transformations with metres (m)
+    - Rotation unit (`ru`: any unit can be used. The present project only supports transformations with degrees (deg)
+  - Local per object 
+    - Type (`type`): Type of the geo-object such as Building, Car, etc. 
 
 
 ### GeoOBJ
@@ -58,18 +59,19 @@ Next to the geo-referencing features, the `.geoobj` extension also supports exch
 1. `sc` for adding scale information (`s` is already defined in `.obj` for smoothing groups)
 2. `t` for translation information
 3. `r` for rotation angular information
-4. `tu` for defining the file's translation unit (default is metres `m`)
-5. `ru` for defining the file's rotation unit (default is degrees `deg`)
-6. `m` for arbitrary meta information. Every meta entry contains a key as first element followed by one or more values
-
+4. `m` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+    - `type` for object type information
+5. `mf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+    - `tu` for defining the translation unit (default is metres `m`)
+    - `ru` for defining the rotation unit (default is degrees `deg`)
 Example:
 
 ```
 sc 1.5 2 5
 t 10 -5 4
 r 90 45 10
-tu inch
-ru rad
+mf tu inch
+mf ru rad
 m axis_ordering x y z
 ```
 
@@ -93,31 +95,33 @@ GeoOFF
 urn:ogc:def:crs:EPSG::4326
 ```
 
-GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF` header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r][m*]`.
+GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF` header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r][f*][m*]`.
 Like this GeoOFF is able to support:
 - An absolute origin using the `o` header postfix symbol
 - Extent information using the `e` header postfix symbol
 - Global scaling information using the `s` header postfix symbol
 - Global translation information using the `t` header postfix symbol
 - Global rotation information using the `r` header postfix symbol
-- Arbitrary meta information using the `m` header postfix symbol (which can occur multiple times)
+- Arbitrary meta information using the `m` header postfix symbol for object information or `f` for file information (which can occur multiple times)
   - Defined as blank-separated list of key/value pairs like `key value`
   - Values may be again a list of values that are separated with a whitespace like `key value1 value2 value3`
-  - Reserved keys:
+  - Reserved keys for file meta information (`f`):
     - `tu` for defining the translation unit (default is metres `m`)
     - `ru` for defining the rotation unit (default is degrees `deg`)
+  - Reserved keys for object meta information (`m`):
+    - `type` for object type information
 
 Example: 
 ```
-GeoOFFostrmmm
+GeoOFFostrffm
 urn:ogc:def:crs:OGC:2:84
 14.2842798233032 48.30284881591775 279.807006835938
 2 2 2
 10 50 100
 90 0 0
 tu inch 
-type genericobject 
 axis_ordering x y z
+type genericobject 
 ```
 
 **Note:** The `.off` prefixes are currently not supported in the implementations.
@@ -146,10 +150,11 @@ Next to the geo-referencing features, the `.geply` extension also supports excha
 1. `scale` for adding scale information
 2. `translate` for translation information
 3. `rotate` for rotation angular information
-4. `meta` for arbitrary meta information. Every meta entry contains a key as first element followed by one or more values
-5. `tu` for defining the translation unit (default is metres `m`)
-6. `ru` for defining the rotation unit (default is degrees `deg`)
-
+4. `meta` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+    - `type` for object type information
+5. `metaf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+    - `tu` for defining the translation unit (default is metres `m`)
+    - `ru` for defining the rotation unit (default is degrees `deg`)
 
 Example:
 
@@ -159,10 +164,10 @@ geoply
 scale 1.5 2 5
 translate 10 -5 4
 rotate 90 45 10
-tu m
-ru deg
+metaf tu m
+metaf ru deg
 meta type genericobject
-meta axis_ordering x y z
+metaf axis_ordering x y z
 ...
 end_header
 ```

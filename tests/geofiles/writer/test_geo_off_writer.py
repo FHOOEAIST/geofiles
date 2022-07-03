@@ -55,8 +55,8 @@ class TestGeoOffWriter(BaseWriterTest):
 
     def test_write6(self) -> None:
         data = self.get_cube()
-        data.translation_unit = "inch"
-        data.rotation_unit = "rad"
+        data.meta_information["tu"] = "inch"
+        data.meta_information["ru"] = "rad"
         data.objects[0].meta_information["type"] = "GenericObject"
         converter = OriginConverter()
         origin = converter.to_origin(data)
@@ -65,10 +65,10 @@ class TestGeoOffWriter(BaseWriterTest):
 
     def test_write7(self) -> None:
         data = self.get_cube()
-        data.translation_unit = "inch"
-        data.rotation_unit = "rad"
+        data.meta_information["tu"] = "inch"
+        data.meta_information["ru"] = "rad"
+        data.meta_information["axis_ordering"] = ("x", "y", "z")
         data.objects[0].meta_information["type"] = "GenericObject"
-        data.objects[0].meta_information["axis_ordering"] = ("x", "y", "z")
         converter = OriginConverter()
         origin = converter.to_origin(data)
 

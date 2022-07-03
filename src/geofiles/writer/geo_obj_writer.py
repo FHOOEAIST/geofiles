@@ -78,11 +78,17 @@ class GeoObjWriter(BaseWriter, ABC):
                 True,
             )
 
-        if not data.is_default_translation_unit():
-            self._write_to_file(file, f"tu {data.translation_unit}", write_binary, True)
+        for k, v in data.meta_information.items():
+            if k == "tu" and v == "m":
+                continue
+            if k == "ru" and v == "deg":
+                continue
 
-        if not data.is_default_rotation_unit():
-            self._write_to_file(file, f"ru {data.rotation_unit}", write_binary, True)
+            if isinstance(v, tuple):
+                to_write = " ".join(v)
+            else:
+                to_write = str(v)
+            self._write_to_file(file, f"mf {k} {to_write}", write_binary, True)
 
         self._write_coordinates(data.vertices, file, "v ", write_binary)
         self._write_coordinates(data.normals, file, "vn ", write_binary)

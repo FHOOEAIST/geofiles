@@ -1,6 +1,6 @@
 from abc import ABC
 from io import TextIOWrapper
-from typing import Any
+from typing import Any, Dict
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
@@ -97,19 +97,11 @@ class GeoPlyWriter(BaseWriter, ABC):
                 write_binary,
                 True,
             )
-        if not data.is_default_translation_unit():
-            self._write_to_file(file, f"tu {data.translation_unit}", write_binary, True)
 
-        if not data.is_default_rotation_unit():
-            self._write_to_file(file, f"ru {data.rotation_unit}", write_binary, True)
-
-        for k, v in data.objects[0].meta_information.items():
-            if isinstance(v, tuple):
-                to_write = f"{' '.join(v)}"
-            else:
-                to_write = f"{v}"
-            self._write_to_file(file, f"meta {k} {to_write}", write_binary, True)
-
+        self.write_meta_information("metaf", data.meta_information, file, write_binary)
+        self.write_meta_information(
+            "meta", data.objects[0].meta_information, file, write_binary
+        )
         self._write_to_file(file, f"element vertex {num_vertices}", write_binary, True)
         self._write_to_file(file, "property float x", write_binary, True)
         self._write_to_file(file, "property float y", write_binary, True)
@@ -144,3 +136,25 @@ class GeoPlyWriter(BaseWriter, ABC):
         :return: true if file format supports origin based representation
         """
         return True
+
+    def write_meta_information(
+        self,
+        prefix: str,
+        meta_information: Dict[str, Any],
+        file: TextIOWrapper,
+        write_binary: bool,
+    ) -> None:
+        """
+        Help method for writing meta information to the file
+        :param prefix: used to mark the meta information
+        :param meta_information: the actual data
+        :param file: target to be written
+        :param write_binary: flag if file is a binary file
+        :return:
+        """
+        for k, v in meta_information.items():
+            if isinstance(v, tuple):
+                to_write = f"{' '.join(v)}"
+            else:
+                to_write = f"{v}"
+            self._write_to_file(file, f"{prefix} {k} {to_write}", write_binary, True)

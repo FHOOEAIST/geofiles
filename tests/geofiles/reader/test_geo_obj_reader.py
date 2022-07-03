@@ -133,8 +133,8 @@ class TestGeoObjReader(BaseTest):
         geo_obj_file = reader.read(file)
 
         # then
-        self.assertEqual(geo_obj_file.rotation_unit, "rad")
-        self.assertEqual(geo_obj_file.translation_unit, "inch")
+        self.assertEqual(geo_obj_file.meta_information["ru"], "rad")
+        self.assertEqual(geo_obj_file.meta_information["tu"], "inch")
         self.assertEqual(
             geo_obj_file.objects[0].meta_information["type"], "GenericObject"
         )
@@ -148,8 +148,8 @@ class TestGeoObjReader(BaseTest):
         geo_obj_file = reader.read(file)
 
         # then
-        self.assertEqual(geo_obj_file.rotation_unit, "rad")
-        self.assertEqual(geo_obj_file.translation_unit, "inch")
+        self.assertEqual(geo_obj_file.meta_information["ru"], "rad")
+        self.assertEqual(geo_obj_file.meta_information["tu"], "inch")
         self.assertEqual(
             geo_obj_file.objects[0].meta_information["axis_ordering"], ("x", "y", "z")
         )

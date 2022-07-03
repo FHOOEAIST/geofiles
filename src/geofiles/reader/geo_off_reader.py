@@ -78,18 +78,18 @@ class GeoOffReader(BaseReader, ABC):
                     res.translation = [float(a) for a in splits]
                 elif element == "r":
                     res.rotation = [float(a) for a in splits]
-                elif element == "m":
+                elif element in ["m", "f"]:
+                    if element == "m":
+                        target = obj.meta_information
+                    else:
+                        target = res.meta_information
+
                     k = splits[0]
                     v: Any = ""
                     if len(splits) > 2:
                         v = tuple(splits[1:])
                     else:
                         v = splits[1]
-                    if k == "tu":
-                        res.translation_unit = str(v)
-                    elif k == "ru":
-                        res.rotation_unit = str(v)
-                    else:
-                        obj.meta_information[k] = v
+                    target[k] = v
 
         return res

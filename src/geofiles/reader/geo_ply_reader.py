@@ -42,16 +42,17 @@ class GeoPlyReader(BaseReader, ABC):
                     extent = [float(a) for a in trimmed[7:].split(" ")]
                     res.min_extent = extent[:3]
                     res.max_extent = extent[3:]
-                elif trimmed.startswith("tu"):
-                    res.translation_unit = trimmed[3:]
-                elif trimmed.startswith("ru"):
-                    res.rotation_unit = trimmed[3:]
                 elif trimmed.startswith("meta"):
                     splits = trimmed.split(" ")
-                    if len(splits) > 3:
-                        obj.meta_information[splits[1]] = tuple(splits[2:])
+                    if splits[0] == "meta":
+                        target = obj.meta_information
                     else:
-                        obj.meta_information[splits[1]] = splits[2]
+                        target = res.meta_information
+
+                    if len(splits) > 3:
+                        target[splits[1]] = tuple(splits[2:])
+                    else:
+                        target[splits[1]] = splits[2]
                 elif trimmed.startswith("end_header"):
                     search_for_vertices = True
             else:
