@@ -80,13 +80,39 @@ class CityJsonReader(JsonReader, BaseReader, ABC):
                 result.objects.append(geo_object)
                 geo_object.name = city_object_name
                 geometry = city_object.get("geometry")
+                face_cnt = 0
                 if geometry:
                     for geometry_object in geometry:
+                        geometry_type = geometry_object.get("type")
+                        if geometry_type:
+                            geometry_type_entries = geo_object.meta_information.get(
+                                geometry_type
+                            )
+                            if geometry_type_entries is None:
+                                geometry_type_entries = []
+                                geo_object.meta_information[
+                                    geometry_type
+                                ] = geometry_type_entries
+                            geometry_type_entries.append(face_cnt)
+
                         boundaries = geometry_object.get("boundaries")
                         if boundaries:
                             faces: List[Face] = []
                             self.get_values_of_most_inner_array(boundaries, faces)
                             geo_object.faces = faces
+                            face_cnt += len(faces) - 1
+
+                        if geometry_type:
+                            geometry_type_entries = geo_object.meta_information.get(
+                                geometry_type
+                            )
+                            if geometry_type_entries is None:
+                                geometry_type_entries = []
+                                geo_object.meta_information[
+                                    geometry_type
+                                ] = geometry_type_entries
+                            geometry_type_entries.append(face_cnt)
+
         else:
             raise Exception("No city objects defined")
 

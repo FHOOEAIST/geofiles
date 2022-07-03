@@ -2,8 +2,8 @@ geoply
 format ascii 1.0
 crs urn:ogc:def:crs:OGC:2:84
 origin 14.2842798233032 48.30284881591775 279.807006835938
-tu inch
-ru rad
+metaf tu inch
+metaf ru rad
 meta type GenericObject
 element vertex 8
 property float x

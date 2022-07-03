@@ -53,8 +53,8 @@ class TestGeoObjWriter(BaseWriterTest):
 
     def test_write6(self) -> None:
         data = self.get_cube()
-        data.translation_unit = "inch"
-        data.rotation_unit = "rad"
+        data.meta_information["tu"] = "inch"
+        data.meta_information["ru"] = "rad"
         data.objects[0].meta_information["type"] = "GenericObject"
         data.objects[0].meta_information["axis_ordering"] = ("x", "y", "z")
         converter = OriginConverter()

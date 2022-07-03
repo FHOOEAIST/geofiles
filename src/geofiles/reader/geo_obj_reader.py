@@ -105,16 +105,17 @@ class GeoObjReader(BaseReader, ABC):
                 coordinates = [float(a) for a in trimmed[3:].split(" ")]
                 res.normals.append(coordinates)
                 filled_group = True
-            elif trimmed.startswith("m "):
+            elif trimmed.startswith("m ") or trimmed.startswith("mf "):
                 splits = trimmed.split(" ")
+                if splits[0] == "m":
+                    target = current_object.meta_information
+                else:
+                    target = res.meta_information
+
                 if len(splits) == 3:
-                    current_object.meta_information[splits[1]] = splits[2]
+                    target[splits[1]] = splits[2]
                 elif len(splits) > 3:
-                    current_object.meta_information[splits[1]] = tuple(splits[2:])
-            elif trimmed.startswith("tu "):
-                res.translation_unit = trimmed[3:]
-            elif trimmed.startswith("ru "):
-                res.rotation_unit = trimmed[3:]
+                    target[splits[1]] = tuple(splits[2:])
 
         if last_added_object is not current_object:
             res.objects.append(current_object)

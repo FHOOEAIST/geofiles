@@ -1,5 +1,5 @@
 import copy
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from geofiles.conversion.static import is_not_none_nor_empty, update_min_max
 from geofiles.domain.geo_object import GeoObject
@@ -36,20 +36,39 @@ class GeoObjectFile:
         self.texture_coordinates: List[List[float]] = []
         self.min_extent: Optional[List[float]] = []
         self.max_extent: Optional[List[float]] = []
-        self.translation_unit = "m"
-        self.rotation_unit = "deg"
+        self.meta_information: Dict[str, Any] = dict()
+
+    def get_translation_unit(self) -> str:
+        """
+        Getter for the translational unit
+        :returns: unit used for translation information
+        """
+        tu = self.meta_information.get("tu")
+        if tu is None:
+            return "m"
+        return str(tu)
+
+    def get_rotation_unit(self) -> str:
+        """
+        Getter for the rotational unit
+        :returns: unit used for rotation information
+        """
+        ru = self.meta_information.get("ru")
+        if ru is None:
+            return "deg"
+        return str(ru)
 
     def is_default_translation_unit(self) -> bool:
         """
         :returns: true iff file uses metres as translation unit
         """
-        return self.translation_unit == "m"
+        return self.get_translation_unit() == "m"
 
     def is_default_rotation_unit(self) -> bool:
         """
         :returns: true iff file uses degree as rotation unit
         """
-        return self.rotation_unit == "deg"
+        return self.get_rotation_unit() == "deg"
 
     def is_origin_based(self) -> bool:
         """
@@ -141,7 +160,8 @@ class GeoObjectFile:
 
     def minimize(self, name: Optional[str] = None) -> None:
         """
-        Minimizes this GeoObjectFile to one single object as required for GeoOFF and GeoPLY. Also eliminates duplicated faces
+        Minimizes this GeoObjectFile to one single object as required for GeoOFF and GeoPLY. Also eliminates duplicated faces.
+        Note: Object based meta information is lost, but file based information will be maintained.
         :param name: Name for the single object, if None the name of the first object is used
         """
         geoobject = GeoObject()

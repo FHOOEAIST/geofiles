@@ -1,6 +1,6 @@
 from abc import ABC
 from io import TextIOWrapper
-from typing import Any
+from typing import Any, Dict
 
 from geofiles.domain.geo_object_file import GeoObjectFile
 from geofiles.writer.base import BaseWriter
@@ -31,7 +31,6 @@ class GeoOffWriter(BaseWriter, ABC):
         num_vertices = len(data.vertices)
         faces = []
         obj = data.objects[0]
-        meta_information = obj.meta_information.copy()
         if (
             obj.contains_scaling()
             or obj.contains_rotation()
@@ -48,7 +47,11 @@ class GeoOffWriter(BaseWriter, ABC):
         contains_scaling = data.contains_scaling()
         contains_translation = data.contains_translation()
         contains_rotation = data.contains_rotation()
-        if data.is_geo_referenced() or len(meta_information) != 0:
+        if (
+            data.is_geo_referenced()
+            or len(obj.meta_information) != 0
+            or len(data.meta_information) != 0
+        ):
             header = "GeoOFF"
             if origin_based:
                 header += "o"
@@ -60,13 +63,9 @@ class GeoOffWriter(BaseWriter, ABC):
                 header += "t"
             if contains_rotation:
                 header += "r"
-            for _ in range(0, len(meta_information)):
-                header += "m"
-            if not data.is_default_translation_unit():
-                meta_information["tu"] = data.translation_unit
-                header += "m"
-            if not data.is_default_rotation_unit():
-                meta_information["ru"] = data.rotation_unit
+            for _ in range(0, len(data.meta_information)):
+                header += "f"
+            for _ in range(0, len(obj.meta_information)):
                 header += "m"
             self._write_to_file(file, header, write_binary, True)
             self._write_to_file(file, data.crs, write_binary, True)
@@ -101,12 +100,8 @@ class GeoOffWriter(BaseWriter, ABC):
                 self._write_to_file(
                     file, " ".join([str(f) for f in data.rotation]), write_binary, True
                 )
-
-            for k, v in meta_information.items():
-                if isinstance(v, tuple):
-                    self._write_to_file(file, f"{k} {' '.join(v)}", write_binary, True)
-                else:
-                    self._write_to_file(file, f"{k} {v}", write_binary, True)
+            self.write_meta_information(data.meta_information, file, write_binary)
+            self.write_meta_information(obj.meta_information, file, write_binary)
         else:
             if origin_based:
                 raise Exception("Origin information not supported in OFF file format")
@@ -120,7 +115,7 @@ class GeoOffWriter(BaseWriter, ABC):
                 )
             if contains_rotation:
                 raise Exception("Rotation information not supported in OFF file format")
-            if len(meta_information) != 0:
+            if len(data.meta_information) != 0 or len(obj.meta_information) != 0:
                 raise Exception("OFF file format does not support meta information")
             self._write_to_file(file, "OFF", write_binary, True)
 
@@ -150,3 +145,19 @@ class GeoOffWriter(BaseWriter, ABC):
         :return: true if file format supports origin based representation
         """
         return True
+
+    def write_meta_information(
+        self, meta_information: Dict[str, Any], file: TextIOWrapper, write_binary: bool
+    ) -> None:
+        """
+        Write the given meta information dictionary to the file
+        :param meta_information: to be written
+        :param file: target to be written
+        :param write_binary: flag if file is a binary file
+        :return:
+        """
+        for k, v in meta_information.items():
+            if isinstance(v, tuple):
+                self._write_to_file(file, f"{k} {' '.join(v)}", write_binary, True)
+            else:
+                self._write_to_file(file, f"{k} {v}", write_binary, True)
