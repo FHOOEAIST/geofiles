@@ -1,6 +1,6 @@
 from abc import ABC
 from io import TextIOWrapper
-from typing import Any, List, Set, Dict
+from typing import Any, Dict, List, Set
 
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -96,7 +96,7 @@ class GeoObjWriter(BaseWriter, ABC):
 
         # find all root nodes
         roots = []
-        parents = dict()
+        parents: Dict[str, List[GeoObject]] = dict()
         for geoobject in data.objects:
             if geoobject.parent is not None:
                 siblings = parents.get(geoobject.parent.name)
@@ -107,12 +107,22 @@ class GeoObjWriter(BaseWriter, ABC):
             else:
                 roots.append(geoobject)
 
-        used = set()
+        used: Set[str] = set()
         for geoobject in roots:
-            self._write_geoobject(geoobject, geo_referenced, file, write_binary, used, parents, 0)
+            self._write_geoobject(
+                geoobject, geo_referenced, file, write_binary, used, parents, 0
+            )
 
-    def _write_geoobject(self, geoobject: GeoObject, geo_referenced: bool, file: TextIOWrapper, write_binary: bool,
-                         used: Set[str], parents: Dict[str, List[GeoObject]], level: int) -> None:
+    def _write_geoobject(
+        self,
+        geoobject: GeoObject,
+        geo_referenced: bool,
+        file: TextIOWrapper,
+        write_binary: bool,
+        used: Set[str],
+        parents: Dict[str, List[GeoObject]],
+        level: int,
+    ) -> None:
         """
         Help method for writing a geoobject
         :param geoobject: to be written
@@ -152,9 +162,7 @@ class GeoObjWriter(BaseWriter, ABC):
                     self._write_to_file(file, "/", write_binary)
 
                 if contains_textures:
-                    self._write_to_file(
-                        file, f.texture_coordinates[i], write_binary
-                    )
+                    self._write_to_file(file, f.texture_coordinates[i], write_binary)
 
                 if contains_normals:
                     self._write_to_file(file, "/", write_binary)
@@ -171,7 +179,9 @@ class GeoObjWriter(BaseWriter, ABC):
             if geo_referenced:
                 self._write_to_file(file, f"h {curr_level}", write_binary, True)
             for child in children:
-                self._write_geoobject(child, geo_referenced, file, write_binary, used, parents, curr_level)
+                self._write_geoobject(
+                    child, geo_referenced, file, write_binary, used, parents, curr_level
+                )
 
     def _write_transformation(
         self, geoobj: GeoObject, file: TextIOWrapper, write_binary: bool
