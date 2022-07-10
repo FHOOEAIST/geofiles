@@ -4,16 +4,24 @@
 [![DOI](https://zenodo.org/badge/401244311.svg)](https://zenodo.org/badge/latestdoi/401244311)
 
 ![logo](https://github.com/FHOOEAIST/geofiles/raw/main/documentation/logo.png)
+
 # Geo-referenced Geometry File Formats
 
-Classic geometry file formats as `.obj`, `.off`, `.ply`, `.stl` or `.dae` do not support the utilization of coordinate systems besides from a local system, that can not be defined more precisely.
-This feature is a major requirement for global applications, exchanging geo-referenced models e.g. in the context of outdoor augmented reality applications.
+Classic geometry file formats as `.obj`, `.off`, `.ply`, `.stl` or `.dae` do not support the utilization of coordinate
+systems besides from a local system, that can not be defined more precisely.
+This feature is a major requirement for global applications, exchanging geo-referenced models e.g. in the context of
+outdoor augmented reality applications.
 
 For this reason, the present project evaluates different possibilities of geo-referenced geometry files.
 
-Next to wide-spread standards as `GeoVRML`, `X3D`, `CityJSON`, `GeoJSON`, `GML` or `KML`, we introduce four geo-referenced extensions called `.geoobj`, `.geooff`, `.geoply` and `.geostl`.
-While, the named standard formats allow defining objects with multiple additional features, they also come with an overhead according to the file size and an increased structural complexity with disadvantages to the read performance.
-This overhead has to be minimized in many use cases and for this reason, some file formats are more suitable than others. For completeness: the overhead can be further reduced using binary representations (like binary `obj` or `stl`) instead of textual ones, but since not all named formats support a binary mode, this is ignored in favor of human-readability within this project and comparison.
+Next to wide-spread standards as `GeoVRML`, `X3D`, `CityJSON`, `GeoJSON`, `GML` or `KML`, we introduce four
+geo-referenced extensions called `.geoobj`, `.geooff`, `.geoply` and `.geostl`.
+While, the named standard formats allow defining objects with multiple additional features, they also come with an
+overhead according to the file size and an increased structural complexity with disadvantages to the read performance.
+This overhead has to be minimized in many use cases and for this reason, some file formats are more suitable than
+others. For completeness: the overhead can be further reduced using binary representations (like binary `obj` or `stl`)
+instead of textual ones, but since not all named formats support a binary mode, this is ignored in favor of
+human-readability within this project and comparison.
 
 ## Geo-referenced Extensions
 
@@ -21,23 +29,26 @@ In this chapter you can find multiple extensions of classic geometry file format
 All of these extensions support two major features:
 
 1. Defining the coordinate reference system (CRS) of the used vertices' coordinates
-2. Defining an optional origin, which represents an absolute geo-referenced location and an implicit local Cartesian coordinate frame for the models with a metric unit.
+2. Defining an optional origin, which represents an absolute geo-referenced location and an implicit local Cartesian
+   coordinate frame for the models with a metric unit.
 
 ### Additional features
 
 Some proposed file formats support additional features such as:
+
 - Geographical extent
 - Transformation information (local per object or global for all vertices)
-  - Scaling factor
-  - Translation
-  - Rotation
+    - Scaling factor
+    - Translation
+    - Rotation
 - Arbitrary meta information, with three fixed keys:
-  - Global per file such as:
-    - Translation unit (`tu`): any unit can be used. The present project only supports transformations with metres (m)
-    - Rotation unit (`ru`: any unit can be used. The present project only supports transformations with degrees (deg)
-  - Local per object 
-    - Type (`type`): Type of the geo-object such as Building, Car, etc. 
-
+    - Global per file such as:
+        - Translation unit (`tu`): any unit can be used. The present project only supports transformations with metres (
+          m)
+        - Rotation unit (`ru`: any unit can be used. The present project only supports transformations with degrees (
+          deg)
+    - Local per object
+        - Type (`type`): Type of the geo-object such as Building, Car, etc.
 
 ### GeoOBJ
 
@@ -47,6 +58,7 @@ The `.geoobj` file format extends the classic `.obj` file format with two line-t
 2. The `or` line type is used to define the optional origin of the vertices
 
 Example:
+
 ```
 crs urn:ogc:def:crs:EPSG::4326
 or 48.3028533074941 14.2842865755919 279.307006835938
@@ -54,7 +66,8 @@ or 48.3028533074941 14.2842865755919 279.307006835938
 
 #### Addons
 
-Next to the geo-referencing features, the `.geoobj` extension also supports exchanging `scale`, `rotation`, as well as `translation` information using the following line prefixes:
+Next to the geo-referencing features, the `.geoobj` extension also supports exchanging `scale`, `rotation`, as well
+as `translation` information using the following line prefixes:
 
 1. `sc` for adding scale information (`s` is already defined in `.obj` for smoothing groups)
 2. `t` for translation information
@@ -68,23 +81,26 @@ t 10 -5 4
 r 90 45 10
 ```
 
-Note that: if either a scaling, a translation or a rotation information is stated after an object definition with the prefix `o`, the transformation is not interpreted globally, but locally for the specific object.
+Note that: if either a scaling, a translation or a rotation information is stated after an object definition with the
+prefix `o`, the transformation is not interpreted globally, but locally for the specific object.
 
-Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expressions using the line prefix `e`.
+Next to that it also supports the optional geographical extent meta information, containing the minimal (first three
+values) and maximal (remaining three values) coordinate value expressions using the line prefix `e`.
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
+
 ```
 e -0.5 -0.5 -0.5 0.5 0.5 0.5
 ```
 
 GeoObj also supports meta information on file or on object level:
 
-4. `m` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+4. `m` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or
+   more values. Reserved keys:
     - `type` for object type information
-5. `mf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+5. `mf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or
+   more values. Reserved keys:
     - `tu` for defining the translation unit (default is metres `m`)
     - `ru` for defining the rotation unit (default is degrees `deg`)
-
-
 
 ```
 mf tu inch
@@ -95,7 +111,8 @@ m axis_ordering x y z
 And finally GeoObj contains an extension to map object hierarchy:
 
 6. `h` can be used before an object definition to change the hierarchy level. Like this an object tree can be created
-    - Uses the absolute index of the used hierarchy level (e.g. 2 represents a grandchildren-object root->children->grandchildren)
+    - Uses the absolute index of the used hierarchy level (e.g. 2 represents a grandchildren-object root->children->
+      grandchildren)
     - Use 0 for root level
     - Parents are set to the last object of the specified level
 
@@ -118,33 +135,38 @@ f 1 2 3
 
 ### GeoOFF
 
-The `.geooff` file format extends the classic `.off` file. 
+The `.geooff` file format extends the classic `.off` file.
 For this we introduce a new file header using `GeoOFF` instead of `OFF`.
 The next non-empty line after this header is used to define the crs.
 
 Example:
+
 ```
 GeoOFF
 urn:ogc:def:crs:EPSG::4326
 ```
 
-GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF` header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r][f*][m*]`.
+GeoOFF supports alternative headers, using different postfix values. The pattern of the header is based on the `OFF`
+header definition and is defined like `[ST][C][N][4][n]GeoOFF[o][e][s][t][r][f*][m*]`.
 Like this GeoOFF is able to support:
+
 - An absolute origin using the `o` header postfix symbol
 - Extent information using the `e` header postfix symbol
 - Global scaling information using the `s` header postfix symbol
 - Global translation information using the `t` header postfix symbol
 - Global rotation information using the `r` header postfix symbol
-- Arbitrary meta information using the `m` header postfix symbol for object information or `f` for file information (which can occur multiple times)
-  - Defined as blank-separated list of key/value pairs like `key value`
-  - Values may be again a list of values that are separated with a whitespace like `key value1 value2 value3`
-  - Reserved keys for file meta information (`f`):
-    - `tu` for defining the translation unit (default is metres `m`)
-    - `ru` for defining the rotation unit (default is degrees `deg`)
-  - Reserved keys for object meta information (`m`):
-    - `type` for object type information
+- Arbitrary meta information using the `m` header postfix symbol for object information or `f` for file information (
+  which can occur multiple times)
+    - Defined as blank-separated list of key/value pairs like `key value`
+    - Values may be again a list of values that are separated with a whitespace like `key value1 value2 value3`
+    - Reserved keys for file meta information (`f`):
+        - `tu` for defining the translation unit (default is metres `m`)
+        - `ru` for defining the rotation unit (default is degrees `deg`)
+    - Reserved keys for object meta information (`m`):
+        - `type` for object type information
 
-Example: 
+Example:
+
 ```
 GeoOFFostrffm
 urn:ogc:def:crs:OGC:2:84
@@ -178,14 +200,17 @@ end_header
 
 #### Addons
 
-Next to the geo-referencing features, the `.geply` extension also supports exchanging global `scale`, `rotation`, as well as `translation` information using the following line prefixes:
+Next to the geo-referencing features, the `.geply` extension also supports exchanging global `scale`, `rotation`, as
+well as `translation` information using the following line prefixes:
 
 1. `scale` for adding scale information
 2. `translate` for translation information
 3. `rotate` for rotation angular information
-4. `meta` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+4. `meta` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one
+   or more values. Reserved keys:
     - `type` for object type information
-5. `metaf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+5. `metaf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one
+   or more values. Reserved keys:
     - `tu` for defining the translation unit (default is metres `m`)
     - `ru` for defining the rotation unit (default is degrees `deg`)
 
@@ -205,8 +230,10 @@ metaf axis_ordering x y z
 end_header
 ```
 
-Next to that it also supports the optional geographical extent meta information, containing the minimal (first three values) and maximal (remaining three values) coordinate value expressions using the `extent` header.
+Next to that it also supports the optional geographical extent meta information, containing the minimal (first three
+values) and maximal (remaining three values) coordinate value expressions using the `extent` header.
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
+
 ```
 geoply
 ...
@@ -219,7 +246,8 @@ end_header
 
 The `.geostl` file format extends the classic `.stl` file using the `geosolid` root element.
 Followed by the `geosolid` prefix of the file format a meta-data tuple is introduced.
-This tuple consists of the crs at the first position, followed by the optional origin coordinates and finally the optional stl name.
+This tuple consists of the crs at the first position, followed by the optional origin coordinates and finally the
+optional stl name.
 
 ``` 
 geosolid urn:ogc:def:crs:OGC:2:84 48.3028533074941 14.2842865755919 279.307006835938 fileName
@@ -227,31 +255,54 @@ geosolid urn:ogc:def:crs:OGC:2:84 48.3028533074941 14.2842865755919 279.30700683
 
 ## File format comparison
 
-The different named file formats come with a variable amount of features according to e.g. the supported CRS, an origin for specifying a local coordinate system, the meta information of the minimal and maximal coordinates (geographical extent), multi-object support or also differ in the representation of vertices. To take up the last point, some formats use e.g. central vertex lists with referencing indices in the face definition and others re-define the vertices within every indiviudal face. Next to that there are many different other features (e.g. smoothing groups in `.obj`, `geographicalExtent` in `CityJSON` or exact property definitions in `.ply`), which vary between the file formats and lead to a diverse semantic expressiveness. 
+The different named file formats come with a variable amount of features according to e.g. the supported CRS, an origin
+for specifying a local coordinate system, the meta information of the minimal and maximal coordinates (geographical
+extent), multi-object support or also differ in the representation of vertices. To take up the last point, some formats
+use e.g. central vertex lists with referencing indices in the face definition and others re-define the vertices within
+every indiviudal face. Next to that there are many different other features (e.g. smoothing groups in `.obj`
+, `geographicalExtent` in `CityJSON` or exact property definitions in `.ply`), which vary between the file formats and
+lead to a diverse semantic expressiveness.
 
-| Format                                                                                      | Base format                                                                         | Encoding                                                                                                 | Coordinate Reference System                                                                                                                   | Multiple Objects | Vertex References  | Origin Support                               | Transformation Information                                                             | Geographical Extent | Semantic Expressiveness |
-|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|------------------|--------------------|----------------------------------------------|----------------------------------------------------------------------------------------|---------------------|-------------------------|
-| [CityJSON](https://www.cityjson.org/)                                                       | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | Any                                                                                                                                           | Yes              | Yes                | No. But can be approximated with translation | [Global Translation + Scaling](https://www.cityjson.org/specs/1.0.3/#transform-object) | Yes                 | ++                      |
-| [CityGML](https://www.ogc.org/standards/citygml)                                            | [XML](https://www.w3.org/XML/)                                                      | Text                                                                                                     | Any                                                                                                                                           | Yes              | No                 | No                                           | No                                                                                     | No                  | ++                      |
-| [Collada](https://www.khronos.org/collada/)                                                 | [XML](https://www.w3.org/XML/)                                                      | Text                                                                                                     | None (due to XML structure easily addable)                                                                                                    | Yes              | Locally per object | No                                           | No                                                                                     | No                  | ++                      |
-| [GeoJSON](https://geojson.org/)                                                             | [JSON](https://www.json.org/)                                                       | Text                                                                                                     | WGS 84                                                                                                                                        | Yes              | No                 | No                                           | No                                                                                     | No                  | +                       |
-| [GeoObj](#geoobj)                                                                           | [OBJ](http://fegemo.github.io/cefet-cg/attachments/obj-spec.pdf)                    | Text *                                                                                                   | Any                                                                                                                                           | Yes              | Yes                | Yes                                          | Yes                                                                                    | Yes                 | ~                       |
-| [GeoOFF](#geooff)                                                                           | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)       | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes                | Yes                                          | Yes                                                                                    | Yes                 | -                       |
-| [GeoPLY](#geoply)                                                                           | [PLY](http://graphics.stanford.edu/data/3Dscanrep/)                                 | Text *                                                                                                   | Any                                                                                                                                           | No               | Yes                | Yes                                          | Yes                                                                                    | Yes                 | ~                       |
-| [GeoSTL](#geostl)                                                                           | [STL](https://www.fabbers.com/tech/STL_Format)                                      | Text *                                                                                                   | Any                                                                                                                                           | No               | No                 | Yes                                          | No                                                                                     | No                  | --                      |
-| [GML](https://www.ogc.org/standards/gml)                                                    | [XML](https://www.w3.org/XML/)                                                      | Text                                                                                                     | Any                                                                                                                                           | Yes              | No                 | No                                           | No                                                                                     | No                  | ++                      |
-| [KML](https://developers.google.com/kml/documentation/kmlreference)                         | [XML](https://www.w3.org/XML/)                                                      | Text or compressed ([KMZ](https://www.google.com/earth/outreach/learn/packaging-content-in-a-kmz-file/)) | WGS 84                                                                                                                                        | Yes              | No                 | No                                           | No                                                                                     | No                  | ++                      |
-| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf)                      | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec)                                 | Text or Binary                                                                                           | WGS84 / EPSG4326 / UTM                                                                                                                        | Yes              | Locally per object | Yes                                          | Yes                                                                                    | Yes                 | +                       |
-| [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html) | [XML](https://www.w3.org/XML/), [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) | Text or Binary                                                                                           | [Multiple supported CRS](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html#t-Supportedspatialframes) | Yes              | Locally per object | No. But can be approximated with translation | Yes                                                                                    | Yes                 | ++                      |
+|          | File        |                      | Geo-Reference                                   |                 |                     | Geometry   |                   |                  |                   | Appearance                 |            |               | Scene         |                  |                            | Animation  |
+|----------|-------------|----------------------|-------------------------------------------------|-----------------|---------------------|------------|-------------------|------------------|-------------------|----------------------------|------------|---------------|---------------|------------------|----------------------------|------------|
+|          | Base Format | Encoding             | CRS                                             | Origin  Support | Geographical Extent | Faceted    | Multiple  Objects | Object Hierarchy | Vertex References | Color                      | Material   | Image texture | Light sources | Viewport/Cameras | Transformation Information |            |
+| [CityJSON](https://www.cityjson.org/) | [JSON](https://www.json.org/)        | Text                 | Any                                             | †                | ✓          | ✓ | ✓        |                  | Global            | ✓                 | ✓ | ✓    |               |                  | [Global Translation + Scaling](https://www.cityjson.org/specs/1.0.3/#transform-object)      |            |
+| [GeoJSON](https://geojson.org/)  | [JSON](https://www.json.org/)         | Text                 | WGS84                                           |                 | Via bounding box per object                    | ✓ | ✓        |                  |                   | [Via GeoJSON  CSS extension](https://wiki.openstreetmap.org/wiki/Geojson_CSS)  |            |               |               |                  |                            |            |
+| [GeoOBJ](https://github.com/FHOOEAIST/geofiles#geoobj)   | [OBJ](http://fegemo.github.io/cefet-cg/attachments/obj-spec.pdf)          | Text*                | Any                                             | ✓      | ✓          | ✓ | ✓        | ✓       | Global            | ✓                 | ✓ | ✓    |               |                  | ✓                 |            |
+| [GeOFF](https://github.com/FHOOEAIST/geofiles#geooff)    | [OFF](https://shape.cs.princeton.edu/benchmark/documentation/off_format.html)          | Text*                | Any                                             | ✓      | ✓          | ✓ |                   |                  | Global            | ✓                 |            |               |               |                  | ✓                 |            |
+| [GeoPLY](https://github.com/FHOOEAIST/geofiles#geoply)   | [PLY](http://graphics.stanford.edu/data/3Dscanrep/)          | Text*                | Any                                             | ✓      | ✓          | ✓ |                   |                  | Global            | ✓                 | ✓ | ✓    |               |                  | ✓                 |            |
+| [GeoSTL](https://github.com/FHOOEAIST/geofiles#geostl)   | [STL](https://www.fabbers.com/tech/STL_Format)          | Text*                | Any                                             | ✓      |                     | ✓ |                   |                  |                   |                            |            |               |               |                  |                            |            |
+| [GML](https://www.ogc.org/standards/gml)      | [XML](https://www.w3.org/XML/)          | Text                 | Any                                             |                 |                     | ✓ | ✓        | ✓       |                   | ✓                 |            |               |               |                  |                            |            |
+| [CityGML](https://www.ogc.org/standards/citygml)  | [GML](https://www.ogc.org/standards/gml)          | Text                 | Any                                             |                 |                     | ✓ | ✓        | ✓       |                   | ✓                 | ✓ | ✓    |               |                  |                            |            |
+| [KML](https://developers.google.com/kml/documentation/kmlreference)      | [XML](https://www.w3.org/XML/)          | Text or zipped ([KMZ]() ) | WGS84                                           |                 |                     | ✓ | ✓        |                  |                   | ✓                 |            |               |               |                  |                            |            |
+| [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf)  | [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec)         | Text or  Binary      | WGS84 / EPSG4326 / UTM                              | ✓      | ✓          | ✓ | ✓        | ✓       | Local             | ✓                 | ✓ | ✓    | ✓    | ✓       | ✓                 | ✓ |
+| [X3D](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/Architecture.html)      | [XML](https://www.w3.org/XML/), [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) or [JSON](https://www.json.org/)  | Text or Binary       | [Multiple supported](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html#t-Supportedspatialframes)                              | †                | ✓          | ✓ | ✓        | ✓       | Local             | ✓                 | ✓ | ✓    | ✓    | ✓       | ✓                 | ✓ |
+| [Collada](https://www.khronos.org/collada/)  | [XML](https://www.w3.org/XML/)          | Text                 | None (but, due to XML structure easily addable) |                 |                     | ✓ | ✓        | ✓       | Local             | ✓                 | ✓ | ✓    | ✓    | ✓       | ✓                 | ✓ |
+
+† Some file formats do not explicitly support an origin representation, but this feature can be approximated using translations.
+
 
 \* Currently, only text support, but the base format would support binary, so a binary extension would be possible.
 
-
 ### Size comparison
 
-The following file comparison uses the minimal required sub-set of the specific file formats to represent geo-referenced 3D models. Additional features (e.g. GeographicalExtent in `CityJSON`) are not considered as far as possible, to avoid a negative bias of the comparison. Next to that also the used reader does not support all features of the input files (e.g. `.mtb` material information) and may use different line-ending symbols (Windows vs Linux). This would lead to the situation that in some cases the input file size is greater than the geo-referenced version. For this reason we have decided to do a normalization first by reading the input files with our custom reader and exporting the normalized representation using our custom obj writer. The exported and normalized files are used as basis of comparison.
+The following file comparison uses the minimal required sub-set of the specific file formats to represent geo-referenced
+3D models. Additional features (e.g. GeographicalExtent in `CityJSON`) are not considered as far as possible, to avoid a
+negative bias of the comparison. Next to that also the used reader does not support all features of the input files (
+e.g. `.mtb` material information) and may use different line-ending symbols (Windows vs Linux). This would lead to the
+situation that in some cases the input file size is greater than the geo-referenced version. For this reason we have
+decided to do a normalization first by reading the input files with our custom reader and exporting the normalized
+representation using our custom obj writer. The exported and normalized files are used as basis of comparison.
 
-You can find most of the used obj files [here](https://github.com/alecjacobson/common-3d-test-models). The only exceptions are the Amsterdam (find it [here](https://3dbag.nl/)) and Berlin (find it [here](https://www.businesslocationcenter.de/en/economic-atlas/download-portal/)) city model files. Also note that, X3D is currently not explicitly supported by the present framework since it can be encoded using XML or VRML. Next to that it is the successor of [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) and supports many features of [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) within the [geospatial extension](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html) with only minor  differences. For this reason it would result in a comparable size when using the VRML encoding and is left out in the following comparison.
+You can find most of the used obj files [here](https://github.com/alecjacobson/common-3d-test-models). The only
+exceptions are the Amsterdam (find it [here](https://3dbag.nl/)) and Berlin (find
+it [here](https://www.businesslocationcenter.de/en/economic-atlas/download-portal/)) city model files. Also note that,
+X3D is currently not explicitly supported by the present framework since it can be encoded using XML or VRML. Next to
+that it is the successor of [VRML](http://www.martinreddy.net/gfx/3d/VRML.spec) and supports many features
+of [GeoVRML](http://www.ai.sri.com/~reddy/geovrml/archive/geovrml1_0.pdf) within
+the [geospatial extension](https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/geodata.html)
+with only minor differences. For this reason it would result in a comparable size when using the VRML encoding and is
+left out in the following comparison.
 
 | File                 | Vertices | Original | CityJSON | CityJSON (Origin) | GeoJSON   | GeoOBJ   | GeoOBJ (Origin) | GeoOFF   | GeoOFF (Origin) | GeoPLY   | GeoPLY (Origin) | GeoSTL    | GeoSTL (Origin) | GeoVRML  | GeoVRML (Origin) | GML       | CityGML   | KML       | Collada  |
 |----------------------|----------|----------|----------|-------------------|-----------|----------|-----------------|----------|-----------------|----------|-----------------|-----------|-----------------|----------|------------------|-----------|-----------|-----------|----------|
@@ -288,7 +339,11 @@ You can find most of the used obj files [here](https://github.com/alecjacobson/c
 
 **Note:** Sizes are in KiloByte (KB)
 
-**Note 2:** Some results are below the baseline. GeoOFF and GeoPLY are for example smaller compared to the input OBJ file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands of lines.
+**Note 2:** Some results are below the baseline. GeoOFF and GeoPLY are for example smaller compared to the input OBJ
+file's, because of the missing line prefix. While vertices and faces are marked with `v` and `f` in OBJ, this prefix is
+implicitly given by the ordering and the number of elements in the two mentioned file formats (and their base
+formats `OFF` and `PLY`). The line prefix results in a comparable high overhead, when it comes to files with thousands
+of lines.
 
 An interactive visualization of the size comparison can be found [here](https://fhooeaist.github.io/geofiles/).
 
@@ -304,8 +359,13 @@ pip install geofiles
 
 ### Importing files
 
-The present project supports multiple reader implementations for importing (geo-referenced) geometry files (`.obj`, `.geoobj`,  `.ply`, `.geoply`, `.off`, `.geooff`, `.stl`, `.geostl`, `CityJSON`, `GeoJSON`, `KML`, `GML`, `CityGML`, `Collada (.dae)`).
-Using one of these readers is the entrypoint to the framework and allows to create an in-memory geometry model using the `GeoObjectFile` class. Note that only a subset of the features of the named files are currently supported. So reading files with non-supported features may result in a loss of information (e.g. smoothing groups in `.obj`, exact property definitions of `.ply` or classes of CityObjects in `CityJSON`, etc.)
+The present project supports multiple reader implementations for importing (geo-referenced) geometry files (`.obj`
+, `.geoobj`,  `.ply`, `.geoply`, `.off`, `.geooff`, `.stl`, `.geostl`, `CityJSON`, `GeoJSON`, `KML`, `GML`, `CityGML`
+, `Collada (.dae)`).
+Using one of these readers is the entrypoint to the framework and allows to create an in-memory geometry model using
+the `GeoObjectFile` class. Note that only a subset of the features of the named files are currently supported. So
+reading files with non-supported features may result in a loss of information (e.g. smoothing groups in `.obj`, exact
+property definitions of `.ply` or classes of CityObjects in `CityJSON`, etc.)
 
 ```python
 reader = GeoObjReader()
@@ -330,8 +390,10 @@ geoObjFile: GeoObjectFile = reader.read_string(file)
 
 ### Converting
 
-The present framework supports different conversion methodologies as converting from one to another coordinate reference system.
-Next to the CRS-conversion the framework also supports to transform between origin and non-origin based representations, as well as between geo-referenced and local representations. 
+The present framework supports different conversion methodologies as converting from one to another coordinate reference
+system.
+Next to the CRS-conversion the framework also supports to transform between origin and non-origin based representations,
+as well as between geo-referenced and local representations.
 Finally, there is also basic support for transforming (scale, rotation, translation) a model's vertices.
 
 ```python
@@ -355,10 +417,13 @@ transformed = transformer.transform(origin_based)
 ### Determining Geographical Extent
 
 The geographical extent of a file can be determined in two ways:
+
 1. Only searching for the min and max coordinates of the values (not considering transformation or origin information)
 2. Determining the geographical extent considering all available meta information
 
-Depending on the use case one variant is more suitable than the other. If you are going to ignore transformation information in your application, the additional overhead of the second method is not required, otherwise if you want to know the extents considering this meta information you have to use the `ExtentCalculator` class.
+Depending on the use case one variant is more suitable than the other. If you are going to ignore transformation
+information in your application, the additional overhead of the second method is not required, otherwise if you want to
+know the extents considering this meta information you have to use the `ExtentCalculator` class.
 
 ```python
 # 1. Classic geographical extent 
@@ -371,17 +436,22 @@ objFileWithExtents = ExtentCalculator.update_extent(geoObjFile, True, True)
 
 ### Exporting files
 
-Finally, the in-memory model representations can be re-written to your hard drive using one of the writer implementations. 
+Finally, the in-memory model representations can be re-written to your hard drive using one of the writer
+implementations.
 Note:
+
 1. That some file formats presuppose a specific CRS (e.g. `.kml` requires vertices in `Wgs84` representation)
-2. Most file formats do not support transformation (scale, rotation, translation) meta-information. A model's vertices have to be transformed first before exported to such a file format.
+2. Most file formats do not support transformation (scale, rotation, translation) meta-information. A model's vertices
+   have to be transformed first before exported to such a file format.
 3. The writers will automatically append the specific file type (unless you set `append_file_type` to `False`)
+
 ```python
 writer = GeoPlyWriter()
 writer.write("mygreatfile.geoply", transformed, append_file_type=False)
 ```
 
-Alternatively, the writers can also be used to create file format specific output like JSON (for GeoJSON, CityJSON, ...), XML (for GML, KML, ...) or just string:
+Alternatively, the writers can also be used to create file format specific output like JSON (for GeoJSON, CityJSON, ...)
+, XML (for GML, KML, ...) or just string:
 
 ```python
 writer = GeoPlyWriter()
@@ -401,23 +471,32 @@ xml_output = writer.create_xml(transformed)
 ## FAQ
 
 - Why yet another 3D geometry file format like `.geoobj`?
-  - During our research in the context of outdoor augmented reality applications, we were looking for a possibility for exchanging geo-referenced geometry models. In this context, the other named file formats come with a too high overhead (e.g. `XML` tags or not required meta information as object types like in `CityJson`) in our opinion and are for this reason not ideal.
+    - During our research in the context of outdoor augmented reality applications, we were looking for a possibility
+      for exchanging geo-referenced geometry models. In this context, the other named file formats come with a too high
+      overhead (e.g. `XML` tags or not required meta information as object types like in `CityJson`) in our opinion and
+      are for this reason not ideal.
 - You describe multiple geo-referenced file formats. Which one should I use for geo-referenced 3D models?
-  - This depends on the use case. If you have to exchange the models with as little overhead as possible we recommend using the proposed `.geoply`, `.geoobj` or `.geooff` format extensions. If you require semantic expressiveness, you should prefer other formats like `CityJson` or `GML`. 
+    - This depends on the use case. If you have to exchange the models with as little overhead as possible we recommend
+      using the proposed `.geoply`, `.geoobj` or `.geooff` format extensions. If you require semantic expressiveness,
+      you should prefer other formats like `CityJson` or `GML`.
 - How are vertices defined, if I use the origin-based approach of `.geoobj`, `.geoply`, `.geooff` or `.geostl`?
-  - In the origin-based version, vertices are represented within a local Cartesian coordinate system with the defined origin as coordinate system origin (0, 0, 0). 
-  - The local coordinate system is intended as a left handed system.
-  - The local coordinate system uses the x-axis as abscissa axis (width information), y-axis as ordinate axis (length information) and z-axis as applicate axis (height information).
-  - The units used in this type of coordinate system are assumed to be in **meters**. 
+    - In the origin-based version, vertices are represented within a local Cartesian coordinate system with the defined
+      origin as coordinate system origin (0, 0, 0).
+    - The local coordinate system is intended as a left handed system.
+    - The local coordinate system uses the x-axis as abscissa axis (width information), y-axis as ordinate axis (length
+      information) and z-axis as applicate axis (height information).
+    - The units used in this type of coordinate system are assumed to be in **meters**.
 - How is the transformation information defined?
-  - The proposed transformation information is separated into tuples (one value per axis) for translation, rotation and scale. 
-  - Per default: For the translation, meter based offsets are intended to be used, the rotation is based on degrees and the scale tuple is represented using numeric factors.
-  - `GeoOBJ`, `GeoOFF` and `GeoPLY` support to change the used unit for translation/rotation information
+    - The proposed transformation information is separated into tuples (one value per axis) for translation, rotation
+      and scale.
+    - Per default: For the translation, meter based offsets are intended to be used, the rotation is based on degrees
+      and the scale tuple is represented using numeric factors.
+    - `GeoOBJ`, `GeoOFF` and `GeoPLY` support to change the used unit for translation/rotation information
 
 ## Contributing
 
 **First make sure to read our [general contribution guidelines](https://fhooeaist.github.io/CONTRIBUTING.html).**
-   
+
 ## Licence
 
 Copyright (c) 2021 the original author or authors.
@@ -430,6 +509,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 ## Research
 
 If you are going to use this project as part of a research paper, we would ask you to reference this project by citing
-it. 
+it.
 
 [![DOI](https://zenodo.org/badge/401244311.svg)](https://zenodo.org/badge/latestdoi/401244311)
