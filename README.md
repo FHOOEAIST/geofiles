@@ -59,15 +59,6 @@ Next to the geo-referencing features, the `.geoobj` extension also supports exch
 1. `sc` for adding scale information (`s` is already defined in `.obj` for smoothing groups)
 2. `t` for translation information
 3. `r` for rotation angular information
-4. `m` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
-    - `type` for object type information
-5. `mf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
-    - `tu` for defining the translation unit (default is metres `m`)
-    - `ru` for defining the rotation unit (default is degrees `deg`)
-6. `h` can be used before an object definition to change the hierarchy level. Like this an object tree can be created
-    - Uses the absolute index of the used hierarchy level (e.g. 2 represents a grandchildren-object root->children->grandchildren)
-    - Use 0 for root level
-    - Parents are set to the last object of the specified level
 
 Example:
 
@@ -75,9 +66,6 @@ Example:
 sc 1.5 2 5
 t 10 -5 4
 r 90 45 10
-mf tu inch
-mf ru rad
-m axis_ordering x y z
 ```
 
 Note that: if either a scaling, a translation or a rotation information is stated after an object definition with the prefix `o`, the transformation is not interpreted globally, but locally for the specific object.
@@ -86,6 +74,46 @@ Next to that it also supports the optional geographical extent meta information,
 This information can be useful for filtering geo-referenced files without any need to iterate all vertices.
 ```
 e -0.5 -0.5 -0.5 0.5 0.5 0.5
+```
+
+GeoObj also supports meta information on file or on object level:
+
+4. `m` for arbitrary object based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+    - `type` for object type information
+5. `mf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
+    - `tu` for defining the translation unit (default is metres `m`)
+    - `ru` for defining the rotation unit (default is degrees `deg`)
+
+
+
+```
+mf tu inch
+mf ru rad
+m axis_ordering x y z
+```
+
+And finally GeoObj contains an extension to map object hierarchy:
+
+6. `h` can be used before an object definition to change the hierarchy level. Like this an object tree can be created
+    - Uses the absolute index of the used hierarchy level (e.g. 2 represents a grandchildren-object root->children->grandchildren)
+    - Use 0 for root level
+    - Parents are set to the last object of the specified level
+
+```
+crs urn:ogc:def:crs:OGC:2:84
+or 14.2842798233032 48.30284881591775 279.807006835938
+v -0.5009357136907019 -0.4994462475020125 0.5
+v -0.5009357136907019 -0.4994462475020125 -0.5
+v -0.5009356247086404 0.4994462914230726 -0.5
+g cubes
+h 1
+o child1
+f 1 2 3
+o child2
+f 1 2 3
+h 2
+o child3
+f 1 2 3
 ```
 
 ### GeoOFF
