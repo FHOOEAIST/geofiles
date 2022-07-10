@@ -81,7 +81,11 @@ class GeoObjReader(BaseReader, ABC):
                 elif new_level < current_level:
                     while new_level < current_level:
                         current_level -= 1
-                        current_parent = current_parent.parent
+                        if (
+                            current_parent is not None
+                            and current_parent.parent is not None
+                        ):
+                            current_parent = current_parent.parent
                 current_level = new_level
             # check if the current line defines the coordinate reference system
             elif trimmed.startswith("crs "):
