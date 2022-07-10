@@ -20,6 +20,8 @@ class GeoObjReader(BaseReader, ABC):
         """
         res = GeoObjectFile()
 
+        current_level = 0
+        current_parent = None
         current_object = GeoObject()
         last_added_object = None
         found_group = False
@@ -59,11 +61,28 @@ class GeoObjReader(BaseReader, ABC):
                 else:
                     new_object = GeoObject()
                     new_object.name = name
-                    new_object.parent = current_object
+                    new_object.parent = current_parent
                     res.objects.append(current_object)
                     last_added_object = current_object
                     current_object = new_object
+                if trimmed.startswith("g "):
+                    current_parent = current_object
+                    current_level += 1
                 found_group = True
+            # check if the current line defines a hierarchy change
+            elif trimmed.startswith("h "):
+                new_level = int(trimmed[2])
+                if new_level < 0:
+                    continue
+                if new_level == 0:
+                    current_parent = None
+                elif new_level == current_level + 1:
+                    current_parent = current_object
+                elif new_level < current_level:
+                    while new_level < current_level:
+                        current_level -= 1
+                        current_parent = current_parent.parent
+                current_level = new_level
             # check if the current line defines the coordinate reference system
             elif trimmed.startswith("crs "):
                 res.crs = trimmed[4:]

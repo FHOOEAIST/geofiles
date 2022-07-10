@@ -64,6 +64,11 @@ Next to the geo-referencing features, the `.geoobj` extension also supports exch
 5. `mf` for arbitrary file based meta information. Every meta entry contains a key as first element followed by one or more values. Reserved keys:
     - `tu` for defining the translation unit (default is metres `m`)
     - `ru` for defining the rotation unit (default is degrees `deg`)
+6. `h` can be used before an object definition to change the hierarchy level. Like this an object tree can be created
+    - Uses the absolute index of the used hierarchy level (e.g. 2 represents a grandchildren-object root->children->grandchildren)
+    - Use 0 for root level
+    - Parents are set to the last object of the specified level
+
 Example:
 
 ```

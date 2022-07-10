@@ -1,6 +1,6 @@
 from abc import ABC
 from io import TextIOWrapper
-from typing import Any, List
+from typing import Any, List, Set, Dict
 
 from geofiles.domain.geo_object import GeoObject
 from geofiles.domain.geo_object_file import GeoObjectFile
@@ -94,45 +94,84 @@ class GeoObjWriter(BaseWriter, ABC):
         self._write_coordinates(data.normals, file, "vn ", write_binary)
         self._write_coordinates(data.texture_coordinates, file, "vt ", write_binary)
 
+        # find all root nodes
+        roots = []
+        parents = dict()
         for geoobject in data.objects:
-            if len(geoobject.faces) == 0:
-                self._write_to_file(file, f"g {geoobject.name}", write_binary, True)
+            if geoobject.parent is not None:
+                siblings = parents.get(geoobject.parent.name)
+                if siblings is None:
+                    siblings = []
+                siblings.append(geoobject)
+                parents[geoobject.parent.name] = siblings
             else:
-                self._write_to_file(file, f"o {geoobject.name}", write_binary, True)
+                roots.append(geoobject)
 
+        used = set()
+        for geoobject in roots:
+            self._write_geoobject(geoobject, geo_referenced, file, write_binary, used, parents, 0)
+
+    def _write_geoobject(self, geoobject: GeoObject, geo_referenced: bool, file: TextIOWrapper, write_binary: bool,
+                         used: Set[str], parents: Dict[str, List[GeoObject]], level: int) -> None:
+        """
+        Help method for writing a geoobject
+        :param geoobject: to be written
+        :param geo_referenced: flag if geo-referenced file (geoobj)
+        :param file: target
+        :param write_binary:
+        :param used: already written objects (identified by name)
+        :param parents: mapping of object names to their children
+        :param level: current level
+        :return: None
+        """
+        if geoobject.name in used:
+            return
+        used.add(geoobject.name)
+        if len(geoobject.faces) == 0:
+            self._write_to_file(file, f"g {geoobject.name}", write_binary, True)
+        else:
+            self._write_to_file(file, f"o {geoobject.name}", write_binary, True)
+        if geo_referenced:
+            self._write_transformation(geoobject, file, write_binary)
+        for k, v in geoobject.meta_information.items():
+            if isinstance(v, tuple):
+                to_write = " ".join(v)
+            else:
+                to_write = str(v)
+            self._write_to_file(file, f"m {k} {to_write}", write_binary, True)
+
+        for f in geoobject.faces:
+            self._write_to_file(file, "f ", write_binary)
+            contains_textures = len(f.texture_coordinates) != 0
+            contains_normals = len(f.normal_indices) != 0
+            index_len = len(f.indices)
+            for i, idx in enumerate(f.indices):
+                self._write_to_file(file, idx, write_binary)
+
+                if contains_textures or contains_normals:
+                    self._write_to_file(file, "/", write_binary)
+
+                if contains_textures:
+                    self._write_to_file(
+                        file, f.texture_coordinates[i], write_binary
+                    )
+
+                if contains_normals:
+                    self._write_to_file(file, "/", write_binary)
+                    self._write_to_file(file, f.normal_indices[i], write_binary)
+
+                if i < index_len - 1:
+                    self._write_to_file(file, " ", write_binary)
+
+            self._write_to_file(file, "", write_binary, True)
+
+        children = parents.get(geoobject.name)
+        if children is not None:
+            curr_level = level + 1
             if geo_referenced:
-                self._write_transformation(geoobject, file, write_binary)
-            for k, v in geoobject.meta_information.items():
-                if isinstance(v, tuple):
-                    to_write = " ".join(v)
-                else:
-                    to_write = str(v)
-                self._write_to_file(file, f"m {k} {to_write}", write_binary, True)
-
-            for f in geoobject.faces:
-                self._write_to_file(file, "f ", write_binary)
-                contains_textures = len(f.texture_coordinates) != 0
-                contains_normals = len(f.normal_indices) != 0
-                index_len = len(f.indices)
-                for i, idx in enumerate(f.indices):
-                    self._write_to_file(file, idx, write_binary)
-
-                    if contains_textures or contains_normals:
-                        self._write_to_file(file, "/", write_binary)
-
-                    if contains_textures:
-                        self._write_to_file(
-                            file, f.texture_coordinates[i], write_binary
-                        )
-
-                    if contains_normals:
-                        self._write_to_file(file, "/", write_binary)
-                        self._write_to_file(file, f.normal_indices[i], write_binary)
-
-                    if i < index_len - 1:
-                        self._write_to_file(file, " ", write_binary)
-
-                self._write_to_file(file, "", write_binary, True)
+                self._write_to_file(file, f"h {curr_level}", write_binary, True)
+            for child in children:
+                self._write_geoobject(child, geo_referenced, file, write_binary, used, parents, curr_level)
 
     def _write_transformation(
         self, geoobj: GeoObject, file: TextIOWrapper, write_binary: bool

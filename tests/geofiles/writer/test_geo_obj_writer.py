@@ -1,3 +1,5 @@
+import copy
+
 from geofiles.conversion.origin_converter import OriginConverter
 from geofiles.writer.base import BaseWriter
 from geofiles.writer.geo_obj_writer import GeoObjWriter
@@ -61,6 +63,35 @@ class TestGeoObjWriter(BaseWriterTest):
         origin = converter.to_origin(data)
 
         self._test_write(origin, "cube_meta2" + self.get_writer().get_file_type())
+
+    def test_write7(self) -> None:
+        data = self.get_cube()
+        data.objects[0].rotation = [90, 0, 0]
+        data.objects[0].scaling = [2, 2, 2]
+        data.objects[0].translation = [10, 50, 100]
+
+        root = data.objects[0]
+        child1 = copy.deepcopy(root)
+        child1.name = "child1"
+        child1.parent = root
+        child2 = copy.deepcopy(root)
+        child2.name = "child2"
+        child2.parent = root
+        child3 = copy.deepcopy(root)
+        root.faces = []
+        root.name = "cubes"
+        child3.name = "child3"
+        child3.parent = child2
+        data.objects.append(child1)
+        data.objects.append(child2)
+        data.objects.append(child3)
+
+        converter = OriginConverter()
+        origin = converter.to_origin(data)
+
+        self._test_write(
+            origin, "object_hierarchy" + self.get_writer().get_file_type()
+        )
 
     def test_write_local(self) -> None:
         data = self.get_local_cube()
