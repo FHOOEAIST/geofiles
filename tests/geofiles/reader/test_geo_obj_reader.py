@@ -154,6 +154,29 @@ class TestGeoObjReader(BaseTest):
             geo_obj_file.objects[0].meta_information["axis_ordering"], ("x", "y", "z")
         )
 
+    def test_read9(self) -> None:
+        # given
+        file = self.get_ressource_file("object_hierarchy.geoobj")
+        reader = GeoObjReader()
+
+        # when
+        geo_obj_file = reader.read(file)
+
+        # then
+        self.assertEqual(len(geo_obj_file.objects), 4)
+        obj1 = geo_obj_file.objects[0]
+        obj2 = geo_obj_file.objects[1]
+        obj3 = geo_obj_file.objects[2]
+        obj4 = geo_obj_file.objects[3]
+        self.assertEqual(obj1.name, "cubes")
+        self.assertEqual(obj1.parent, None)
+        self.assertEqual(obj2.name, "child1")
+        self.assertEqual(obj2.parent, obj1)
+        self.assertEqual(obj3.name, "child2")
+        self.assertEqual(obj3.parent, obj1)
+        self.assertEqual(obj4.name, "child3")
+        self.assertEqual(obj4.parent, obj3)
+
     def test_read_string(self) -> None:
         # given
         input_str = """
