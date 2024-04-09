@@ -511,4 +511,19 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 If you are going to use this project as part of a research paper, we would ask you to reference this project by citing
 it.
 
-[![DOI](https://zenodo.org/badge/401244311.svg)](https://zenodo.org/badge/latestdoi/401244311)
+```bibtex
+@article{Praschl2023,
+  title = {Extending 3D geometric file formats for geospatial applications},
+  volume = {16},
+  ISSN = {1866-928X},
+  url = {http://dx.doi.org/10.1007/s12518-023-00543-6},
+  DOI = {10.1007/s12518-023-00543-6},
+  number = {1},
+  journal = {Applied Geomatics},
+  publisher = {Springer Science and Business Media LLC},
+  author = {Praschl,  Christoph and Krauss,  Oliver},
+  year = {2023},
+  month = dec,
+  pages = {161–180}
+}
+```
